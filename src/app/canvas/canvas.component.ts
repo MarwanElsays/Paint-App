@@ -138,6 +138,7 @@ export class CanvasComponent implements OnInit {
     this.s.select = "selected";
     //console.log(selectShapes);
   }
+  /* My Name is Maroooooooooooo */
 
 }
 
