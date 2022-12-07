@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "paint-6f272": {
+      "hosting": {
+        "paint": [
+          "paint-6f272"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "paint-6f272"
+  }
+}

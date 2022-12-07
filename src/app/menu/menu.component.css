@@ -1,0 +1,125 @@
+.shapesmenu{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(22, 100, 119);
+    height:40px;
+    line-height: 200%;
+    align-items: center;
+}
+
+li{
+    height:100%;
+    list-style: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    color:aliceblue;
+    cursor: pointer;
+}
+
+li:hover{
+    background-color: rgb(127, 0, 49);
+}
+
+label{
+    margin-left:30px ;
+    margin-right: 10px;
+    color:blanchedalmond
+}
+
+/* #pickcolorlabel{
+    margin-left:50px ;
+} */
+
+/* Eraseeee */
+#eraseDiv{
+   margin-left: 1px;
+}
+
+#erase{
+    padding:10px 10px 10px 10px;
+    line-height: 200%;
+    border-radius: 10px;
+}
+#erase:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+/* undoooooo */
+#undoDiv{
+    margin-left: 1px;
+ }
+ 
+ #undo{
+     padding:10px 10px 10px 10px;
+     line-height: 200%;
+     border-radius: 10px;
+ }
+ #undo:hover{
+     background-color: aliceblue;
+     cursor: pointer;
+ }
+
+ /* redoooo */
+#redoDiv{
+    margin-left: 1px;
+ }
+ 
+#redo{
+    padding:10px 10px 10px 10px;
+    line-height: 200%;
+    border-radius: 10px;
+ }
+ #redo:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+ }
+
+ /* undoooooo */
+#selectDiv{
+    margin-left: 1px;
+ }
+ 
+ #select{
+     padding:10px 10px 10px 10px;
+     line-height: 200%;
+     border-radius: 10px;
+ }
+ #select:hover{
+     background-color: aliceblue;
+     cursor: pointer;
+ }
+
+/* Load */
+#LoadDiv{
+    margin-left: 300px;
+}
+
+#Load{
+    padding:10px 10px 10px 10px;
+    line-height: 200%;
+    border-radius: 10px;
+}
+#Load:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+/* saveeeeee */
+#saveDiv{
+    margin-left: 10px;
+}
+#save{
+    padding:10px 10px 10px 10px;
+    line-height: 200%;
+    border-radius: 10px;
+}
+#save:hover{
+    background-color: aliceblue;
+    cursor: pointer;
+}
+
+/******************************/
+.active{
+    background-color: rgb(136, 255, 239);
+}
