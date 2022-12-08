@@ -2,6 +2,7 @@ import { ShapeFactoryService } from './../services/shape-factory.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
+import { ControllerService } from '../services/controller';
 
 @Component({
   selector: 'app-canvas',
@@ -9,7 +10,7 @@ import { Shape } from '../Shapes/shape';
   styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements OnInit {
-  constructor(private s: DrawService, private factory: ShapeFactoryService) {}
+  constructor(private s: DrawService, private factory: ShapeFactoryService) { }
 
   @ViewChild('c', { static: true }) canvas!: ElementRef;
   startdraw: boolean = false;
@@ -19,28 +20,61 @@ export class CanvasComponent implements OnInit {
   selectShapes: Shape[] = [];
   currshape: Shape = new Shape();
   moveSelected: boolean = false;
+  controller: ControllerService = new ControllerService(this);
+  undoArray: Shape[] = [];
 
   ngOnInit(): void {
     const mycanvas: HTMLCanvasElement = this.canvas.nativeElement;
     const ctx = mycanvas.getContext('2d');
+    if (ctx) {
+      this.startcanvas(ctx);
+      this.eventSubscription(ctx);
+      this.mouseInput(mycanvas, ctx);
+    }
+  }
+  
 
-    if (ctx) this.startcanvas(ctx);
+  startcanvas(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = '#FFF';
+    ctx?.fillRect(0, 0, 1536, 701);
+  }
 
-    this.s.erase.subscribe((b) => {
-      if (ctx) this.startcanvas(ctx);
-      this.shapes.splice(0, this.shapes.length);
+  update(ctx: CanvasRenderingContext2D) {
+    this.startcanvas(ctx);
+    this.shapes.forEach((s) => {
+      s.Update(ctx);
+    });
+  }
+
+  Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    if (!this.startdraw) return;
+    ctx.beginPath();
+    this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
+  }
+
+  drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    ctx.strokeStyle = this.s.color;
+    ctx?.beginPath();
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
+
+  select() {
+    this.selectShapes = this.shapes.filter((shape) => {
+      return (
+        shape.x > this.currshape.x &&
+        shape.x + shape.w < this.currshape.x + this.currshape.w &&
+        shape.y > this.currshape.y &&
+        shape.y + shape.h < this.currshape.y + this.currshape.h
+      );
     });
 
-    this.s.undo.subscribe((b) => {
-      if (ctx) this.undo(ctx);
-    });
+    this.s.select = 'selected';
+  }
 
-    this.s.redo.subscribe((b) => {
-      if (ctx) this.redo(ctx);
-    });
-
+  mouseInput(mycanvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     mycanvas.addEventListener('mousedown', (e) => {
-      ctx?.beginPath();
+      ctx.beginPath();
       this.startx = e.clientX;
       this.starty = e.clientY - 80;
       this.startdraw = true;
@@ -60,43 +94,35 @@ export class CanvasComponent implements OnInit {
       ){
         this.moveSelected = true;
         this.currshape.valid = false;
-      } 
-      else 
-      {
+      }
+      else {
         this.s.select = 'drawShape';
         this.s.sel = false;
         this.shapes.pop();
-        if (ctx) this.update(ctx);
+        this.update(ctx);
         this.currshape.valid = false;
         this.moveSelected = false;
       }
     });
 
     mycanvas.addEventListener('mousemove', (e) => {
-      if (ctx) {
-        if (!this.moveSelected) {
+      if (!this.moveSelected) {
+        this.update(ctx);
+        this.Draw(ctx, e.clientX, e.clientY - 80);
+      } else {
+
+        /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
+        /*   ************** ***************      ********* **** ****          *************/
+
+        this.selectShapes.forEach((shape) => {
+          shape.x = e.clientX;
+          shape.y = e.clientY;
+          shape.Draw(ctx, shape.col, e.clientX, e.clientY, this.startx, this.starty);
           this.update(ctx);
-          this.Draw(ctx, e.clientX, e.clientY - 80);
-        } else {
-
-          /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
-          /*   ************** ***************      ********* **** ****          *************/
-
-          // this.selectShapes.forEach((shape) => {
-          //   shape.x = e.clientX;
-          //   shape.y = e.clientY;
-          //   shape.Draw(ctx,shape.col,e.clientX,e.clientY,this.startx,this.starty);
-          //   this.update(ctx);
-          // });
-
-         
-          
+        });
 
 
-
-          /***********************************************************************/
-        }
-        
+        /***********************************************************************/
       }
     });
 
@@ -115,55 +141,17 @@ export class CanvasComponent implements OnInit {
     });
   }
 
-  startcanvas(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = '#FFF';
-    ctx?.fillRect(0, 0, 1536, 701);
-  }
-
-  update(ctx: CanvasRenderingContext2D) {
-    this.startcanvas(ctx);
-    ctx.setLineDash([0]);
-    this.shapes.forEach((s) => {
-      s.Update(ctx);
-    });
-  }
-
-  Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    if (!this.startdraw) return;
-    ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
-  }
-
-  drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    ctx.strokeStyle = this.s.color;
-    ctx?.beginPath();
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
-
-  undoArray: Shape[] = [];
-  undo(ctx: CanvasRenderingContext2D) {
-    let removedShape = this.shapes.pop();
-    if (removedShape) this.undoArray.push(removedShape);
-    this.update(ctx);
-  }
-
-  redo(ctx: CanvasRenderingContext2D) {
-    let removedShape = this.undoArray.pop();
-    if (removedShape) this.shapes.push(removedShape);
-    this.update(ctx);
-  }
-
-  select() {
-    this.selectShapes = this.shapes.filter((shape) => {
-      return (
-        shape.x > this.currshape.x &&
-        shape.x + shape.w < this.currshape.x + this.currshape.w &&
-        shape.y > this.currshape.y &&
-        shape.y + shape.h < this.currshape.y + this.currshape.h
-      );
+  eventSubscription(ctx: CanvasRenderingContext2D) {
+    this.s.erase.subscribe((b) => {
+      this.controller.Erase(ctx);
     });
 
-    this.s.select = 'selected';
+    this.s.undo.subscribe((b) => {
+      this.controller.Undo(ctx);
+    });
+
+    this.s.redo.subscribe((b) => {
+      this.controller.Redo(ctx);
+    });
   }
 }
