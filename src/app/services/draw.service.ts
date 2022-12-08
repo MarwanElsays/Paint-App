@@ -18,6 +18,7 @@ export class DrawService {
   undo = new EventEmitter<void>();
   redo = new EventEmitter<void>();
   fillEvent = new EventEmitter<void>();
+  unSelectEvent = new EventEmitter<void>();
 
   emitErase() {
     this.erase.emit();
@@ -33,5 +34,9 @@ export class DrawService {
 
   emitFillEvent() {
     this.fillEvent.emit();
+  }
+
+  emitUnSelectEvent() {
+    this.unSelectEvent.emit();
   }
 }

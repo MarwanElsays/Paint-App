@@ -70,6 +70,7 @@ export class MenuComponent {
       this.s.Fill = false;
     } else {
       this.s.select = "drawShape";
+      this.s.emitUnSelectEvent();
     }
   }
 }

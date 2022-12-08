@@ -41,6 +41,12 @@ export class ControllerService {
         this.canvas.shapes.pop();
       this.canvas.update(ctx);
     })
+
+    s.unSelectEvent.subscribe(() => {
+      if (this.canvas.shapes[this.canvas.shapes.length - 1] instanceof SelectBox)
+        this.canvas.shapes.pop();
+      this.canvas.update(ctx);
+    })
   }
 
   mouseInside(mouseX: number, mouseY: number, shape: Shape) {
