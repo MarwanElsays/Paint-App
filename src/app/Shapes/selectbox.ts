@@ -1,8 +1,9 @@
 import { DrawService } from '../services/draw.service';
 import { Shape } from './shape';
-export class selectbox extends Shape {
+export class SelectBox extends Shape {
 
   private selectedShapes: Shape[] = [];
+  private active: boolean = false;
 
   override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
     ctx.setLineDash([6]);

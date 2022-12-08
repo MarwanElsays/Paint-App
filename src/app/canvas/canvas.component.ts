@@ -3,6 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
 import { ControllerService } from '../services/controller';
+import { SelectBox } from '../Shapes/selectbox';
 
 @Component({
   selector: 'app-canvas',
@@ -17,11 +18,11 @@ export class CanvasComponent implements OnInit {
   startx: number = 0;
   starty: number = 0;
   shapes: Shape[] = [];
-  selectedShapes: Shape[] = [];
   currshape: Shape = new Shape();
   moveSelected: boolean = false;
   controller: ControllerService = new ControllerService(this);
   undoArray: Shape[] = [];
+  selectBox: SelectBox = new SelectBox();
 
   ngOnInit(): void {
     const mycanvas: HTMLCanvasElement = this.canvas.nativeElement;
@@ -66,19 +67,15 @@ export class CanvasComponent implements OnInit {
       this.starty = e.clientY - 80;
       this.startdraw = true;
 
+      console.log(this.s.select);
       if (this.s.select == 'drawSelectBox') {
-        this.currshape = this.factory.getShape('selectbox');
+        this.currshape = this.selectBox;
         this.s.color = '#000000';
         this.s.shape = '';
       } else if (this.s.select == 'drawShape') {
         this.currshape = this.factory.getShape(this.s.shape);
-      } else if (
-        this.s.select == 'selected' &&
-        e.clientX >= this.currshape.x &&
-        e.clientX <= this.currshape.x + this.currshape.w &&
-        e.clientY - 80 >= this.currshape.y &&
-        e.clientY - 80 <= this.currshape.y + this.currshape.h
-      ) {
+      } else if (this.s.select == 'selected' && this.controller.mouseInside(e.clientX, e.clientY, this.currshape)) {
+        console.log('here');
         this.moveSelected = true;
         this.currshape.valid = false;
       } else {
@@ -92,11 +89,15 @@ export class CanvasComponent implements OnInit {
     });
 
     mycanvas.addEventListener('mousemove', (e) => {
+      console.log(this.moveSelected);
       if (!this.moveSelected) {
         this.update(ctx);
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
-
+        switch (this.s.Edit) {
+          case 'Move':   this.selectBox.Move(e.clientX, e.clientY); break;
+          case 'Resize': this.selectBox.Resize(e.clientX, e.clientY); break;
+        }
         /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
         /*   ************** ***************      ********* **** ****          *************/
 
@@ -118,14 +119,15 @@ export class CanvasComponent implements OnInit {
       this.startdraw = false;
       this.moveSelected = false;
 
-      if (this.s.select == 'drawSelectBox' && ctx) {
+      if (this.s.select == 'drawSelectBox') {
         ctx.setLineDash([0]);
-        // this.select();
+        this.selectBox.selectShapes(this.shapes, this.s);
       }
 
-      if (this.currshape.valid == true) this.shapes.push(this.currshape);
-      if (this.currshape) this.currshape.id = this.shapes.length;
-      console.log(this.shapes)
+      if (this.currshape.valid == true) 
+        this.shapes.push(this.currshape);
+      if (this.currshape)
+        this.currshape.id = this.shapes.length;
     });
   }
 }

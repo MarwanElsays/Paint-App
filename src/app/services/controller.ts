@@ -1,4 +1,5 @@
 import { CanvasComponent } from "../canvas/canvas.component";
+import { Shape } from "../Shapes/shape";
 import { DrawService } from "./draw.service";
 
 export class ControllerService {
@@ -33,5 +34,12 @@ export class ControllerService {
     s.redo.subscribe(() => {
       this.Redo(ctx);
     });
+  }
+
+  mouseInside(mouseX: number, mouseY: number, shape: Shape) {
+    return (mouseX >= shape.x &&
+    mouseX <= shape.x + shape.w &&
+    mouseY - 80 >= shape.y &&
+    mouseY - 80 <= shape.y + shape.h);
   }
 }
