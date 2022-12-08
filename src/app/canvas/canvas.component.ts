@@ -46,7 +46,7 @@ export class CanvasComponent implements OnInit {
       this.startdraw = true;
 
       if (this.s.select == 'drawSelectBox') {
-        this.currshape = this.factory.getShape('square');
+        this.currshape = this.factory.getShape('selectbox');
         this.s.color = '#000000';
         this.s.shape = '';
       } else if (this.s.select == 'drawShape') {
@@ -55,8 +55,8 @@ export class CanvasComponent implements OnInit {
         this.s.select == 'selected' &&
         e.clientX >= this.currshape.x &&
         e.clientX <= this.currshape.x + this.currshape.w &&
-        e.clientY >= this.currshape.y &&
-        e.clientY <= this.currshape.y + this.currshape.h
+        e.clientY-80 >= this.currshape.y &&
+        e.clientY-80 <= this.currshape.y + this.currshape.h
       ){
         this.moveSelected = true;
         this.currshape.valid = false;
@@ -82,12 +82,15 @@ export class CanvasComponent implements OnInit {
           /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
           /*   ************** ***************      ********* **** ****          *************/
 
-          this.selectShapes.forEach((shape) => {
-            shape.x = e.clientX;
-            shape.y = e.clientY;
-            shape.Draw(ctx,shape.col,e.clientX,e.clientY,this.startx,this.starty);
-            this.update(ctx);
-          });
+          // this.selectShapes.forEach((shape) => {
+          //   shape.x = e.clientX;
+          //   shape.y = e.clientY;
+          //   shape.Draw(ctx,shape.col,e.clientX,e.clientY,this.startx,this.starty);
+          //   this.update(ctx);
+          // });
+
+         
+          
 
 
 
@@ -101,12 +104,14 @@ export class CanvasComponent implements OnInit {
       this.startdraw = false;
       this.moveSelected = false;
 
-      if (this.s.select == 'drawSelectBox') {
+      if (this.s.select == 'drawSelectBox' && ctx) {
+        ctx.setLineDash([0]);
         this.select();
       }
 
       if (this.currshape.valid == true) this.shapes.push(this.currshape);
       if (this.currshape) this.currshape.id = this.shapes.length;
+      console.log(this.shapes)
     });
   }
 
@@ -117,6 +122,7 @@ export class CanvasComponent implements OnInit {
 
   update(ctx: CanvasRenderingContext2D) {
     this.startcanvas(ctx);
+    ctx.setLineDash([0]);
     this.shapes.forEach((s) => {
       s.Update(ctx);
     });
