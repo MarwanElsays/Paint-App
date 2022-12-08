@@ -21,5 +21,15 @@ export class Square extends Shape {
     ctx.strokeRect(this.x, this.y, this.w, this.h);
   }
 
+  override Move(x: number, y: number): void {
+    this.x = x;
+    this.y = y;
+  }
+
+  override Resize(width: number, height: number): void {
+    this.w = width;
+    this.h = height;
+  }
+
 }
 

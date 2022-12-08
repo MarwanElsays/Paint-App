@@ -26,4 +26,14 @@ export class Triangle extends Shape{
     ctx.closePath();
     ctx.stroke();
   }
+
+  override Move(x: number, y: number): void {
+    this.x = x;
+    this.y = y;
+  }
+
+  override Resize(width: number, height: number): void {
+    this.w = width;
+    this.h = height;
+  }
 }

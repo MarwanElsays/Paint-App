@@ -17,7 +17,7 @@ export class CanvasComponent implements OnInit {
   startx: number = 0;
   starty: number = 0;
   shapes: Shape[] = [];
-  selectShapes: Shape[] = [];
+  selectedShapes: Shape[] = [];
   currshape: Shape = new Shape();
   moveSelected: boolean = false;
   controller: ControllerService = new ControllerService(this);
@@ -28,11 +28,10 @@ export class CanvasComponent implements OnInit {
     const ctx = mycanvas.getContext('2d');
     if (ctx) {
       this.startcanvas(ctx);
-      this.eventSubscription(ctx);
+      this.controller.eventSubscription(ctx, this.s);
       this.mouseInput(mycanvas, ctx);
     }
   }
-  
 
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
@@ -60,19 +59,6 @@ export class CanvasComponent implements OnInit {
     ctx.stroke();
   }
 
-  select() {
-    this.selectShapes = this.shapes.filter((shape) => {
-      return (
-        shape.x > this.currshape.x &&
-        shape.x + shape.w < this.currshape.x + this.currshape.w &&
-        shape.y > this.currshape.y &&
-        shape.y + shape.h < this.currshape.y + this.currshape.h
-      );
-    });
-
-    this.s.select = 'selected';
-  }
-
   mouseInput(mycanvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     mycanvas.addEventListener('mousedown', (e) => {
       ctx.beginPath();
@@ -90,13 +76,12 @@ export class CanvasComponent implements OnInit {
         this.s.select == 'selected' &&
         e.clientX >= this.currshape.x &&
         e.clientX <= this.currshape.x + this.currshape.w &&
-        e.clientY-80 >= this.currshape.y &&
-        e.clientY-80 <= this.currshape.y + this.currshape.h
-      ){
+        e.clientY - 80 >= this.currshape.y &&
+        e.clientY - 80 <= this.currshape.y + this.currshape.h
+      ) {
         this.moveSelected = true;
         this.currshape.valid = false;
-      }
-      else {
+      } else {
         this.s.select = 'drawShape';
         this.s.sel = false;
         this.shapes.pop();
@@ -123,6 +108,8 @@ export class CanvasComponent implements OnInit {
         // });
 
 
+
+
         /***********************************************************************/
       }
     });
@@ -133,26 +120,12 @@ export class CanvasComponent implements OnInit {
 
       if (this.s.select == 'drawSelectBox' && ctx) {
         ctx.setLineDash([0]);
-        this.select();
+        // this.select();
       }
 
       if (this.currshape.valid == true) this.shapes.push(this.currshape);
       if (this.currshape) this.currshape.id = this.shapes.length;
       console.log(this.shapes)
-    });
-  }
-
-  eventSubscription(ctx: CanvasRenderingContext2D) {
-    this.s.erase.subscribe((b) => {
-      this.controller.Erase(ctx);
-    });
-
-    this.s.undo.subscribe((b) => {
-      this.controller.Undo(ctx);
-    });
-
-    this.s.redo.subscribe((b) => {
-      this.controller.Redo(ctx);
     });
   }
 }
