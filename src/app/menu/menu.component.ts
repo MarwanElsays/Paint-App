@@ -1,11 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { DrawService } from '../services/draw.service';
-import { faEraser } from '@fortawesome/free-solid-svg-icons';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
-import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
-import { faRedo } from '@fortawesome/free-solid-svg-icons';
-import { faMousePointer } from '@fortawesome/free-solid-svg-icons';
+import { faEraser,faSave,faFileUpload,faUndo,faRedo,faMousePointer,
+         faSquare,faCircle,faPencilAlt} from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-menu',
@@ -24,7 +21,12 @@ export class MenuComponent implements OnInit {
   faRedo = faRedo;
   faMousePointer = faMousePointer;
 
-  shapes: string[] = ['square', 'circle', 'triangle', 'line','pencil'];
+  shapes: any[] = [{name:'square',icon:faSquare},
+                   {name:'circle',icon:faCircle}, 
+                   {name:'triangle',icon:faSquare},
+                   {name:'line',icon:faPencilAlt}, 
+                   {name:'pencil',icon:faPencilAlt}
+    ];
 
   asign(shape: string) {
     this.s.shape = shape;
@@ -51,3 +53,6 @@ export class MenuComponent implements OnInit {
     }
   }
 }
+
+
+

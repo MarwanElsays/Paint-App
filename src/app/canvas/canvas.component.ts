@@ -42,7 +42,7 @@ export class CanvasComponent implements OnInit {
     mycanvas.addEventListener('mousedown', (e) => {
       ctx?.beginPath();
       this.startx = e.clientX;
-      this.starty = e.clientY - 40;
+      this.starty = e.clientY - 80;
       this.startdraw = true;
 
       if (this.s.select == 'drawSelectBox') {
@@ -76,7 +76,7 @@ export class CanvasComponent implements OnInit {
       if (ctx) {
         if (!this.moveSelected) {
           this.update(ctx);
-          this.Draw(ctx, e.clientX, e.clientY - 40);
+          this.Draw(ctx, e.clientX, e.clientY - 80);
         } else {
 
           /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
