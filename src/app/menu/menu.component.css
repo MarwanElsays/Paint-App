@@ -28,7 +28,7 @@ label{
 }
 
 #LoadDiv{
-    margin-left: 350px;
+    margin-left: 250px;
 }
 
 #saveDiv{
@@ -47,14 +47,25 @@ label{
     border-radius: 5px;
 }
 
-#shapesContainer li{
+#EditSelected{
+    background-color: rgba(193, 192, 186, 0.427);
+    border : aliceblue 2px solid;
+    display: grid;
+    grid-template-columns: repeat(2,50px);
+    width:100px;
+    height: 70px;
+    margin-left: 5px;
+    border-radius: 5px;
+}
+
+#shapesContainer,#EditSelected li{
     list-style: none;
     color:aliceblue;
     cursor: pointer;
     text-align: center;
 }
 
-#shapesContainer li:hover{
+#shapesContainer li:hover ,#EditSelected li:hover{
     background-color: rgba(216, 216, 216, 0.466);
     border-radius: 10px;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { faEraser,faSave,faFileUpload,faUndo,faRedo,faMousePointer,
-         faSquare,faCircle,faPencilAlt} from '@fortawesome/free-solid-svg-icons';
+         faSquare,faCircle,faPencilAlt,faCopy,faPaste,faCut} from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -28,8 +28,18 @@ export class MenuComponent implements OnInit {
                    {name:'pencil',icon:faPencilAlt}
     ];
 
+    Edits:any[] = [{name:'copy',icon:faCopy},
+                   {name:'cut',icon:faPaste},
+                   {name:'paste',icon:faCut},
+  ];
+
+
   asign(shape: string) {
     this.s.shape = shape;
+  }
+
+  doEdits(edit: string) {
+    this.s.Edit = edit;
   }
 
   erase() {
