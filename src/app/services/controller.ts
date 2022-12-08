@@ -2,9 +2,7 @@ import { CanvasComponent } from "../canvas/canvas.component";
 import { Shape } from "../Shapes/shape";
 
 export class ControllerService {
-  constructor(private canvas: CanvasComponent) { 
-    this.canvas = canvas;
-  }
+  constructor(private canvas: CanvasComponent) { }
 
   Undo(ctx: CanvasRenderingContext2D) {
     let removedShape = this.canvas.shapes.pop();
