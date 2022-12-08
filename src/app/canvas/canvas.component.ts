@@ -48,7 +48,6 @@ export class CanvasComponent implements OnInit {
       if (this.s.select == 'drawSelectBox') {
         this.currshape = this.factory.getShape('selectbox');
         this.s.color = '#000000';
-        this.s.shape = '';
       } else if (this.s.select == 'drawShape') {
         this.currshape = this.factory.getShape(this.s.shape);
       } else if (
@@ -63,6 +62,7 @@ export class CanvasComponent implements OnInit {
       }
       else {
         this.s.select = 'drawShape';
+        this.s.shape = '';
         this.s.sel = false;
         this.shapes.pop();
         this.update(ctx);
@@ -97,7 +97,6 @@ export class CanvasComponent implements OnInit {
       this.moveSelected = false;
 
       if (this.s.select == 'drawSelectBox' && ctx) {
-        ctx.setLineDash([0]);
         this.select();
       }
 
@@ -109,7 +108,6 @@ export class CanvasComponent implements OnInit {
 
   update(ctx: CanvasRenderingContext2D) {
     this.startcanvas(ctx);
-    ctx.setLineDash([0]);
     this.shapes.forEach((s) => {
       s.Update(ctx);
     });
