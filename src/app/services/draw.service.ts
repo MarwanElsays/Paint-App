@@ -8,7 +8,7 @@ export class DrawService {
   constructor() { }
 
   shape: string = "";
-  Edit: string = "";
+  Edit: string = "Move";
   color: string = "#000000FF";
   select: string = 'drawShape';
   sel: boolean = false;

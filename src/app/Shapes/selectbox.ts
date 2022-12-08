@@ -20,6 +20,8 @@ export class SelectBox extends Shape {
     if (this.w == 0 && this.h == 0)
       this.valid = false;
     else this.valid = true;
+
+    ctx.setLineDash([0]);
   }
 
   override Update(ctx: CanvasRenderingContext2D) {
@@ -27,6 +29,7 @@ export class SelectBox extends Shape {
     ctx.strokeStyle = this.col;
     ctx.beginPath();
     ctx.strokeRect(this.x, this.y, this.w, this.h);
+    ctx.setLineDash([0]);
   }
 
   override Move(x: number, y: number) {

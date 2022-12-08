@@ -29,7 +29,7 @@ export class MenuComponent {
   ];
 
   Edits: any[] = [
-  { name: 'Move', icon: faCopy },       //change name to Copy
+  { name: 'Copy', icon: faCopy },       //change name to Copy
   { name: 'Cut', icon: faPaste },
   { name: 'Paste', icon: faCut },
   ];

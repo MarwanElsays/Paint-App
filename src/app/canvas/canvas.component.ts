@@ -33,7 +33,6 @@ export class CanvasComponent implements OnInit {
       this.mouseInput(mycanvas, ctx);
     }
   }
-
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
     ctx.fillRect(0, 0, 1536, 701);
@@ -71,19 +70,20 @@ export class CanvasComponent implements OnInit {
       if (this.s.select == 'drawSelectBox') {
         this.currshape = this.selectBox;
         this.s.color = '#000000';
-        this.s.shape = '';
       } else if (this.s.select == 'drawShape') {
         this.currshape = this.factory.getShape(this.s.shape);
       } else if (this.s.select === 'selected' && this.controller.mouseInside(e.clientX, e.clientY, this.selectBox)) {
         this.moveSelected = true;
+        this.s.Edit = 'Move';
         this.currshape.valid = false;
         this.selectBox.setOldX(e.clientX);
         this.selectBox.setOldY(e.clientY);
       } else {
         this.s.select = 'drawShape';
+        this.s.shape = '';
         this.s.sel = false;
         this.shapes.pop();
-        this.currshape.valid = false;
+        this.currshape = new Shape();
         this.moveSelected = false;
       }
     });
@@ -94,9 +94,7 @@ export class CanvasComponent implements OnInit {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
         switch (this.s.Edit) {
-          case 'Move':
-            this.selectBox.Move(e.clientX, e.clientY);
-            break;
+          case 'Move':   this.selectBox.Move(e.clientX, e.clientY); break;
           case 'Resize': this.selectBox.Resize(e.clientX, e.clientY); break;
         }
         /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
@@ -129,3 +127,12 @@ export class CanvasComponent implements OnInit {
     });
   }
 }
+
+
+
+// drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
+//   ctx.strokeStyle = this.s.color;
+//   ctx.beginPath();
+//   ctx.lineTo(x, y);
+//   ctx.stroke();
+// }
