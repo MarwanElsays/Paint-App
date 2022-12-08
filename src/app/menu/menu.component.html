@@ -1,15 +1,26 @@
 <ul class="shapesmenu">
     <div id="shapesContainer">
+        <li (click)="asign('triangle')">
+            <i class="bi bi-triangle-fill"></i>
+        </li>
+
+        <li (click)="asign('line')">
+            <i class="bi bi-slash-lg"></i>
+        </li>
+
         <li *ngFor="let shape of shapes" (click)="asign(shape.name)">
             <fa-icon [icon]="shape.icon"></fa-icon>
         </li>
+      
     </div>
+
 
     <div id="EditSelected">
         <li *ngFor="let edit of Edits" (click)="doEdits(edit.name)">
             <fa-icon [icon]="edit.icon"></fa-icon>
         </li>
     </div>
+
 
     <label id="pickcolorlabel">pick a Color:</label> <input type="color" [(ngModel)]="this.s.color">
 

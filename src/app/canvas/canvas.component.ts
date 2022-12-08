@@ -36,11 +36,12 @@ export class CanvasComponent implements OnInit {
 
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
-    ctx?.fillRect(0, 0, 1536, 701);
+    ctx.fillRect(0, 0, 1536, 701);
   }
 
   update(ctx: CanvasRenderingContext2D) {
     this.startcanvas(ctx);
+    ctx.setLineDash([0]);
     this.shapes.forEach((s) => {
       s.Update(ctx);
     });
@@ -54,7 +55,7 @@ export class CanvasComponent implements OnInit {
 
   drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
     ctx.strokeStyle = this.s.color;
-    ctx?.beginPath();
+    ctx.beginPath();
     ctx.lineTo(x, y);
     ctx.stroke();
   }
@@ -80,7 +81,7 @@ export class CanvasComponent implements OnInit {
       this.startdraw = true;
 
       if (this.s.select == 'drawSelectBox') {
-        this.currshape = this.factory.getShape('square');
+        this.currshape = this.factory.getShape('selectbox');
         this.s.color = '#000000';
         this.s.shape = '';
       } else if (this.s.select == 'drawShape') {
@@ -89,9 +90,9 @@ export class CanvasComponent implements OnInit {
         this.s.select == 'selected' &&
         e.clientX >= this.currshape.x &&
         e.clientX <= this.currshape.x + this.currshape.w &&
-        e.clientY >= this.currshape.y &&
-        e.clientY <= this.currshape.y + this.currshape.h
-      ) {
+        e.clientY-80 >= this.currshape.y &&
+        e.clientY-80 <= this.currshape.y + this.currshape.h
+      ){
         this.moveSelected = true;
         this.currshape.valid = false;
       }
@@ -130,12 +131,14 @@ export class CanvasComponent implements OnInit {
       this.startdraw = false;
       this.moveSelected = false;
 
-      if (this.s.select == 'drawSelectBox') {
+      if (this.s.select == 'drawSelectBox' && ctx) {
+        ctx.setLineDash([0]);
         this.select();
       }
 
       if (this.currshape.valid == true) this.shapes.push(this.currshape);
       if (this.currshape) this.currshape.id = this.shapes.length;
+      console.log(this.shapes)
     });
   }
 

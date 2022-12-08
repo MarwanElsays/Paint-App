@@ -1,7 +1,8 @@
 import { Shape } from './shape';
-export class Square extends Shape {
+export class selectbox extends Shape {
   
   override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
+    ctx.setLineDash([6]);
     ctx.strokeStyle = color;
     ctx.strokeRect(startx, starty, x - startx, y - starty);
     
@@ -16,6 +17,7 @@ export class Square extends Shape {
   }
 
   override Update(ctx: CanvasRenderingContext2D) {
+    ctx.setLineDash([6]);
     ctx.strokeStyle = this.col;
     ctx.beginPath();
     ctx.strokeRect(this.x, this.y, this.w, this.h);
