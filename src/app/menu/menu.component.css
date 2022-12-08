@@ -8,8 +8,8 @@
 }
 
 label{
-    margin-left:30px ;
-    margin-right: 10px;
+    margin-left:10px ;
+    margin-right:10px;
     color:blanchedalmond
 }
 
@@ -28,7 +28,7 @@ label{
 }
 
 #LoadDiv{
-    margin-left: 250px;
+    margin-left: 350px;
 }
 
 #saveDiv{
@@ -58,15 +58,35 @@ label{
     border-radius: 5px;
 }
 
+
+#Coloring{
+    background-color: rgba(193, 192, 186, 0.427);
+    border : aliceblue 2px solid;
+    width:150px;
+    height: 70px;
+    margin-left: 5px;
+    border-radius: 5px;
+}
+
+#Coloring li{
+    margin-left: 20px;
+    list-style: none;
+    color:rgb(0, 0, 0);
+    cursor: pointer;
+    text-align:center;
+    margin-top: 2px;
+    width:40px
+}
+
 #shapesContainer,#EditSelected li{
     list-style: none;
-    color:aliceblue;
+    color:rgb(255, 232, 232);
     cursor: pointer;
     text-align: center;
 }
 
-#shapesContainer li:hover ,#EditSelected li:hover{
-    background-color: rgba(216, 216, 216, 0.466);
+#shapesContainer li:hover ,#EditSelected li:hover ,#Coloring li:hover {
+    background-color: rgba(216, 216, 216, 0.647);
     border-radius: 10px;
 }
 
@@ -74,4 +94,5 @@ label{
 /******************************/
 .active{
     background-color: rgb(136, 255, 239);
+    border-radius: 10px;
 }

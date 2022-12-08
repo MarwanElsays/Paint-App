@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import {
   faEraser, faSave, faFileUpload, faUndo, faRedo, faMousePointer,
-  faSquare, faCircle, faPencilAlt, faCopy, faPaste, faCut
+  faSquare, faCircle, faPencilAlt, faCopy, faPaste, faCut, faFill
 } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -21,6 +21,7 @@ export class MenuComponent {
   faUndo = faUndo;
   faRedo = faRedo;
   faMousePointer = faMousePointer;
+  faFill = faFill;
 
   shapes: any[] = [
   { name: 'square', icon: faSquare },
@@ -30,8 +31,8 @@ export class MenuComponent {
 
   Edits: any[] = [
   { name: 'Copy', icon: faCopy },       //change name to Copy
-  { name: 'Cut', icon: faPaste },
-  { name: 'Paste', icon: faCut },
+  { name: 'Cut', icon: faCut },
+  { name: 'Paste', icon: faPaste },
   ];
 
 
@@ -41,6 +42,10 @@ export class MenuComponent {
 
   doEdits(edit: string) {
     this.s.Edit = edit;
+  }
+
+  Fill() {
+    this.s.Fill = !this.s.Fill;
   }
 
   erase() {

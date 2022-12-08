@@ -23,6 +23,7 @@ export class CanvasComponent implements OnInit {
   controller: ControllerService = new ControllerService(this);
   undoArray: Shape[] = [];
   selectBox: SelectBox = new SelectBox();
+  shapeFillColor: string = "";
 
   ngOnInit(): void {
     const mycanvas: HTMLCanvasElement = this.canvas.nativeElement;
@@ -33,6 +34,7 @@ export class CanvasComponent implements OnInit {
       this.mouseInput(mycanvas, ctx);
     }
   }
+
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
     ctx.fillRect(0, 0, 1536, 701);
@@ -52,6 +54,15 @@ export class CanvasComponent implements OnInit {
     this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
   }
 
+  Fill(ctx: CanvasRenderingContext2D) {
+    this.shapes.forEach((s) => {
+      if (this.controller.mouseInside(this.startx, this.starty, s)) {
+        ctx.fillStyle = this.shapeFillColor;
+        ctx.fillRect(s.x, s.y, s.w, s.h);
+      }
+    })
+  }
+
   // drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
   //   ctx.strokeStyle = this.s.color;
   //   ctx.beginPath();
@@ -66,7 +77,13 @@ export class CanvasComponent implements OnInit {
       this.startx = e.clientX;
       this.starty = e.clientY - 80;
       this.startdraw = true;
-      console.log(this.controller.mouseInside(e.clientX, e.clientY, this.selectBox));
+      this.shapeFillColor = this.s.color;
+      if (this.s.Fill) {
+        this.s.shape = '';
+        this.currshape = new Shape();
+        this.Fill(ctx);
+      }
+
       if (this.s.select == 'drawSelectBox') {
         this.currshape = this.selectBox;
         this.s.color = '#000000';
@@ -83,6 +100,7 @@ export class CanvasComponent implements OnInit {
         this.s.shape = '';
         this.s.sel = false;
         this.shapes.pop();
+        //this.update(ctx);
         this.currshape = new Shape();
         this.moveSelected = false;
       }
@@ -90,11 +108,11 @@ export class CanvasComponent implements OnInit {
 
     mycanvas.addEventListener('mousemove', (e) => {
       this.update(ctx);
-      if (!this.moveSelected) {
+      if (!this.moveSelected && !this.s.Fill) {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
         switch (this.s.Edit) {
-          case 'Move':   this.selectBox.Move(e.clientX, e.clientY); break;
+          case 'Move': this.selectBox.Move(e.clientX, e.clientY); break;
           case 'Resize': this.selectBox.Resize(e.clientX, e.clientY); break;
         }
         /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
@@ -114,13 +132,12 @@ export class CanvasComponent implements OnInit {
       this.startdraw = false;
       this.moveSelected = false;
 
-      console.log(this.s.select);
       if (this.s.select == 'drawSelectBox') {
         ctx.setLineDash([0]);
         this.selectBox.selectShapes(this.shapes, this.s);
       }
 
-      if (this.currshape.valid == true) 
+      if (this.currshape.valid == true)
         this.shapes.push(this.currshape);
       if (this.currshape)
         this.currshape.id = this.shapes.length;
