@@ -1,10 +1,10 @@
 import { CanvasComponent } from "../canvas/canvas.component";
+import { SelectBox } from "../Shapes/selectbox";
 import { Shape } from "../Shapes/shape";
+import { DrawService } from "./draw.service";
 
 export class ControllerService {
-  constructor(private canvas: CanvasComponent) { 
-    this.canvas = canvas;
-  }
+  constructor(private canvas: CanvasComponent) {}
 
   Undo(ctx: CanvasRenderingContext2D) {
     let removedShape = this.canvas.shapes.pop();
@@ -18,19 +18,35 @@ export class ControllerService {
     this.canvas.update(ctx);
   }
 
-  Move(shape: Shape, x: number, y: number) {
-    shape.x = x;
-    shape.y = y;
-  }
-
-  
-  Resize(shape: Shape, width: number, height: number) {
-    shape.w = width;
-    shape.h = height;
-  }
-
   Erase(ctx: CanvasRenderingContext2D) {
     this.canvas.startcanvas(ctx);
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
+  }
+
+  eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
+    s.erase.subscribe(() => {
+      this.Erase(ctx);
+    });
+
+    s.undo.subscribe(() => {
+      this.Undo(ctx);
+    });
+
+    s.redo.subscribe(() => {
+      this.Redo(ctx);
+    });
+
+    s.fillEvent.subscribe(() => {
+      if (this.canvas.shapes[this.canvas.shapes.length - 1] instanceof SelectBox)
+        this.canvas.shapes.pop();
+      this.canvas.update(ctx);
+    })
+  }
+
+  mouseInside(mouseX: number, mouseY: number, shape: Shape) {
+    return (mouseX >= Math.min(shape.x, shape.x + shape.w) &&
+    mouseX <= Math.max(shape.x, shape.x + shape.w) &&
+    mouseY - 80 >= Math.min(shape.y, shape.y + shape.h) &&
+    mouseY - 80 <= Math.max(shape.y, shape.y + shape.h));
   }
 }

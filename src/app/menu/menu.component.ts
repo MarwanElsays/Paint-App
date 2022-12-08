@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DrawService } from '../services/draw.service';
-import { faEraser,faSave,faFileUpload,faUndo,faRedo,faMousePointer,
-         faSquare,faCircle,faPencilAlt,faCopy,faPaste,faCut,faFill} from '@fortawesome/free-solid-svg-icons';
+import {
+  faEraser, faSave, faFileUpload, faUndo, faRedo, faMousePointer,
+  faSquare, faCircle, faPencilAlt, faCopy, faPaste, faCut, faFill
+} from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -19,16 +21,18 @@ export class MenuComponent {
   faUndo = faUndo;
   faRedo = faRedo;
   faMousePointer = faMousePointer;
-  faFill=faFill;
+  faFill = faFill;
 
-  shapes: any[] = [{name:'square',icon:faSquare},
-                   {name:'circle',icon:faCircle}, 
-                   {name:'pencil',icon:faPencilAlt}
-    ];
+  shapes: any[] = [
+  { name: 'square', icon: faSquare },
+  { name: 'circle', icon: faCircle },
+  { name: 'pencil', icon: faPencilAlt }
+  ];
 
-  Edits: any[] = [{ name: 'copy', icon: faCopy },
-  { name: 'cut', icon: faCut },
-  { name: 'paste', icon: faPaste},
+  Edits: any[] = [
+  { name: 'Copy', icon: faCopy },       //change name to Copy
+  { name: 'Cut', icon: faCut },
+  { name: 'Paste', icon: faPaste },
   ];
 
 
@@ -42,6 +46,9 @@ export class MenuComponent {
 
   Fill() {
     this.s.Fill = !this.s.Fill;
+    this.s.Edit = '';
+    this.s.sel = false;
+    this.s.emitFillEvent();
   }
 
   erase() {
@@ -60,6 +67,7 @@ export class MenuComponent {
     this.s.sel = !this.s.sel;
     if (this.s.sel) {
       this.s.select = "drawSelectBox";
+      this.s.Fill = false;
     } else {
       this.s.select = "drawShape";
     }

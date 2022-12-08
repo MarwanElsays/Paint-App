@@ -7,26 +7,31 @@ export class DrawService {
 
   constructor() { }
 
-  shape:string ="";
-  Edit:string ="";
-  color:string = "#000000FF";
-  select:string = 'drawShape';
-  sel:boolean = false;
-  Fill:boolean = false;
+  shape: string = "";
+  color: string = "#000000FF";
+  select: string = 'drawShape';         //same variable pls
+  Edit: string = "Move";                //same variable pls
+  sel: boolean = false;                 //same variable pls
+  Fill: boolean = false;                //same variable pls
 
-  erase = new EventEmitter<boolean>();
-  undo = new EventEmitter<boolean>();
-  redo = new EventEmitter<boolean>();
+  erase = new EventEmitter<void>();
+  undo = new EventEmitter<void>();
+  redo = new EventEmitter<void>();
+  fillEvent = new EventEmitter<void>();
 
-  emitErase(){
-    this.erase.emit(true);
+  emitErase() {
+    this.erase.emit();
   }
 
-  emitUndo(){
-    this.undo.emit(true);
+  emitUndo() {
+    this.undo.emit();
   }
 
-  emitRedo(){
-    this.redo.emit(true);
+  emitRedo() {
+    this.redo.emit();
+  }
+
+  emitFillEvent() {
+    this.fillEvent.emit();
   }
 }
