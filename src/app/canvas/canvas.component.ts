@@ -36,11 +36,12 @@ export class CanvasComponent implements OnInit {
 
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
-    ctx?.fillRect(0, 0, 1536, 701);
+    ctx.fillRect(0, 0, 1536, 701);
   }
 
   update(ctx: CanvasRenderingContext2D) {
     this.startcanvas(ctx);
+    ctx.setLineDash([0]);
     this.shapes.forEach((s) => {
       s.Update(ctx);
     });
@@ -54,7 +55,7 @@ export class CanvasComponent implements OnInit {
 
   drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
     ctx.strokeStyle = this.s.color;
-    ctx?.beginPath();
+    ctx.beginPath();
     ctx.lineTo(x, y);
     ctx.stroke();
   }
