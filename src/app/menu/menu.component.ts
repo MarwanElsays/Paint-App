@@ -3,7 +3,6 @@ import { DrawService } from '../services/draw.service';
 import { faEraser,faSave,faFileUpload,faUndo,faRedo,faMousePointer,
          faSquare,faCircle,faPencilAlt,faCopy,faPaste,faCut} from '@fortawesome/free-solid-svg-icons';
 
-
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -23,8 +22,6 @@ export class MenuComponent implements OnInit {
 
   shapes: any[] = [{name:'square',icon:faSquare},
                    {name:'circle',icon:faCircle}, 
-                   {name:'triangle',icon:faSquare},
-                   {name:'line',icon:faPencilAlt}, 
                    {name:'pencil',icon:faPencilAlt}
     ];
 
