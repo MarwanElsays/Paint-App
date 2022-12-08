@@ -4,6 +4,13 @@
             <fa-icon [icon]="shape.icon"></fa-icon>
         </li>
     </div>
+
+    <div id="EditSelected">
+        <li *ngFor="let edit of Edits" (click)="doEdits(edit.name)">
+            <fa-icon [icon]="edit.icon"></fa-icon>
+        </li>
+    </div>
+
     <label id="pickcolorlabel">pick a Color:</label> <input type="color" [(ngModel)]="this.s.color">
 
     <div id="eraseDiv"><label>Erase</label><fa-icon [icon]="faEraser" (click) = "erase()" id="erase"></fa-icon></div>
