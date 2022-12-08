@@ -66,7 +66,7 @@ export class CanvasComponent implements OnInit {
         this.s.sel = false;
         this.shapes.pop();
         this.update(ctx);
-        this.currshape.valid = false;
+        this.currshape = new Shape();
         this.moveSelected = false;
       }
     });
@@ -96,7 +96,7 @@ export class CanvasComponent implements OnInit {
       this.startdraw = false;
       this.moveSelected = false;
 
-      if (this.s.select == 'drawSelectBox' && ctx) {
+      if (this.s.select == 'drawSelectBox') {
         this.select();
       }
 
