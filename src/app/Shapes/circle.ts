@@ -21,6 +21,10 @@ export class Circle extends Shape {
     ctx.beginPath();
     ctx.ellipse(this.x, this.y, this.w, this.h, 0, 0, 360);
     ctx.stroke();
+    if (this.fillColour != '') {
+      ctx.fillStyle = this.fillColour;
+      ctx.fill();
+    }
   }
 
   override Move(x: number, y: number): void {
@@ -31,5 +35,12 @@ export class Circle extends Shape {
   override Resize(width: number, height: number): void {
     this.w = width;
     this.h = height;
+  }
+
+  override Fill(fillColour: string, ctx: CanvasRenderingContext2D) {
+    this.Update(ctx);
+    ctx.fillStyle = fillColour;
+    ctx.fill();
+    this.fillColour = fillColour;
   }
 }

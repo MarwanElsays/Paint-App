@@ -46,6 +46,9 @@ export class MenuComponent {
 
   Fill() {
     this.s.Fill = !this.s.Fill;
+    this.s.Edit = '';
+    this.s.sel = false;
+    this.s.emitFillEvent();
   }
 
   erase() {
@@ -64,6 +67,7 @@ export class MenuComponent {
     this.s.sel = !this.s.sel;
     if (this.s.sel) {
       this.s.select = "drawSelectBox";
+      this.s.Fill = false;
     } else {
       this.s.select = "drawShape";
     }

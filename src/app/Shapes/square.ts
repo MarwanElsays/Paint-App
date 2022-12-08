@@ -19,6 +19,10 @@ export class Square extends Shape {
     ctx.strokeStyle = this.col;
     ctx.beginPath();
     ctx.strokeRect(this.x, this.y, this.w, this.h);
+    if (this.fillColour != '') {
+      ctx.fillStyle = this.fillColour;
+      ctx.fillRect(this.x, this.y, this.w, this.h);
+    }
   }
 
   override Move(x: number, y: number): void {
@@ -31,5 +35,10 @@ export class Square extends Shape {
     this.h = height;
   }
 
+  override Fill(fillColour: string, ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = fillColour;
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+    this.fillColour = fillColour;
+  }
 }
 

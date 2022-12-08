@@ -25,6 +25,10 @@ export class Triangle extends Shape{
     ctx.lineTo(this.x, this.y + this.h);
     ctx.closePath();
     ctx.stroke();
+    if (this.fillColour != '') {
+      ctx.fillStyle = this.fillColour;
+      ctx.fill();
+    }
   }
 
   override Move(x: number, y: number): void {
@@ -35,5 +39,12 @@ export class Triangle extends Shape{
   override Resize(width: number, height: number): void {
     this.w = width;
     this.h = height;
+  }
+
+  override Fill(fillColour: string, ctx: CanvasRenderingContext2D) {
+    this.Update(ctx);
+    ctx.fillStyle = fillColour;
+    ctx.fill();
+    this.fillColour = fillColour;
   }
 }

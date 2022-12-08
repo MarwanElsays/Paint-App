@@ -1,4 +1,5 @@
 import { CanvasComponent } from "../canvas/canvas.component";
+import { SelectBox } from "../Shapes/selectbox";
 import { Shape } from "../Shapes/shape";
 import { DrawService } from "./draw.service";
 
@@ -34,6 +35,12 @@ export class ControllerService {
     s.redo.subscribe(() => {
       this.Redo(ctx);
     });
+
+    s.fillEvent.subscribe(() => {
+      if (this.canvas.shapes[this.canvas.shapes.length - 1] instanceof SelectBox)
+        this.canvas.shapes.pop();
+      this.canvas.update(ctx);
+    })
   }
 
   mouseInside(mouseX: number, mouseY: number, shape: Shape) {

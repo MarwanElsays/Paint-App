@@ -4,6 +4,7 @@ import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
 import { ControllerService } from '../services/controller';
 import { SelectBox } from '../Shapes/selectbox';
+import { Triangle } from '../Shapes/triangle';
 
 @Component({
   selector: 'app-canvas',
@@ -56,9 +57,10 @@ export class CanvasComponent implements OnInit {
 
   Fill(ctx: CanvasRenderingContext2D) {
     this.shapes.forEach((s) => {
-      if (this.controller.mouseInside(this.startx, this.starty, s)) {
+      console.log(this.startx, this.starty);
+      if (this.controller.mouseInside(this.startx, this.starty + 80, s)) {
         ctx.fillStyle = this.shapeFillColor;
-        ctx.fillRect(s.x, s.y, s.w, s.h);
+        s.Fill(this.shapeFillColor, ctx);
       }
     })
   }
@@ -81,10 +83,9 @@ export class CanvasComponent implements OnInit {
       if (this.s.Fill) {
         this.s.shape = '';
         this.currshape = new Shape();
+        
         this.Fill(ctx);
-      }
-
-      if (this.s.select == 'drawSelectBox') {
+      } else if (this.s.select == 'drawSelectBox') {
         this.currshape = this.selectBox;
         this.s.color = '#000000';
       } else if (this.s.select == 'drawShape') {
@@ -100,7 +101,7 @@ export class CanvasComponent implements OnInit {
         this.s.shape = '';
         this.s.sel = false;
         this.shapes.pop();
-        //this.update(ctx);
+        this.update(ctx);
         this.currshape = new Shape();
         this.moveSelected = false;
       }
