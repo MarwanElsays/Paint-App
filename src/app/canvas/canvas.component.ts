@@ -33,44 +33,9 @@ export class CanvasComponent implements OnInit {
     }
   }
   
-
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
     ctx.fillRect(0, 0, 1536, 701);
-  }
-
-  update(ctx: CanvasRenderingContext2D) {
-    this.startcanvas(ctx);
-    ctx.setLineDash([0]);
-    this.shapes.forEach((s) => {
-      s.Update(ctx);
-    });
-  }
-
-  Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    if (!this.startdraw) return;
-    ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
-  }
-
-  drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    ctx.strokeStyle = this.s.color;
-    ctx.beginPath();
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
-
-  select() {
-    this.selectShapes = this.shapes.filter((shape) => {
-      return (
-        shape.x > this.currshape.x &&
-        shape.x + shape.w < this.currshape.x + this.currshape.w &&
-        shape.y > this.currshape.y &&
-        shape.y + shape.h < this.currshape.y + this.currshape.h
-      );
-    });
-
-    this.s.select = 'selected';
   }
 
   mouseInput(mycanvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -142,6 +107,33 @@ export class CanvasComponent implements OnInit {
     });
   }
 
+  update(ctx: CanvasRenderingContext2D) {
+    this.startcanvas(ctx);
+    ctx.setLineDash([0]);
+    this.shapes.forEach((s) => {
+      s.Update(ctx);
+    });
+  }
+
+  Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    if (!this.startdraw) return;
+    ctx.beginPath();
+    this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
+  }
+
+  select() {
+    this.selectShapes = this.shapes.filter((shape) => {
+      return (
+        shape.x > this.currshape.x &&
+        shape.x + shape.w < this.currshape.x + this.currshape.w &&
+        shape.y > this.currshape.y &&
+        shape.y + shape.h < this.currshape.y + this.currshape.h
+      );
+    });
+
+    this.s.select = 'selected';
+  }
+
   eventSubscription(ctx: CanvasRenderingContext2D) {
     this.s.erase.subscribe((b) => {
       this.controller.Erase(ctx);
@@ -156,3 +148,12 @@ export class CanvasComponent implements OnInit {
     });
   }
 }
+
+
+
+// drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
+//   ctx.strokeStyle = this.s.color;
+//   ctx.beginPath();
+//   ctx.lineTo(x, y);
+//   ctx.stroke();
+// }
