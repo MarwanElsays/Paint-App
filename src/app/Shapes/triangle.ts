@@ -9,8 +9,8 @@ export class Triangle extends Shape{
         ctx.closePath();
         ctx.stroke();
     
-        this.w = Math.abs(x - startx) * 2;
-        this.h = Math.abs(y - starty);
+        this.w = (x - startx) * 2;
+        this.h = y - starty;
         this.x = startx - this.w / 2;
         this.y = starty;
         this.col = color;
