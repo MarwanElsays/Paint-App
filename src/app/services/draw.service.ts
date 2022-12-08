@@ -12,6 +12,7 @@ export class DrawService {
   color:string = "#000000FF";
   select:string = 'drawShape';
   sel:boolean = false;
+  Fill:boolean = false;
 
   erase = new EventEmitter<boolean>();
   undo = new EventEmitter<boolean>();

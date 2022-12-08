@@ -22,6 +22,7 @@ export class CanvasComponent implements OnInit {
   moveSelected: boolean = false;
   controller: ControllerService = new ControllerService(this);
   undoArray: Shape[] = [];
+  shapeFillColor:string = "";
 
   ngOnInit(): void {
     const mycanvas: HTMLCanvasElement = this.canvas.nativeElement;
@@ -44,8 +45,13 @@ export class CanvasComponent implements OnInit {
       this.startx = e.clientX;
       this.starty = e.clientY - 80;
       this.startdraw = true;
-
-      if (this.s.select == 'drawSelectBox') {
+      this.shapeFillColor = this.s.color;
+      if(this.s.Fill){
+        this.s.shape = '';
+        this.currshape = new Shape();
+        this.Fill(ctx);
+      }
+      else if (this.s.select == 'drawSelectBox') {
         this.currshape = this.factory.getShape('selectbox');
         this.s.color = '#000000';
       } else if (this.s.select == 'drawShape') {
@@ -57,7 +63,7 @@ export class CanvasComponent implements OnInit {
         e.clientY-80 >= this.currshape.y &&
         e.clientY-80 <= this.currshape.y + this.currshape.h
       ){
-        console.log(this.s.Edit)
+        
         this.moveSelected = true;
         this.currshape.valid = false;
       }
@@ -73,7 +79,7 @@ export class CanvasComponent implements OnInit {
     });
 
     mycanvas.addEventListener('mousemove', (e) => {
-      if (!this.moveSelected) {
+      if (!this.moveSelected && !this.s.Fill) {
         this.update(ctx);
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
@@ -118,6 +124,18 @@ export class CanvasComponent implements OnInit {
     if (!this.startdraw) return;
     ctx.beginPath();
     this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
+  }
+
+  Fill(ctx:CanvasRenderingContext2D){
+    this.shapes.forEach((s) =>{
+      if(this.startx > s.x && 
+        this.startx < s.x + s.w && 
+        this.starty > s.y && 
+        this.starty < s.y +s.h){
+          ctx.fillStyle = this.shapeFillColor;
+          ctx.fillRect(s.x,s.y,s.w,s.h);
+        }
+    })
   }
 
   select() {
