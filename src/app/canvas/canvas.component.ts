@@ -57,6 +57,7 @@ export class CanvasComponent implements OnInit {
         e.clientY-80 >= this.currshape.y &&
         e.clientY-80 <= this.currshape.y + this.currshape.h
       ){
+        console.log(this.s.Edit)
         this.moveSelected = true;
         this.currshape.valid = false;
       }
