@@ -115,12 +115,12 @@ export class CanvasComponent implements OnInit {
         /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
         /*   ************** ***************      ********* **** ****          *************/
 
-        this.selectShapes.forEach((shape) => {
-          shape.x = e.clientX;
-          shape.y = e.clientY;
-          shape.Draw(ctx, shape.col, e.clientX, e.clientY, this.startx, this.starty);
-          this.update(ctx);
-        });
+        // this.selectShapes.forEach((shape) => {
+        //   shape.x = e.clientX;
+        //   shape.y = e.clientY;
+        //   shape.Draw(ctx, shape.col, e.clientX, e.clientY, this.startx, this.starty);
+        //   this.update(ctx);
+        // });
 
 
         /***********************************************************************/
