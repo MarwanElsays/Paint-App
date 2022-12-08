@@ -45,3 +45,7 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+#folders
+dir_to_ignore/.angular
+dir_to_ignore/node_modules

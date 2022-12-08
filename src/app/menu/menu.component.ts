@@ -1,7 +1,9 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DrawService } from '../services/draw.service';
-import { faEraser,faSave,faFileUpload,faUndo,faRedo,faMousePointer,
-         faSquare,faCircle,faPencilAlt,faCopy,faPaste,faCut} from '@fortawesome/free-solid-svg-icons';
+import {
+  faEraser, faSave, faFileUpload, faUndo, faRedo, faMousePointer,
+  faSquare, faCircle, faPencilAlt, faCopy, faPaste, faCut
+} from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -9,11 +11,10 @@ import { faEraser,faSave,faFileUpload,faUndo,faRedo,faMousePointer,
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })
-export class MenuComponent implements OnInit {
-    
-  constructor(public s: DrawService) {}
+export class MenuComponent {
 
-  ngOnInit(): void {}
+  constructor(public s: DrawService) { }
+
   faEraser = faEraser;
   faSave = faSave;
   faFileUpload = faFileUpload;
@@ -21,16 +22,16 @@ export class MenuComponent implements OnInit {
   faRedo = faRedo;
   faMousePointer = faMousePointer;
 
-  shapes: any[] = [{name:'square',icon:faSquare},
-                   {name:'circle',icon:faCircle}, 
-                   {name:'triangle',icon:faSquare},
-                   {name:'line',icon:faPencilAlt}, 
-                   {name:'pencil',icon:faPencilAlt}
-    ];
+  shapes: any[] = [{ name: 'square', icon: faSquare },
+  { name: 'circle', icon: faCircle },
+  { name: 'triangle', icon: faSquare },
+  { name: 'line', icon: faPencilAlt },
+  { name: 'pencil', icon: faPencilAlt }
+  ];
 
-    Edits:any[] = [{name:'copy',icon:faCopy},
-                   {name:'cut',icon:faPaste},
-                   {name:'paste',icon:faCut},
+  Edits: any[] = [{ name: 'copy', icon: faCopy },
+  { name: 'cut', icon: faPaste },
+  { name: 'paste', icon: faCut },
   ];
 
 
@@ -53,12 +54,12 @@ export class MenuComponent implements OnInit {
   redo() {
     this.s.emitRedo();
   }
-  
-  select(){
+
+  select() {
     this.s.sel = !this.s.sel;
-    if(this.s.sel){
+    if (this.s.sel) {
       this.s.select = "drawSelectBox";
-    }else{
+    } else {
       this.s.select = "drawShape";
     }
   }
