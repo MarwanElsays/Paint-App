@@ -37,9 +37,9 @@ export class ControllerService {
   }
 
   mouseInside(mouseX: number, mouseY: number, shape: Shape) {
-    return (mouseX >= shape.x &&
-    mouseX <= shape.x + shape.w &&
-    mouseY - 80 >= shape.y &&
-    mouseY - 80 <= shape.y + shape.h);
+    return (mouseX >= Math.min(shape.x, shape.x + shape.w) &&
+    mouseX <= Math.max(shape.x, shape.x + shape.w) &&
+    mouseY - 80 >= Math.min(shape.y, shape.y + shape.h) &&
+    mouseY - 80 <= Math.max(shape.y, shape.y + shape.h));
   }
 }

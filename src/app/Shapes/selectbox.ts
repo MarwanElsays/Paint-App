@@ -1,9 +1,11 @@
 import { DrawService } from '../services/draw.service';
 import { Shape } from './shape';
+import { Line } from './line';
 export class SelectBox extends Shape {
 
   private selectedShapes: Shape[] = [];
-  private active: boolean = false;
+  private oldMouseX: number = 0;
+  private oldMouseY: number = 0;
 
   override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
     ctx.setLineDash([6]);
@@ -29,9 +31,20 @@ export class SelectBox extends Shape {
 
   override Move(x: number, y: number) {
     this.selectedShapes.forEach(shape => {
-      shape.x = x;
-      shape.y = y;
+      let diffX = x - this.oldMouseX;
+      let diffY = y - this.oldMouseY;
+
+      shape.x += diffX;
+      shape.y += diffY;
+
+      if (shape instanceof Line) {
+        shape.endx += diffX;
+        shape.endy += diffY;
+      }
+
     });
+    this.setOldX(x);
+    this.setOldY(y);
   }
 
 
@@ -45,13 +58,22 @@ export class SelectBox extends Shape {
   selectShapes(shapes: Shape[], s: DrawService) {
     this.selectedShapes = shapes.filter((shape) => {
       return (
-        shape.x > this.x &&
-        shape.x + shape.w < this.x + this.w &&
-        shape.y > this.y &&
-        shape.y + shape.h < this.y + this.h
+        Math.min(shape.x, shape.x + shape.w) > Math.min(this.x, this.x + this.w) &&
+        Math.max(shape.x, shape.x + shape.w) < Math.max(this.x, this.x + this.w) &&
+        Math.min(shape.y, shape.y + shape.h) > Math.min(this.y, this.y + this.h) &&
+        Math.max(shape.y, shape.y + shape.h) < Math.max(this.y, this.y + this.h)
       );
     });
     s.select = 'selected';
+    console.log(this.selectedShapes);
+  }
+
+  setOldX(x: number) {
+    this.oldMouseX = x;
+  }
+
+  setOldY(y: number) {
+    this.oldMouseY = y;
   }
 }
 

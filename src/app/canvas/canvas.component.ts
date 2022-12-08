@@ -53,49 +53,50 @@ export class CanvasComponent implements OnInit {
     this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
   }
 
-  drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    ctx.strokeStyle = this.s.color;
-    ctx.beginPath();
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
+  // drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  //   ctx.strokeStyle = this.s.color;
+  //   ctx.beginPath();
+  //   ctx.lineTo(x, y);
+  //   ctx.stroke();
+  // }
 
   mouseInput(mycanvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     mycanvas.addEventListener('mousedown', (e) => {
+      this.update(ctx);
       ctx.beginPath();
       this.startx = e.clientX;
       this.starty = e.clientY - 80;
       this.startdraw = true;
-
-      console.log(this.s.select);
+      console.log(this.controller.mouseInside(e.clientX, e.clientY, this.selectBox));
       if (this.s.select == 'drawSelectBox') {
         this.currshape = this.selectBox;
         this.s.color = '#000000';
         this.s.shape = '';
       } else if (this.s.select == 'drawShape') {
         this.currshape = this.factory.getShape(this.s.shape);
-      } else if (this.s.select == 'selected' && this.controller.mouseInside(e.clientX, e.clientY, this.currshape)) {
-        console.log('here');
+      } else if (this.s.select === 'selected' && this.controller.mouseInside(e.clientX, e.clientY, this.selectBox)) {
         this.moveSelected = true;
         this.currshape.valid = false;
+        this.selectBox.setOldX(e.clientX);
+        this.selectBox.setOldY(e.clientY);
       } else {
         this.s.select = 'drawShape';
         this.s.sel = false;
         this.shapes.pop();
-        this.update(ctx);
         this.currshape.valid = false;
         this.moveSelected = false;
       }
     });
 
     mycanvas.addEventListener('mousemove', (e) => {
-      console.log(this.moveSelected);
+      this.update(ctx);
       if (!this.moveSelected) {
-        this.update(ctx);
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
         switch (this.s.Edit) {
-          case 'Move':   this.selectBox.Move(e.clientX, e.clientY); break;
+          case 'Move':
+            this.selectBox.Move(e.clientX, e.clientY);
+            break;
           case 'Resize': this.selectBox.Resize(e.clientX, e.clientY); break;
         }
         /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
@@ -105,20 +106,17 @@ export class CanvasComponent implements OnInit {
         //   shape.x = e.clientX;
         //   shape.y = e.clientY;
         //   shape.Draw(ctx, shape.col, e.clientX, e.clientY, this.startx, this.starty);
-        //   this.update(ctx);
         // });
-
-
-
-
         /***********************************************************************/
       }
     });
 
     mycanvas.addEventListener('mouseup', (e) => {
+      this.update(ctx);
       this.startdraw = false;
       this.moveSelected = false;
 
+      console.log(this.s.select);
       if (this.s.select == 'drawSelectBox') {
         ctx.setLineDash([0]);
         this.selectBox.selectShapes(this.shapes, this.s);
