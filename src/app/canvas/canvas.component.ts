@@ -32,6 +32,7 @@ export class CanvasComponent implements OnInit {
       this.mouseInput(mycanvas, ctx);
     }
   }
+  
 
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
