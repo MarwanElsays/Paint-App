@@ -30,25 +30,29 @@ export class MenuComponent {
   ];
 
   Edits: any[] = [
-  { name: 'Copy', icon: faCopy },       //change name to Copy
+  { name: 'Copy', icon: faCopy },
   { name: 'Cut', icon: faCut },
   { name: 'Paste', icon: faPaste },
   ];
 
 
   asign(shape: string) {
+    this.s.state = 'drawShape';
     this.s.shape = shape;
   }
 
   doEdits(edit: string) {
-    this.s.Edit = edit;
+    this.s.state = edit;
   }
 
   Fill() {
-    this.s.Fill = !this.s.Fill;
-    this.s.Edit = '';
-    this.s.sel = false;
-    this.s.emitFillEvent();
+    if (this.s.state != 'Fill') {
+      this.s.state = 'Fill';
+      this.s.emitFillEvent();
+    } else {
+      this.s.state = 'drawShape';
+      this.s.emitFillEvent();
+    }
   }
 
   erase() {
@@ -64,12 +68,10 @@ export class MenuComponent {
   }
 
   select() {
-    this.s.sel = !this.s.sel;
-    if (this.s.sel) {
-      this.s.select = "drawSelectBox";
-      this.s.Fill = false;
+    if (this.s.state != 'Selecting') {
+      this.s.state = 'Selecting';
     } else {
-      this.s.select = "drawShape";
+      this.s.state = 'drawShape';
       this.s.emitUnSelectEvent();
     }
   }

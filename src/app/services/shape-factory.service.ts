@@ -11,9 +11,9 @@ import { Triangle } from '../Shapes/triangle';
 export class ShapeFactoryService {
   getShape(shapeType: string) {
     switch (shapeType) {
-      case 'square': return new Square();
-      case 'circle': return new Circle();
-      case 'line': return new Line();
+      case 'square':   return new Square();
+      case 'circle':   return new Circle();
+      case 'line':     return new Line();
       case 'triangle': return new Triangle();
     }
     return new Shape();

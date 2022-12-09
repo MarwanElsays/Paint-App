@@ -6,10 +6,10 @@ export class Circle extends Shape {
     ctx.ellipse(startx, starty, Math.abs(x - startx), Math.abs(y - starty), 0, 0, 360);
     ctx.stroke();
 
-    this.x = startx;
-    this.y = starty;
-    this.w = Math.abs(x - startx);
-    this.h = Math.abs(y - starty);
+    this.x = startx - this.w / 2;
+    this.y = starty - this.h / 2;
+    this.w = Math.abs(x - startx) * 2;
+    this.h = Math.abs(y - starty) * 2;
     this.col = color;
     if (this.w == 0)
       this.valid = false;
@@ -19,7 +19,7 @@ export class Circle extends Shape {
   override Update(ctx: CanvasRenderingContext2D) {
     ctx.strokeStyle = this.col;
     ctx.beginPath();
-    ctx.ellipse(this.x, this.y, this.w, this.h, 0, 0, 360);
+    ctx.ellipse(this.x + this.w / 2, this.y + this.h / 2, this.w / 2, this.h / 2, 0, 0, 360);
     ctx.stroke();
     if (this.fillColour != '') {
       ctx.fillStyle = this.fillColour;

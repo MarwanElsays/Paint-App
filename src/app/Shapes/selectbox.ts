@@ -67,7 +67,7 @@ export class SelectBox extends Shape {
         Math.max(shape.y, shape.y + shape.h) < Math.max(this.y, this.y + this.h)
       );
     });
-    s.select = 'selected';
+    s.state = 'Selected';
     console.log(this.selectedShapes);
   }
 
