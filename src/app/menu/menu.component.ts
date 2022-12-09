@@ -41,13 +41,11 @@ export class MenuComponent {
   }
 
   doEdits(edit: string) {
-    this.s.Edit = edit;
+    this.s.state = edit;
   }
 
   Fill() {
-    this.s.Fill = !this.s.Fill;
-    this.s.Edit = '';
-    this.s.sel = false;
+    this.s.state = 'Fill';
     this.s.emitFillEvent();
   }
 
@@ -64,12 +62,10 @@ export class MenuComponent {
   }
 
   select() {
-    this.s.sel = !this.s.sel;
-    if (this.s.sel) {
-      this.s.select = "drawSelectBox";
-      this.s.Fill = false;
+    if (this.s.state != 'Selecting') {
+      this.s.state = 'Selecting';
     } else {
-      this.s.select = "drawShape";
+      this.s.state = 'drawShape';
       this.s.emitUnSelectEvent();
     }
   }

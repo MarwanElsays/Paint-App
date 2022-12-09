@@ -4,7 +4,6 @@ import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
 import { ControllerService } from '../services/controller';
 import { SelectBox } from '../Shapes/selectbox';
-import { Triangle } from '../Shapes/triangle';
 
 @Component({
   selector: 'app-canvas',
@@ -15,7 +14,7 @@ export class CanvasComponent implements OnInit {
   constructor(private s: DrawService, private factory: ShapeFactoryService) { }
 
   @ViewChild('c', { static: true }) canvas!: ElementRef;
-  startdraw: boolean = false;
+  startDraw: boolean = false;
   startx: number = 0;
   starty: number = 0;
   shapes: Shape[] = [];
@@ -45,12 +44,15 @@ export class CanvasComponent implements OnInit {
     this.startcanvas(ctx);
     ctx.setLineDash([0]);
     this.shapes.forEach((s) => {
+      if (!(this.s.state == 'Selecting') && !(this.s.state == 'Selected') && this.shapes.includes(this.selectBox)) {
+        this.shapes.splice(this.selectBox.id - 1, 1);
+      }
       s.Update(ctx);
     });
   }
 
   Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    if (!this.startdraw) return;
+    if (!this.startDraw) return;
     ctx.beginPath();
     this.currshape.Draw(ctx, this.s.color, x, y, this.startx, this.starty);
   }
@@ -78,28 +80,26 @@ export class CanvasComponent implements OnInit {
       ctx.beginPath();
       this.startx = e.clientX;
       this.starty = e.clientY - 80;
-      this.startdraw = true;
+      this.startDraw = true;
       this.shapeFillColor = this.s.color;
-      if (this.s.Fill) {
+      if (this.s.state == 'Fill') {
         this.s.shape = '';
         this.currshape = new Shape();
-        
         this.Fill(ctx);
-      } else if (this.s.select == 'drawSelectBox') {
+      } else if (this.s.state == 'Selecting') {
         this.currshape = this.selectBox;
         this.s.color = '#000000';
-      } else if (this.s.select == 'drawShape') {
+      } else if (this.s.state == 'drawShape') {
         this.currshape = this.factory.getShape(this.s.shape);
-      } else if (this.s.select === 'selected' && this.controller.mouseInside(e.clientX, e.clientY, this.selectBox)) {
+      } else if (this.s.state === 'Selected' && this.controller.mouseInside(e.clientX, e.clientY, this.selectBox)) {
         this.moveSelected = true;
-        this.s.Edit = 'Move';
+        this.s.state = 'Move';
         this.currshape.valid = false;
         this.selectBox.setOldX(e.clientX);
         this.selectBox.setOldY(e.clientY);
       } else {
-        this.s.select = 'drawShape';
+        this.s.state = 'drawShape';
         this.s.shape = '';
-        this.s.sel = false;
         this.shapes.pop();
         this.update(ctx);
         this.currshape = new Shape();
@@ -109,10 +109,10 @@ export class CanvasComponent implements OnInit {
 
     mycanvas.addEventListener('mousemove', (e) => {
       this.update(ctx);
-      if (!this.moveSelected && !this.s.Fill) {
+      if (!this.moveSelected && !(this.s.state == 'Fill')) {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
-        switch (this.s.Edit) {
+        switch (this.s.state) {
           case 'Move': this.selectBox.Move(e.clientX, e.clientY); break;
           case 'Resize': this.selectBox.Resize(e.clientX, e.clientY); break;
         }
@@ -130,10 +130,10 @@ export class CanvasComponent implements OnInit {
 
     mycanvas.addEventListener('mouseup', (e) => {
       this.update(ctx);
-      this.startdraw = false;
+      this.startDraw = false;
       this.moveSelected = false;
 
-      if (this.s.select == 'drawSelectBox') {
+      if (this.s.state == 'Selecting') {
         ctx.setLineDash([0]);
         this.selectBox.selectShapes(this.shapes, this.s);
       }
@@ -143,6 +143,14 @@ export class CanvasComponent implements OnInit {
       if (this.currshape)
         this.currshape.id = this.shapes.length;
     });
+  }
+
+  reset() {
+    this.s.state = '';
+    this.currshape = new Shape();
+    this.s.shape = '';
+    this.moveSelected = false;
+    this.startDraw = false;
   }
 }
 

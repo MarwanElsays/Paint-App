@@ -10,7 +10,7 @@
     </div>
 
     <div id="Coloring">
-        <li  (click)="Fill()" [ngClass]="{'active':this.s.Fill}"> <fa-icon [icon]="faFill"></fa-icon> </li>
+        <li  (click)="Fill()" [ngClass]="{'active':this.s.state == 'Fill'}"> <fa-icon [icon]="faFill"></fa-icon> </li>
         <div> <label>pick a color</label><input type="color" [(ngModel)]="this.s.color"></div>
     </div>
     
@@ -23,7 +23,7 @@
      
     <div id="selectDiv">
         <label>Select</label>
-        <fa-icon [icon]="faMousePointer"  id="select"  (click)="select()" [ngClass]="{'active':this.s.sel}"></fa-icon>
+        <fa-icon [icon]="faMousePointer"  id="select"  (click)="select()" [ngClass]="{'active':this.s.state == 'Selecting'}"></fa-icon>
     </div>
 
     <div id="LoadDiv"><label>Load</label><fa-icon [icon]="faFileUpload"  id="Load"></fa-icon></div>
