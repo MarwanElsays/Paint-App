@@ -9,7 +9,7 @@ export class DrawService {
 
   shape: string = "";
   color: string = "#000000FF";
-  state: string = 'drawShape';
+  state: string = 'drawShape';         
 
   erase = new EventEmitter<void>();
   undo = new EventEmitter<void>();

@@ -30,13 +30,14 @@ export class MenuComponent {
   ];
 
   Edits: any[] = [
-  { name: 'Copy', icon: faCopy },       //change name to Copy
+  { name: 'Copy', icon: faCopy },
   { name: 'Cut', icon: faCut },
   { name: 'Paste', icon: faPaste },
   ];
 
 
   asign(shape: string) {
+    this.s.state = 'drawShape';
     this.s.shape = shape;
   }
 
@@ -45,8 +46,13 @@ export class MenuComponent {
   }
 
   Fill() {
-    this.s.state = 'Fill';
-    this.s.emitFillEvent();
+    if (this.s.state != 'Fill') {
+      this.s.state = 'Fill';
+      this.s.emitFillEvent();
+    } else {
+      this.s.state = 'drawShape';
+      this.s.emitFillEvent();
+    }
   }
 
   erase() {
