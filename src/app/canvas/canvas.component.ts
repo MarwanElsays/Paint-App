@@ -66,13 +66,6 @@ export class CanvasComponent implements OnInit {
     })
   }
 
-  // drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  //   ctx.strokeStyle = this.s.color;
-  //   ctx.beginPath();
-  //   ctx.lineTo(x, y);
-  //   ctx.stroke();
-  // }
-
   mouseInput(mycanvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     mycanvas.addEventListener('mousedown', (e) => {
       this.update(ctx);
@@ -104,19 +97,10 @@ export class CanvasComponent implements OnInit {
       if (!this.moveSelected && !(this.s.state == 'Fill')) {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
-        switch (this.s.state) {
+        switch (this.s.state){
           case 'Move':   this.selectBox.Move(e.clientX, e.clientY); break;
           case 'Resize': this.selectBox.Resize(e.clientX, e.clientY); break;
         }
-        /*Here We Will Do  Cases For Move, Resize , Drag, Copy ,Cut , etc.... of the Selected box */
-        /*   ************** ***************      ********* **** ****          *************/
-
-        // this.selectShapes.forEach((shape) => {
-        //   shape.x = e.clientX;
-        //   shape.y = e.clientY;
-        //   shape.Draw(ctx, shape.col, e.clientX, e.clientY, this.startx, this.starty);
-        // });
-        /***********************************************************************/
       }
     });
 
