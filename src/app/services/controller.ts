@@ -4,7 +4,7 @@ import { Shape } from "../Shapes/shape";
 import { DrawService } from "./draw.service";
 
 export class ControllerService {
-  constructor(private canvas: CanvasComponent) {}
+  constructor(private canvas: CanvasComponent,private drawServe:DrawService) {}
 
   Undo(ctx: CanvasRenderingContext2D) {
     let removedShape = this.canvas.shapes.pop();
@@ -33,6 +33,27 @@ export class ControllerService {
     });
 
     s.redo.subscribe(() => {
+      this.Redo(ctx);
+    });
+
+    s.copy.subscribe(() => {
+      if(this.drawServe.state != 'Selected')return;
+
+      this.canvas.selectedShapes.forEach((s) => {
+        s.Fill("#0F0",ctx);
+      })
+     
+    });
+
+    s.cut.subscribe(() => {
+      if(this.drawServe.state != 'Selected')return;
+
+      this.canvas.selectedShapes.forEach((s) => {
+        s.Fill("#0FF",ctx);
+      })
+    });
+
+    s.paste.subscribe(() => {
       this.Redo(ctx);
     });
 

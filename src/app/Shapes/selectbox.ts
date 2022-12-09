@@ -59,7 +59,7 @@ export class SelectBox extends Shape {
   }
 
   selectShapes(shapes: Shape[], s: DrawService) {
-    this.selectedShapes = shapes.filter((shape) => {
+     this.selectedShapes = shapes.filter((shape) => {
       return (
         Math.min(shape.x, shape.x + shape.w) > Math.min(this.x, this.x + this.w) &&
         Math.max(shape.x, shape.x + shape.w) < Math.max(this.x, this.x + this.w) &&
@@ -68,7 +68,7 @@ export class SelectBox extends Shape {
       );
     });
     s.state = 'Selected';
-    console.log(this.selectedShapes);
+    return this.selectedShapes;
   }
 
   setOldX(x: number) {

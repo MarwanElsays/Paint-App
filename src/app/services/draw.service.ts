@@ -14,6 +14,9 @@ export class DrawService {
   erase = new EventEmitter<void>();
   undo = new EventEmitter<void>();
   redo = new EventEmitter<void>();
+  copy = new EventEmitter<void>();
+  cut = new EventEmitter<void>();
+  paste = new EventEmitter<void>();
   fillEvent = new EventEmitter<void>();
   unSelectEvent = new EventEmitter<void>();
 
@@ -23,6 +26,18 @@ export class DrawService {
 
   emitUndo() {
     this.undo.emit();
+  }
+
+  emitCopy() {
+    this.copy.emit();
+  }
+
+  emitCut() {
+    this.cut.emit();
+  }
+
+  emitPaste() {
+    this.paste.emit();
   }
 
   emitRedo() {
