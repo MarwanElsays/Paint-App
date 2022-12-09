@@ -42,7 +42,18 @@ export class MenuComponent {
   }
 
   doEdits(edit: string) {
-    this.s.state = edit;
+    switch(edit){
+      case 'Copy':
+        this.s.emitCopy();
+        break;
+      case 'Cut':
+        this.s.emitCut();
+        break;
+      case 'Paste':
+        this.s.emitPaste();
+        break;
+
+    }
   }
 
   Fill() {
@@ -68,8 +79,8 @@ export class MenuComponent {
   }
 
   select() {
-    if (this.s.state != 'Selecting') {
-      this.s.state = 'Selecting';
+    if (this.s.state != 'DrawSelectBox') {
+      this.s.state = 'DrawSelectBox';
     } else {
       this.s.state = 'drawShape';
       this.s.emitUnSelectEvent();

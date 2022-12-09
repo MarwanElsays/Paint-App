@@ -22,7 +22,8 @@ export class CanvasComponent implements OnInit {
   undoArray: Shape[] = [];
   currshape: Shape = new Shape();
   selectBox: SelectBox = new SelectBox();
-  controller: ControllerService = new ControllerService(this);
+  controller: ControllerService = new ControllerService(this,this.s);
+  selectedShapes : Shape[] = [];
 
   ngOnInit(): void {
     const mycanvas: HTMLCanvasElement = this.canvas.nativeElement;
@@ -42,7 +43,7 @@ export class CanvasComponent implements OnInit {
   update(ctx: CanvasRenderingContext2D) {
     this.startcanvas(ctx);
     ctx.setLineDash([0]);
-    if (this.s.state != 'Selecting' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
+    if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
       this.shapes.splice(this.selectBox.id - 1, 1);
     }
     this.shapes.forEach((s) => {
@@ -58,7 +59,7 @@ export class CanvasComponent implements OnInit {
 
   Fill(ctx: CanvasRenderingContext2D) {
     this.shapes.forEach((s) => {
-      console.log(this.mouseX, this.mouseY, this.shapes[0].x, this.shapes[0].y);
+      // console.log(this.mouseX, this.mouseY, this.shapes[0].x, this.shapes[0].y);
       if (this.controller.mouseInside(this.mouseX, this.mouseY + 80, s)) {
         ctx.fillStyle = this.s.color;
         s.Fill(this.s.color, ctx);
@@ -77,7 +78,7 @@ export class CanvasComponent implements OnInit {
         this.s.shape = '';
         this.currshape = new Shape();
         this.Fill(ctx);
-      } else if (this.s.state == 'Selecting') { //selecting shapes
+      } else if (this.s.state == 'DrawSelectBox') { //selecting shapes
         this.currshape = this.selectBox;
         this.s.color = '#000000';
       } else if (this.s.state == 'drawShape') { //drawing shape
@@ -97,7 +98,9 @@ export class CanvasComponent implements OnInit {
       if (!this.moveSelected && !(this.s.state == 'Fill')) {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
-        switch (this.s.state){
+  
+        switch (this.s.state)
+        {
           case 'Move':   this.selectBox.Move(e.clientX, e.clientY); break;
           case 'Resize': this.selectBox.Resize(e.clientX, e.clientY); break;
         }
@@ -109,9 +112,9 @@ export class CanvasComponent implements OnInit {
       this.startDraw = false;
       this.moveSelected = false;
 
-      if (this.s.state == 'Selecting') {
+      if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
-        this.selectBox.selectShapes(this.shapes, this.s);
+        this.selectedShapes = this.selectBox.selectShapes(this.shapes, this.s);
       }
 
       if (this.currshape.valid == true)
