@@ -78,5 +78,9 @@ export class SelectBox extends Shape {
   setOldY(y: number) {
     this.oldMouseY = y;
   }
+
+  setSelectedShapes(shapeArray : Shape[]) {
+    this.selectedShapes = shapeArray;
+  }
 }
 

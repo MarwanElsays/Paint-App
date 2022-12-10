@@ -13,4 +13,5 @@ export class Shape {
   public Move(x: number, y: number) {}
   public Resize(width: number, height: number) {}
   public Fill(fillColour: string, ctx: CanvasRenderingContext2D) {}
+  public clone():Shape{return new Shape()}
 }

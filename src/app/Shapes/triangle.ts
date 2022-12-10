@@ -47,4 +47,18 @@ export class Triangle extends Shape{
     ctx.fill();
     this.fillColour = fillColour;
   }
+
+  override clone():Triangle {
+    let triangle = new Triangle();
+    triangle.x = this.x - 20;
+    triangle.y = this.y - 20;
+    triangle.w = this.w;
+    triangle.h =this.h;
+    triangle.fillColour = this.fillColour;
+    triangle.col = this.col;
+    triangle.id = this.id;
+    triangle.valid = this.valid;
+    
+    return triangle;
+  }
 }
