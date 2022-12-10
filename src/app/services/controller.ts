@@ -1,3 +1,4 @@
+import { Line } from './../Shapes/line';
 import { CanvasComponent } from "../canvas/canvas.component";
 import { SelectBox } from "../Shapes/selectbox";
 import { Shape } from "../Shapes/shape";
@@ -9,8 +10,10 @@ export class ControllerService {
   copyedshapes:Shape[] = [];
 
   Undo(ctx: CanvasRenderingContext2D) {
-    let removedShape = this.canvas.shapes.pop();
-    if (removedShape) this.canvas.undoArray.push(removedShape);
+    //this.canvas.shapes 
+    this.canvas.backService.performUndo().subscribe((a) =>{
+      console.log(a);
+    });
     this.canvas.update(ctx);
   }
 
@@ -23,6 +26,7 @@ export class ControllerService {
   Erase(ctx: CanvasRenderingContext2D) {
     this.canvas.startcanvas(ctx);
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
+    this.canvas.backService.reset();
   }
 
   eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
@@ -40,22 +44,12 @@ export class ControllerService {
 
     s.copy.subscribe(() => {
       if(this.drawServe.state != 'Selected')return;
+      
       this.copyedshapes.splice(0,this.copyedshapes.length);
       this.canvas.selectedShapes.forEach((s) => {
         this.copyedshapes.push(s.clone());
       })
      
-    });
-
-    s.cut.subscribe(() => {
-      if(this.drawServe.state != 'Selected')return; 
-
-      // console.log( this.canvas.shapes);
-      // this.canvas.selectedShapes.forEach((s) => {
-      //   this.copyedshapes.push(s.clone());
-      // })
-      // console.log( this.canvas.shapes);
-      // this.canvas.update(ctx);
     });
 
     s.paste.subscribe(() => {
@@ -65,14 +59,23 @@ export class ControllerService {
       });
 
       ShapesToBeAdd.forEach((s)=>{
+        let oldID = s.id;
         s.id = this.canvas.ShapeID++;
         this.canvas.shapes.push(s);
+        if(s instanceof Line){
+          this.canvas.backService.createLineCopy(s.id,oldID,s.x.toString()+","+s.y.toString(),s.endx.toString()+","+s.endy.toString(),true);
+        }
+        else
+        {
+          this.canvas.backService.createShapeCopy(s.id,oldID,s.x.toString()+","+s.y.toString(),true);
+        }
       });
 
       this.canvas.selectBox.x-=20;
       this.canvas.selectBox.y-=20;
       this.canvas.selectBox.setSelectedShapes(ShapesToBeAdd);
       this.canvas.update(ctx);
+
     });
 
     s.fillEvent.subscribe(() => {

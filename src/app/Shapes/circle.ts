@@ -53,6 +53,7 @@ export class Circle extends Shape {
     circ.fillColour = this.fillColour;
     circ.col = this.col;
     circ.valid = this.valid;
+    circ.id = this.id;
     
     return circ;
   }

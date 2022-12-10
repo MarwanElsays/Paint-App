@@ -57,6 +57,7 @@ export class Triangle extends Shape{
     triangle.fillColour = this.fillColour;
     triangle.col = this.col;
     triangle.valid = this.valid;
+    triangle.id = this.id;
     
     return triangle;
   }

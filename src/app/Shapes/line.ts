@@ -46,8 +46,9 @@ export class Line extends Shape {
     line.h =this.h;
     line.col = this.col;
     line.valid = this.valid;
-    line.endx = this.endx;
-    line.endy = this.endy;
+    line.endx = this.endx - 20;
+    line.endy = this.endy - 20;
+    line.id = this.id;
 
     return line;
   }
