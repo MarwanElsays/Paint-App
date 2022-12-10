@@ -6,6 +6,8 @@ import { DrawService } from "./draw.service";
 export class ControllerService {
   constructor(private canvas: CanvasComponent,private drawServe:DrawService) {}
 
+  copyedshapes:Shape[] = [];
+
   Undo(ctx: CanvasRenderingContext2D) {
     let removedShape = this.canvas.shapes.pop();
     if (removedShape) this.canvas.undoArray.push(removedShape);
@@ -38,23 +40,32 @@ export class ControllerService {
 
     s.copy.subscribe(() => {
       if(this.drawServe.state != 'Selected')return;
-
+      this.copyedshapes.splice(0,this.copyedshapes.length);
       this.canvas.selectedShapes.forEach((s) => {
-        s.Fill("#0F0",ctx);
+        this.copyedshapes.push(s.clone());
       })
      
     });
 
     s.cut.subscribe(() => {
-      if(this.drawServe.state != 'Selected')return;
+      if(this.drawServe.state != 'Selected')return; 
 
-      this.canvas.selectedShapes.forEach((s) => {
-        s.Fill("#0FF",ctx);
-      })
+      // console.log( this.canvas.shapes);
+      // this.canvas.selectedShapes.forEach((s) => {
+      //   this.copyedshapes.push(s.clone());
+      // })
+      // console.log( this.canvas.shapes);
+      // this.canvas.update(ctx);
     });
 
     s.paste.subscribe(() => {
-      this.Redo(ctx);
+      this.copyedshapes.forEach((s)=>{
+        this.canvas.shapes.push(s);
+      });
+      this.canvas.selectBox.x-=20;
+      this.canvas.selectBox.y-=20;
+      this.canvas.selectBox.setSelectedShapes(this.copyedshapes);
+      this.canvas.update(ctx);
     });
 
     s.fillEvent.subscribe(() => {

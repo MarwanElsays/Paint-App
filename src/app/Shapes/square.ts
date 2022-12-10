@@ -40,5 +40,19 @@ export class Square extends Shape {
     ctx.fillRect(this.x, this.y, this.w, this.h);
     this.fillColour = fillColour;
   }
+
+  override clone():Square {
+    let sq = new Square();
+    sq.x = this.x - 20;
+    sq.y = this.y - 20;
+    sq.w = this.w;
+    sq.h =this.h;
+    sq.fillColour = this.fillColour;
+    sq.col = this.col;
+    sq.id = this.id;
+    sq.valid = this.valid;
+    
+    return sq;
+  }
 }
 

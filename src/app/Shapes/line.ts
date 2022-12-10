@@ -36,4 +36,20 @@ export class Line extends Shape {
     this.w = width;
     this.h = height;
   }
+
+
+  override clone():Line {
+    let line = new Line();
+    line.x = this.x - 20;
+    line.y = this.y - 20;
+    line.w = this.w;
+    line.h =this.h;
+    line.col = this.col;
+    line.id = this.id;
+    line.valid = this.valid;
+    line.endx = this.endx;
+    line.endy = this.endy;
+
+    return line;
+  }
 }

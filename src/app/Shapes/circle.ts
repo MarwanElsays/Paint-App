@@ -43,4 +43,18 @@ export class Circle extends Shape {
     ctx.fill();
     this.fillColour = fillColour;
   }
+
+  override clone():Circle {
+    let circ = new Circle();
+    circ.x = this.x - 20;
+    circ.y = this.y - 20;
+    circ.w = this.w;
+    circ.h =this.h;
+    circ.fillColour = this.fillColour;
+    circ.col = this.col;
+    circ.id = this.id;
+    circ.valid = this.valid;
+    
+    return circ;
+  }
 }
