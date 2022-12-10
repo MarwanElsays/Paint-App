@@ -48,6 +48,7 @@ export class BackendCommunicatorService {
     );
   }
 
+  /*Lsaaaaa*/
   public changeThickness(id:number,thickness:number){
      
     this.http.post( "http://localhost:8085/updateThickness",null,
@@ -83,6 +84,8 @@ export class BackendCommunicatorService {
     );
   }
 
+
+  /* Lsaaaaaaa*/
   public changeOutlineColor(id:number,outlineColor:string){
      
     this.http.post( "http://localhost:8085/updateOutlineColor",null,
@@ -94,6 +97,8 @@ export class BackendCommunicatorService {
     );
   }
 
+
+  /*Lsaaaaaaaaaaaaaaaaaa*/
   public changeFillOpacity(id:number,opacity:number){
      
     this.http.post( "http://localhost:8085/updateFillOpacity",null,
@@ -105,6 +110,7 @@ export class BackendCommunicatorService {
     );
   }
 
+  /*Lsaaaaaaaaaaaaaaaaaaa*///
   public deleteShape(id:number){
      
     this.http.post( "http://localhost:8085/delete",null,
@@ -114,36 +120,29 @@ export class BackendCommunicatorService {
     );
   }
 
-  public createShapeCopy(id:number,type:string,upperLeftCorner:string,width:number,height:number,
-                        fillColor:string,fillOpacity:number ,thickness:number,outlineColor:string,
+
+  public createShapeCopy(newID:number,copiedID:number,newUpperLeftCorner:string,
                         addUndo:boolean ){
      
     this.http.post( "http://localhost:8085/createShapeCopy",null,
       {responseType:'json',
-       params: new HttpParams().set('id', id.toString())
-                               .set('type', type)
-                               .set('upperLeftCorner',upperLeftCorner)
-                               .set('width',width.toString())
-                               .set('height',height.toString())
-                               .set('fillColor', fillColor)
-                               .set('fillOpacity', fillOpacity.toString())
-                               .set('thickness',thickness.toString())
-                               .set('outlineColor',outlineColor)
+       params: new HttpParams().set('newID', newID.toString())
+                               .set('copiedID', copiedID.toString())
+                               .set('newUpperLeftCorner',newUpperLeftCorner)
                                .set('addUndo',addUndo.toString()),
       }
     );
   }
 
-  public createLineCopy(id:number,startingPoint:string,endingPoint:string,
-                        fillColor:string,thickness:number,addUndo:boolean ){
+  public createLineCopy(newID:number,copiedID:number,newStartingPoint:string,
+                        newEndingPoint:string,addUndo:boolean ){
 
     this.http.post( "http://localhost:8085/createLineCopy",null,
       {responseType:'json',
-      params: new HttpParams().set('id', id.toString())
-                .set('startingPoint', startingPoint)
-                .set('endingPoint',endingPoint)
-                .set('fillColor', fillColor)
-                .set('thickness',thickness.toString())
+      params: new HttpParams().set('newID', newID.toString())
+                .set('newStartingPoint', newStartingPoint)
+                .set('newEndingPoint',newEndingPoint)
+                .set('copiedID', copiedID.toString())
                 .set('addUndo',addUndo.toString()),
       }
     );
@@ -161,13 +160,4 @@ export class BackendCommunicatorService {
     return this.http.get( "http://localhost:8085/getShapeData",{responseType:'json'});
   }
 
-  
-
-
-
-
-
-
-  
-  
 }

@@ -5,6 +5,7 @@ import { ControllerService } from '../services/controller';
 import { SelectBox } from '../Shapes/selectbox';
 import { ShapeFactoryService } from '../services/shape-factory.service';
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
+import { Line } from '../Shapes/line';
 
 @Component({
   selector: 'app-canvas',
@@ -12,7 +13,7 @@ import { BackendCommunicatorService } from '../services/backend-communicator.ser
   styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements OnInit {
-  constructor(private s: DrawService, private factory: ShapeFactoryService,private backService:BackendCommunicatorService) { }
+  constructor(private s: DrawService, private factory: ShapeFactoryService,public backService:BackendCommunicatorService) { }
 
   @ViewChild('c', { static: true }) canvas!: ElementRef;
   mouseX: number = 0;
@@ -25,6 +26,7 @@ export class CanvasComponent implements OnInit {
   selectBox: SelectBox = new SelectBox();
   controller: ControllerService = new ControllerService(this,this.s);
   selectedShapes : Shape[] = [];
+  ShapeID:number = 1;
 
   ngOnInit(): void {
     const mycanvas: HTMLCanvasElement = this.canvas.nativeElement;
@@ -39,33 +41,6 @@ export class CanvasComponent implements OnInit {
   startcanvas(ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = '#FFF';
     ctx.fillRect(0, 0, 1536, 701);
-  }
-
-  update(ctx: CanvasRenderingContext2D) {
-    this.startcanvas(ctx);
-    ctx.setLineDash([0]);
-    if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
-      this.shapes.splice(this.selectBox.id - 1, 1);
-    }
-    this.shapes.forEach((s) => {
-      s.Update(ctx);
-    });
-  }
-
-  Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
-    if (!this.startDraw) return;
-    ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color, x, y, this.mouseX, this.mouseY);
-  }
-
-  Fill(ctx: CanvasRenderingContext2D) {
-    this.shapes.forEach((s) => {
-      // console.log(this.mouseX, this.mouseY, this.shapes[0].x, this.shapes[0].y);
-      if (this.controller.mouseInside(this.mouseX, this.mouseY + 80, s)) {
-        ctx.fillStyle = this.s.color;
-        s.Fill(this.s.color, ctx);
-      }
-    })
   }
 
   mouseInput(mycanvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -112,21 +87,66 @@ export class CanvasComponent implements OnInit {
       this.update(ctx);
       this.startDraw = false;
       this.moveSelected = false;
-
-      if (this.s.state == 'DrawSelectBox') {
+      
+      if(this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
         this.selectedShapes = this.selectBox.selectShapes(this.shapes, this.s);
+      }
+      else if(this.s.state == 'Move'){
+        let upperleftcornner = this.currshape.x.toString()+","+this.currshape.y.toString();
+        if(this.currshape instanceof Line) {
+          let endingpoint = this.currshape.endx.toString()+","+this.currshape.endy.toString();
+          this.backService.changeLinePos(this.currshape.id,upperleftcornner,endingpoint);
+        }
+        else{
+          this.backService.changeShapePosAndSize(this.currshape.id,upperleftcornner,this.currshape.w,this.currshape.h);
+        }
+
       }
 
       if (this.currshape.valid == true)
       {
+        this.currshape.id = this.ShapeID++;
         this.shapes.push(this.currshape);
-        this.currshape.id = this.shapes.length;
+        
         let upperleftcornner = this.currshape.x.toString()+","+this.currshape.y.toString();
-        this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.w,this.currshape.h);
+        if(this.currshape instanceof Line) {
+          let endingpoint = this.currshape.endx.toString()+","+this.currshape.endy.toString();
+          this.backService.createLine(this.currshape.id,upperleftcornner,endingpoint);
+        }
+        else{
+          this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.w,this.currshape.h);
+        }
       }
         
     });
+  }
+
+  update(ctx: CanvasRenderingContext2D) {
+    this.startcanvas(ctx);
+    ctx.setLineDash([0]);
+    if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
+      this.shapes.splice(this.shapes.findIndex((x) => {return x.id == this.selectBox.id}), 1);
+    }
+    this.shapes.forEach((s) => {
+      s.Update(ctx);
+    });
+  }
+
+  Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
+    if (!this.startDraw) return;
+    ctx.beginPath();
+    this.currshape.Draw(ctx, this.s.color, x, y, this.mouseX, this.mouseY);
+  }
+
+  Fill(ctx: CanvasRenderingContext2D) {
+    this.shapes.forEach((s) => {
+      if (this.controller.mouseInside(this.mouseX, this.mouseY + 80, s)) {
+        ctx.fillStyle = this.s.color;
+        this.backService.changeFillColor(s.id,this.s.color);
+        s.Fill(this.s.color, ctx);
+      }
+    })
   }
 
   reset() {
