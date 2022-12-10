@@ -49,7 +49,6 @@ export class Square extends Shape {
     sq.h =this.h;
     sq.fillColour = this.fillColour;
     sq.col = this.col;
-    sq.id = this.id;
     sq.valid = this.valid;
     
     return sq;

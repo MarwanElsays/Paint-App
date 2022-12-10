@@ -5,6 +5,7 @@ import { ControllerService } from '../services/controller';
 import { SelectBox } from '../Shapes/selectbox';
 import { ShapeFactoryService } from '../services/shape-factory.service';
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
+import { Line } from '../Shapes/line';
 
 @Component({
   selector: 'app-canvas',
@@ -25,6 +26,7 @@ export class CanvasComponent implements OnInit {
   selectBox: SelectBox = new SelectBox();
   controller: ControllerService = new ControllerService(this,this.s);
   selectedShapes : Shape[] = [];
+  ShapeID:number = 0;
 
   ngOnInit(): void {
     const mycanvas: HTMLCanvasElement = this.canvas.nativeElement;
@@ -60,9 +62,9 @@ export class CanvasComponent implements OnInit {
 
   Fill(ctx: CanvasRenderingContext2D) {
     this.shapes.forEach((s) => {
-      // console.log(this.mouseX, this.mouseY, this.shapes[0].x, this.shapes[0].y);
       if (this.controller.mouseInside(this.mouseX, this.mouseY + 80, s)) {
         ctx.fillStyle = this.s.color;
+        this.backService.changeFillColor(s.id,this.s.color);
         s.Fill(this.s.color, ctx);
       }
     })
@@ -120,10 +122,17 @@ export class CanvasComponent implements OnInit {
 
       if (this.currshape.valid == true)
       {
+        this.currshape.id = this.ShapeID++;
         this.shapes.push(this.currshape);
-        this.currshape.id = this.shapes.length;
+        
         let upperleftcornner = this.currshape.x.toString()+","+this.currshape.y.toString();
-        this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.w,this.currshape.h);
+        if(this.currshape instanceof Line) {
+          let endingpoint = this.currshape.endx.toString()+","+this.currshape.endy.toString();
+          this.backService.createLine(this.currshape.id,upperleftcornner,endingpoint);
+        }
+        else{
+          this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.w,this.currshape.h);
+        }
       }
         
     });

@@ -65,6 +65,7 @@ export class ControllerService {
       });
 
       ShapesToBeAdd.forEach((s)=>{
+        s.id = this.canvas.ShapeID++;
         this.canvas.shapes.push(s);
       });
 
