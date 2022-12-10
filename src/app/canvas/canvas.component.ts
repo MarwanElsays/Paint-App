@@ -1,9 +1,10 @@
-import { ShapeFactoryService } from './../services/shape-factory.service';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
 import { ControllerService } from '../services/controller';
 import { SelectBox } from '../Shapes/selectbox';
+import { ShapeFactoryService } from '../services/shape-factory.service';
+import { BackendCommunicatorService } from '../services/backend-communicator.service';
 
 @Component({
   selector: 'app-canvas',
@@ -11,7 +12,7 @@ import { SelectBox } from '../Shapes/selectbox';
   styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements OnInit {
-  constructor(private s: DrawService, private factory: ShapeFactoryService) { }
+  constructor(private s: DrawService, private factory: ShapeFactoryService,private backService:BackendCommunicatorService) { }
 
   @ViewChild('c', { static: true }) canvas!: ElementRef;
   mouseX: number = 0;
@@ -118,9 +119,13 @@ export class CanvasComponent implements OnInit {
       }
 
       if (this.currshape.valid == true)
+      {
         this.shapes.push(this.currshape);
-      if (this.currshape)
         this.currshape.id = this.shapes.length;
+        let upperleftcornner = this.currshape.x.toString()+","+this.currshape.y.toString();
+        this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.w,this.currshape.h);
+      }
+        
     });
   }
 
@@ -132,12 +137,3 @@ export class CanvasComponent implements OnInit {
     this.startDraw = false;
   }
 }
-
-
-
-// drawPencil(ctx: CanvasRenderingContext2D, x: number, y: number) {
-//   ctx.strokeStyle = this.s.color;
-//   ctx.beginPath();
-//   ctx.lineTo(x, y);
-//   ctx.stroke();
-// }

@@ -1,11 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { ShapeFactoryService } from './services/shape-factory.service';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './menu/menu.component';
 import { CanvasComponent } from './canvas/canvas.component';
 import { DrawService } from './services/draw.service';
 import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BackendCommunicatorService } from './services/backend-communicator.service';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -16,9 +20,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [
     BrowserModule,
     FontAwesomeModule,
+    HttpClientModule,
     FormsModule
   ],
-  providers: [DrawService],
+  providers: [DrawService,BackendCommunicatorService,ShapeFactoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
