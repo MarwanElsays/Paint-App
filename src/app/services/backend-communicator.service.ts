@@ -8,9 +8,13 @@ export class BackendCommunicatorService {
 
   constructor(private http:HttpClient) { }
 
+  public reset(){
+    this.http.post( "http://localhost:8085/reset",null);
+  }
+
   public createLine(id:number,startingPoint:string,endingPoint:string){
      
-    return this.http.post( "http://localhost:8085/createLine",null,
+    this.http.post( "http://localhost:8085/createLine",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('startingPoint', startingPoint)
@@ -21,7 +25,7 @@ export class BackendCommunicatorService {
 
   public createMultiPointShape(id:number,type:string,upperLeftCorner:string,width:number,height:number){
      
-    return this.http.post( "http://localhost:8085/createShape",null,
+    this.http.post( "http://localhost:8085/createShape",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('type', type)
@@ -35,7 +39,7 @@ export class BackendCommunicatorService {
 
   public changeFillColor(id:number,fillColor:string){
      
-    return this.http.post( "http://localhost:8085/updateFillColor",null,
+    this.http.post( "http://localhost:8085/updateFillColor",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('fillColor', fillColor)
@@ -46,7 +50,7 @@ export class BackendCommunicatorService {
 
   public changeThickness(id:number,thickness:number){
      
-    return this.http.post( "http://localhost:8085/updateThickness",null,
+    this.http.post( "http://localhost:8085/updateThickness",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('thickness', thickness)
@@ -57,7 +61,7 @@ export class BackendCommunicatorService {
 
   public changeLinePos(id:number,startingPoint:string,endingPoint:string){
      
-    return this.http.post( "http://localhost:8085/updateLinePos",null,
+    this.http.post( "http://localhost:8085/updateLinePos",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('startingPoint', startingPoint)
@@ -69,7 +73,7 @@ export class BackendCommunicatorService {
 
   public changeShapePosAndSize(id:number,upperLeftCorner:string,width:number,height:number){
      
-    return this.http.post( "http://localhost:8085/updateShapePosAndSize",null,
+    this.http.post( "http://localhost:8085/updateShapePosAndSize",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('upperLeftCorner',upperLeftCorner)
@@ -81,7 +85,7 @@ export class BackendCommunicatorService {
 
   public changeOutlineColor(id:number,outlineColor:string){
      
-    return this.http.post( "http://localhost:8085/updateOutlineColor",null,
+    this.http.post( "http://localhost:8085/updateOutlineColor",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('outlineColor', outlineColor)
@@ -92,7 +96,7 @@ export class BackendCommunicatorService {
 
   public changeFillOpacity(id:number,opacity:number){
      
-    return this.http.post( "http://localhost:8085/updateFillOpacity",null,
+    this.http.post( "http://localhost:8085/updateFillOpacity",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('opacity', opacity.toString())
@@ -103,7 +107,7 @@ export class BackendCommunicatorService {
 
   public deleteShape(id:number){
      
-    return this.http.post( "http://localhost:8085/delete",null,
+    this.http.post( "http://localhost:8085/delete",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())        
       }
@@ -114,7 +118,7 @@ export class BackendCommunicatorService {
                         fillColor:string,fillOpacity:number ,thickness:number,outlineColor:string,
                         addUndo:boolean ){
      
-    return this.http.post( "http://localhost:8085/createShapeCopy",null,
+    this.http.post( "http://localhost:8085/createShapeCopy",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('type', type)
@@ -133,7 +137,7 @@ export class BackendCommunicatorService {
   public createLineCopy(id:number,startingPoint:string,endingPoint:string,
                         fillColor:string,thickness:number,addUndo:boolean ){
 
-    return this.http.post( "http://localhost:8085/createLineCopy",null,
+    this.http.post( "http://localhost:8085/createLineCopy",null,
       {responseType:'json',
       params: new HttpParams().set('id', id.toString())
                 .set('startingPoint', startingPoint)
@@ -144,6 +148,20 @@ export class BackendCommunicatorService {
       }
     );
   }
+
+  public performUndo(){
+    return this.http.get( "http://localhost:8085/undo",{responseType:'json'});
+  }
+
+  public performRedo(){
+    return this.http.get( "http://localhost:8085/redo",{responseType:'json'});
+  }
+
+  public getShapeData(){
+    return this.http.get( "http://localhost:8085/getShapeData",{responseType:'json'});
+  }
+
+  
 
 
 
