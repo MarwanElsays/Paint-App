@@ -59,12 +59,18 @@ export class ControllerService {
     });
 
     s.paste.subscribe(() => {
+      let ShapesToBeAdd: Shape[] = [];
       this.copyedshapes.forEach((s)=>{
+        ShapesToBeAdd.push(s.clone());
+      });
+
+      ShapesToBeAdd.forEach((s)=>{
         this.canvas.shapes.push(s);
       });
+
       this.canvas.selectBox.x-=20;
       this.canvas.selectBox.y-=20;
-      this.canvas.selectBox.setSelectedShapes(this.copyedshapes);
+      this.canvas.selectBox.setSelectedShapes(ShapesToBeAdd);
       this.canvas.update(ctx);
     });
 
