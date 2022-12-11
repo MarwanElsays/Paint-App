@@ -1,3 +1,4 @@
+import { Square } from './../Shapes/square';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
@@ -7,13 +8,14 @@ import { ShapeFactoryService } from '../services/shape-factory.service';
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
 import { Line } from '../Shapes/line';
 
+
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements OnInit {
-  constructor(private s: DrawService, private factory: ShapeFactoryService,public backService:BackendCommunicatorService) { }
+  constructor(private s: DrawService, public factory: ShapeFactoryService,public backService:BackendCommunicatorService) { }
 
   @ViewChild('c', { static: true }) canvas!: ElementRef;
   mouseX: number = 0;
@@ -93,14 +95,19 @@ export class CanvasComponent implements OnInit {
         this.selectedShapes = this.selectBox.selectShapes(this.shapes, this.s);
       }
       else if(this.s.state == 'Move'){
-        let upperleftcornner = this.currshape.x.toString()+","+this.currshape.y.toString();
-        if(this.currshape instanceof Line) {
-          let endingpoint = this.currshape.endx.toString()+","+this.currshape.endy.toString();
-          this.backService.changeLinePos(this.currshape.id,upperleftcornner,endingpoint);
+       this.selectedShapes.forEach((movedShape) =>{
+        let upperleftcornner = movedShape.upperLeftCorner.x.toString()+","+movedShape.upperLeftCorner.y.toString();
+        if(movedShape instanceof Line) {
+          let endingpoint = movedShape.endx.toString()+","+movedShape.endy.toString();
+          this.backService.changeLinePos(movedShape.id,upperleftcornner,endingpoint);
         }
         else{
-          this.backService.changeShapePosAndSize(this.currshape.id,upperleftcornner,this.currshape.w,this.currshape.h);
+          console.log(movedShape.id,upperleftcornner);
+          this.backService.changeShapePosAndSize(movedShape.id,upperleftcornner,movedShape.width,movedShape.height);
         }
+
+       })
+
 
       }
 
@@ -109,13 +116,16 @@ export class CanvasComponent implements OnInit {
         this.currshape.id = this.ShapeID++;
         this.shapes.push(this.currshape);
         
-        let upperleftcornner = this.currshape.x.toString()+","+this.currshape.y.toString();
+        let upperleftcornner = this.currshape.upperLeftCorner.x.toString()+","+this.currshape.upperLeftCorner.y.toString();
         if(this.currshape instanceof Line) {
           let endingpoint = this.currshape.endx.toString()+","+this.currshape.endy.toString();
-          this.backService.createLine(this.currshape.id,upperleftcornner,endingpoint);
+          this.backService.createLine(this.currshape.id,upperleftcornner,endingpoint,this.currshape.thickness,this.currshape.fillColor);
         }
         else{
-          this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.w,this.currshape.h);
+
+          if(!(this.currshape instanceof SelectBox))
+          this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.width,this.currshape.height,
+                                                  "",this.currshape.outlineColor,this.currshape.thickness);
         }
       }
         
@@ -128,7 +138,7 @@ export class CanvasComponent implements OnInit {
     if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
       this.shapes.splice(this.shapes.findIndex((x) => {return x.id == this.selectBox.id}), 1);
     }
-    this.shapes.forEach((s) => {
+    this.shapes.forEach((s:Shape) => {
       s.Update(ctx);
     });
   }
@@ -136,7 +146,7 @@ export class CanvasComponent implements OnInit {
   Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
     if (!this.startDraw) return;
     ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color, x, y, this.mouseX, this.mouseY);
+    this.currshape.Draw(ctx, this.s.color,this.s.thickness, x, y, this.mouseX, this.mouseY);
   }
 
   Fill(ctx: CanvasRenderingContext2D) {
