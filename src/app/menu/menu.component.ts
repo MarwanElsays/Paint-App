@@ -65,6 +65,10 @@ export class MenuComponent {
     }
   }
 
+  ChangeThickness(){
+    this.s.emitChangeThickness();
+  }
+
   erase() {
     this.s.emitErase();
   }
