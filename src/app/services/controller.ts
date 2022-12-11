@@ -182,10 +182,3 @@ export class ControllerService {
     return newShape;
   }
 }
-
-
-// else if (this.s.state == 'Selected'){
-//   this.selectBox.getSelectedShapes().forEach(s =>{
-//     s.thickness = this.s.thickness;
-//   })
-// }
