@@ -1,7 +1,7 @@
 import { Shape } from './shape';
 export class Square extends Shape {
   override type: string = "square";
-  override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number, x: number, y: number, startx: number, starty: number) {
+  override Draw(ctx: CanvasRenderingContext2D, color: string, linewidth: number, x: number, y: number, startx: number, starty: number) {
     ctx.strokeStyle = color;
     ctx.lineWidth = linewidth;
     ctx.strokeRect(startx, starty, x - startx, y - starty);
@@ -30,7 +30,7 @@ export class Square extends Shape {
   override Move(x: number, y: number): void {
     this.upperLeftCorner.x = x;
     this.upperLeftCorner.y = y;
-    
+
   }
 
   override Resize(width: number, height: number): void {
@@ -44,23 +44,23 @@ export class Square extends Shape {
     this.fillColor = fillColor;
   }
 
-  override clone():Square {
+  override clone(): Square {
     let sq = new Square();
     sq.upperLeftCorner.x = this.upperLeftCorner.x - 20;
     sq.upperLeftCorner.y = this.upperLeftCorner.y - 20;
     sq.width = this.width;
-    sq.height =this.height;
+    sq.height = this.height;
     sq.fillColor = this.fillColor;
     sq.outlineColor = this.outlineColor;
     sq.valid = this.valid;
     sq.id = this.id;
     sq.thickness = this.thickness;
-    
+
     return sq;
   }
 
 
-  print(){
+  print() {
     console.log("anaaaaaaaaaaaaaaaaaaa square")
   }
 }

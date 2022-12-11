@@ -1,8 +1,8 @@
 import { Shape } from './shape';
 
-export class Triangle extends Shape{
+export class Triangle extends Shape {
   override type: string = "triangle";
-  override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number, x: number, y: number, startx: number, starty: number) {
+  override Draw(ctx: CanvasRenderingContext2D, color: string, linewidth: number, x: number, y: number, startx: number, starty: number) {
     ctx.strokeStyle = color;
     ctx.lineWidth = linewidth;
     ctx.moveTo(startx, starty);
@@ -13,7 +13,7 @@ export class Triangle extends Shape{
 
     this.width = (x - startx) * 2;
     this.height = y - starty;
-    this.upperLeftCorner.x  = startx - this.width / 2;
+    this.upperLeftCorner.x = startx - this.width / 2;
     this.upperLeftCorner.y = starty;
     this.outlineColor = color;
     this.thickness = linewidth;
@@ -24,9 +24,9 @@ export class Triangle extends Shape{
     ctx.strokeStyle = this.outlineColor;
     ctx.lineWidth = this.thickness;
     ctx.beginPath();
-    ctx.moveTo(this.upperLeftCorner.x  + this.width / 2, this.upperLeftCorner.y);
-    ctx.lineTo(this.upperLeftCorner.x  + this.width, this.upperLeftCorner.y + this.height);
-    ctx.lineTo(this.upperLeftCorner.x , this.upperLeftCorner.y + this.height);
+    ctx.moveTo(this.upperLeftCorner.x + this.width / 2, this.upperLeftCorner.y);
+    ctx.lineTo(this.upperLeftCorner.x + this.width, this.upperLeftCorner.y + this.height);
+    ctx.lineTo(this.upperLeftCorner.x, this.upperLeftCorner.y + this.height);
     ctx.closePath();
     ctx.stroke();
     if (this.fillColor != '') {
@@ -36,7 +36,7 @@ export class Triangle extends Shape{
   }
 
   override Move(x: number, y: number): void {
-    this.upperLeftCorner.x  = x;
+    this.upperLeftCorner.x = x;
     this.upperLeftCorner.y = y;
   }
 
@@ -52,18 +52,18 @@ export class Triangle extends Shape{
     this.fillColor = fillColor;
   }
 
-  override clone():Triangle {
+  override clone(): Triangle {
     let triangle = new Triangle();
-    triangle.upperLeftCorner.x = this.upperLeftCorner.x  - 20;
+    triangle.upperLeftCorner.x = this.upperLeftCorner.x - 20;
     triangle.upperLeftCorner.y = this.upperLeftCorner.y - 20;
     triangle.width = this.width;
-    triangle.height =this.height;
+    triangle.height = this.height;
     triangle.fillColor = this.fillColor;
     triangle.outlineColor = this.outlineColor;
     triangle.valid = this.valid;
     triangle.id = this.id;
     triangle.thickness = this.thickness;
-    
+
     return triangle;
   }
 }
