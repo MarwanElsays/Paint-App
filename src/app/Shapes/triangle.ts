@@ -1,63 +1,68 @@
 import { Shape } from './shape';
 
 export class Triangle extends Shape{
-  override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
+  override type: string = "triangle";
+  override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number, x: number, y: number, startx: number, starty: number) {
     ctx.strokeStyle = color;
+    ctx.lineWidth = linewidth;
     ctx.moveTo(startx, starty);
     ctx.lineTo(x, y);
     ctx.lineTo(startx - (x - startx), y);
     ctx.closePath();
     ctx.stroke();
 
-    this.w = (x - startx) * 2;
-    this.h = y - starty;
-    this.x = startx - this.w / 2;
-    this.y = starty;
-    this.col = color;
+    this.width = (x - startx) * 2;
+    this.height = y - starty;
+    this.upperLeftCorner.x  = startx - this.width / 2;
+    this.upperLeftCorner.y = starty;
+    this.outlineColor = color;
+    this.thickness = linewidth;
     this.valid = true;
   }
 
   override Update(ctx: CanvasRenderingContext2D) {
-    ctx.strokeStyle = this.col;
+    ctx.strokeStyle = this.outlineColor;
+    ctx.lineWidth = this.thickness;
     ctx.beginPath();
-    ctx.moveTo(this.x + this.w / 2, this.y);
-    ctx.lineTo(this.x + this.w, this.y + this.h);
-    ctx.lineTo(this.x, this.y + this.h);
+    ctx.moveTo(this.upperLeftCorner.x  + this.width / 2, this.upperLeftCorner.y);
+    ctx.lineTo(this.upperLeftCorner.x  + this.width, this.upperLeftCorner.y + this.height);
+    ctx.lineTo(this.upperLeftCorner.x , this.upperLeftCorner.y + this.height);
     ctx.closePath();
     ctx.stroke();
-    if (this.fillColour != '') {
-      ctx.fillStyle = this.fillColour;
+    if (this.fillColor != '') {
+      ctx.fillStyle = this.fillColor;
       ctx.fill();
     }
   }
 
   override Move(x: number, y: number): void {
-    this.x = x;
-    this.y = y;
+    this.upperLeftCorner.x  = x;
+    this.upperLeftCorner.y = y;
   }
 
   override Resize(width: number, height: number): void {
-    this.w = width;
-    this.h = height;
+    this.width = width;
+    this.height = height;
   }
 
-  override Fill(fillColour: string, ctx: CanvasRenderingContext2D) {
+  override Fill(fillColor: string, ctx: CanvasRenderingContext2D) {
     this.Update(ctx);
-    ctx.fillStyle = fillColour;
+    ctx.fillStyle = fillColor;
     ctx.fill();
-    this.fillColour = fillColour;
+    this.fillColor = fillColor;
   }
 
   override clone():Triangle {
     let triangle = new Triangle();
-    triangle.x = this.x - 20;
-    triangle.y = this.y - 20;
-    triangle.w = this.w;
-    triangle.h =this.h;
-    triangle.fillColour = this.fillColour;
-    triangle.col = this.col;
+    triangle.upperLeftCorner.x = this.upperLeftCorner.x  - 20;
+    triangle.upperLeftCorner.y = this.upperLeftCorner.y - 20;
+    triangle.width = this.width;
+    triangle.height =this.height;
+    triangle.fillColor = this.fillColor;
+    triangle.outlineColor = this.outlineColor;
     triangle.valid = this.valid;
     triangle.id = this.id;
+    triangle.thickness = this.thickness;
     
     return triangle;
   }

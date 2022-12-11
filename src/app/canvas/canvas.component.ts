@@ -1,3 +1,4 @@
+import { Square } from './../Shapes/square';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
@@ -7,13 +8,14 @@ import { ShapeFactoryService } from '../services/shape-factory.service';
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
 import { Line } from '../Shapes/line';
 
+
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements OnInit {
-  constructor(private s: DrawService, private factory: ShapeFactoryService, public backService: BackendCommunicatorService) { }
+  constructor(private s: DrawService, public factory: ShapeFactoryService, public backService: BackendCommunicatorService) { }
 
   @ViewChild('c', { static: true }) canvas!: ElementRef;
   mouseX: number = 0;
@@ -88,16 +90,16 @@ export class CanvasComponent implements OnInit {
         switch (this.s.state) {
           case 'Move': this.selectBox.Move(e.clientX, e.clientY); break;
           case 'Resize':
-            if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.x + this.selectBox.w, this.selectBox.y)) {
+            if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.upperLeftCorner.x + this.selectBox.width, this.selectBox.upperLeftCorner.y)) {
               this.selectBox.topRightResize(e.clientX, e.clientY);
             }
-            else if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.x, this.selectBox.y)) {
+            else if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.upperLeftCorner.x, this.selectBox.upperLeftCorner.y)) {
               this.selectBox.topLeftResize(e.clientX, e.clientY);
             }
-            else if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.x + this.selectBox.w, this.selectBox.y + this.selectBox.h)) {
+            else if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.upperLeftCorner.x + this.selectBox.width, this.selectBox.upperLeftCorner.y + this.selectBox.height)) {
               this.selectBox.bottomRightResize(e.clientX, e.clientY);
             }
-            else if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.x, this.selectBox.y + this.selectBox.h)) {
+            else if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.upperLeftCorner.x, this.selectBox.upperLeftCorner.y + this.selectBox.height)) {
               this.selectBox.bottomLeftResize(e.clientX, e.clientY);
             }
             this.selectBox.Resize(e.clientX, e.clientY); 
@@ -115,47 +117,50 @@ export class CanvasComponent implements OnInit {
       if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
         this.selectedShapes = this.selectBox.selectShapes(this.shapes, this.s);
-        if (this.selectBox.w < 0) {
-          this.selectBox.x += this.selectBox.w;
-          this.selectBox.w = - this.selectBox.w;
+        if (this.selectBox.width < 0) {
+          this.selectBox.upperLeftCorner.x += this.selectBox.width;
+          this.selectBox.width = - this.selectBox.width;
         }
-        if (this.selectBox.h < 0) {
-          this.selectBox.y += this.selectBox.h;
-          this.selectBox.h = - this.selectBox.h;
+        if (this.selectBox.height < 0) {
+          this.selectBox.upperLeftCorner.y += this.selectBox.height;
+          this.selectBox.height = - this.selectBox.height;
         }
       }
       else if (this.s.state == 'Move' || this.s.state == 'Resize') {
         this.selectBox.getSelectedShapes().forEach(selectedShape => {
-          let upperleftcornner = selectedShape.x.toString() + "," + selectedShape.y.toString();
+          let upperleftcornner = selectedShape.upperLeftCorner.x.toString() + "," + selectedShape.upperLeftCorner.y.toString();
           if (selectedShape instanceof Line) {
             let endingpoint = selectedShape.endx.toString() + "," + selectedShape.endy.toString();
-            this.backService.changeLinePos(selectedShape.id, upperleftcornner, endingpoint).subscribe();
+            this.backService.changeLinePos(selectedShape.id, upperleftcornner, endingpoint);
           }
           else {
-            this.backService.changeShapePosAndSize(selectedShape.id, upperleftcornner, selectedShape.w, selectedShape.h).subscribe();
+            this.backService.changeShapePosAndSize(selectedShape.id, upperleftcornner, selectedShape.width, selectedShape.height);
           }
         });
       }
 
       if (this.currshape.valid == true) {
         this.currshape.id = this.ShapeID++;
-        if (this.currshape.w < 0) {
-          this.currshape.x += this.currshape.w;
-          this.currshape.w = - this.currshape.w;
+        if (this.currshape.width < 0) {
+          this.currshape.upperLeftCorner.x += this.currshape.width;
+          this.currshape.width = - this.currshape.width;
         }
-        if (this.currshape.h < 0) {
-          this.currshape.y += this.currshape.h;
-          this.currshape.h = - this.currshape.h;
+        if (this.currshape.height < 0) {
+          this.currshape.upperLeftCorner.y += this.currshape.height;
+          this.currshape.height = - this.currshape.height;
         }
         this.shapes.push(this.currshape);
 
-        let upperleftcornner = this.currshape.x.toString() + "," + this.currshape.y.toString();
-        if (this.currshape instanceof Line) {
-          let endingpoint = this.currshape.endx.toString() + "," + this.currshape.endy.toString();
-          this.backService.createLine(this.currshape.id, upperleftcornner, endingpoint).subscribe();
+        let upperleftcornner = this.currshape.upperLeftCorner.x.toString() + "," + this.currshape.upperLeftCorner.y.toString();
+        if(this.currshape instanceof Line) {
+          let endingpoint = this.currshape.endx.toString()+","+this.currshape.endy.toString();
+          this.backService.createLine(this.currshape.id,upperleftcornner,endingpoint,this.currshape.thickness,this.currshape.fillColor);
         }
-        else {
-          this.backService.createMultiPointShape(this.currshape.id, this.s.shape, upperleftcornner, this.currshape.w, this.currshape.h, "rgba(20,20,20,200)", "rgba(20,20,20,200)", 1).subscribe();
+        else{
+
+          if(!(this.currshape instanceof SelectBox))
+          this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.width,this.currshape.height,
+                                                  "",this.currshape.outlineColor,this.currshape.thickness);
         }
       }
     });
@@ -167,7 +172,7 @@ export class CanvasComponent implements OnInit {
     if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
       this.shapes.splice(this.shapes.findIndex((x) => { return x.id == this.selectBox.id }), 1);
     }
-    this.shapes.forEach((s) => {
+    this.shapes.forEach((s:Shape) => {
       s.Update(ctx);
     });
   }
@@ -175,14 +180,14 @@ export class CanvasComponent implements OnInit {
   Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
     if (!this.startDraw) return;
     ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color, x, y, this.mouseX, this.mouseY);
+    this.currshape.Draw(ctx, this.s.color,this.s.thickness, x, y, this.mouseX, this.mouseY);
   }
 
   Fill(ctx: CanvasRenderingContext2D) {
     for (let i = this.shapes.length - 1; i >= 0; i--) {
       if (this.shapes[i].isMouseInside(this.mouseX, this.mouseY)) {
         ctx.fillStyle = this.s.color;
-        this.backService.changeFillColor(this.shapes[i].id, this.s.color).subscribe();
+        this.backService.changeFillColor(this.shapes[i].id, this.s.color);
         this.shapes[i].Fill(this.s.color, ctx);
         break;
       }

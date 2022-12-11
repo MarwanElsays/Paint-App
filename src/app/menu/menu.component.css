@@ -12,9 +12,12 @@ label{
     margin-right:10px;
     color:blanchedalmond
 }
+#eraseDiv{
+    margin-left: 40px;
+}
 
-#eraseDiv,#undoDiv,#redoDiv,#selectDiv{
-   margin-left: 1px;
+#undoDiv,#redoDiv,#selectDiv{
+   margin-left: 2px;
 }
 
 #erase,#undo,#redo,#select,#Load,#save{
@@ -28,7 +31,7 @@ label{
 }
 
 #LoadDiv{
-    margin-left: 350px;
+    margin-left: 200px;
 }
 
 #saveDiv{
@@ -41,9 +44,9 @@ label{
     border : aliceblue 2px solid;
     display: grid;
     grid-template-columns: repeat(4,50px);
-    width:300px;
+    width:200px;
     height: 70px;
-    margin-left: 5px;
+    margin-left: 10px;
     border-radius: 5px;
 }
 
@@ -54,28 +57,36 @@ label{
     grid-template-columns: repeat(2,50px);
     width:100px;
     height: 70px;
-    margin-left: 5px;
+    margin-left: 10px;
     border-radius: 5px;
 }
 
 
 #Coloring{
+    display: flex;
     background-color: rgba(193, 192, 186, 0.427);
     border : aliceblue 2px solid;
-    width:150px;
+    width:350px;
     height: 70px;
-    margin-left: 5px;
+    margin-left: 10px;
     border-radius: 5px;
 }
 
 #Coloring li{
+    display: flex;
     margin-left: 20px;
     list-style: none;
     color:rgb(0, 0, 0);
     cursor: pointer;
-    text-align:center;
-    margin-top: 2px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 18px;
+    height:40px;
     width:40px
+}
+
+#Coloring #col [type ="color"]{
+    margin-left: 20px;
 }
 
 #shapesContainer,#EditSelected li{
