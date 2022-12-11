@@ -63,7 +63,7 @@ export class CanvasComponent implements OnInit {
       } 
       else if (this.s.state == 'drawShape') { //drawing shape
         this.currshape = this.factory.getShape(this.s.shape);
-      } 
+      }
       else if (this.s.state == 'Selected' && this.selectBox.isMouseInside(e.clientX, e.clientY - 80)) { //selected and moving
         this.moveSelected = true;
         this.s.state = 'Move';
@@ -86,7 +86,6 @@ export class CanvasComponent implements OnInit {
       if (!this.moveSelected && !this.resizing && !(this.s.state == 'Fill')) {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
-
         switch (this.s.state) {
           case 'Move': this.selectBox.Move(e.clientX, e.clientY); break;
           case 'Resize':
@@ -149,6 +148,14 @@ export class CanvasComponent implements OnInit {
 
       if (this.currshape.valid == true) {
         this.currshape.id = this.ShapeID++;
+        if (this.currshape.w < 0) {
+          this.currshape.x += this.currshape.w;
+          this.currshape.w = - this.currshape.w;
+        }
+        if (this.currshape.h < 0) {
+          this.currshape.y += this.currshape.h;
+          this.currshape.h = - this.currshape.h;
+        }
         this.shapes.push(this.currshape);
 
         let upperleftcornner = this.currshape.x.toString() + "," + this.currshape.y.toString();

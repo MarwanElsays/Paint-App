@@ -14,6 +14,7 @@ export class Shape {
   public Resize(width: number, height: number) { }
   public Fill(fillColour: string, ctx: CanvasRenderingContext2D) { }
   public clone(): Shape { return new Shape() }
+
   public isMouseInside(mouseX: number, mouseY: number): boolean {
     return (mouseX >= Math.min(this.x, this.x + this.w) &&
     mouseX <= Math.max(this.x, this.x + this.w) &&

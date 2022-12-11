@@ -29,9 +29,6 @@ export class Triangle extends Shape{
       ctx.fillStyle = this.fillColour;
       ctx.fill();
     }
-    //testing
-    ctx.beginPath();
-    ctx.strokeRect(this.x, this.y, this.w, this.h);
   }
 
   override Move(x: number, y: number): void {

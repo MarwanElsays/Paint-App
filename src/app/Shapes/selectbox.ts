@@ -46,7 +46,6 @@ export class SelectBox extends Shape {
         shape.endx += diffX;
         shape.endy += diffY;
       }
-
     });
     this.setOldX(x);
     this.setOldY(y);
@@ -56,9 +55,14 @@ export class SelectBox extends Shape {
     this.selectedShapes.forEach(shape => {
       let diffX = x - this.oldMouseX;
       let diffY = y - this.oldMouseY;
-      
+
       shape.w -= diffX;
+      shape.w = (shape.w < 10) ? 10 : shape.w;
+      if (shape.w != 10) shape.x += diffX;
+
       shape.h -= diffY;
+      shape.h = (shape.h < 10) ? 10 : shape.h;
+      if (shape.h != 10) shape.y += diffY;
       
     });
     this.setOldX(x);
@@ -71,7 +75,12 @@ export class SelectBox extends Shape {
       let diffY = y - this.oldMouseY;
 
       shape.w += diffX;
+      shape.w = (shape.w < 10) ? 10 : shape.w;
+
       shape.h -= diffY;
+      shape.h = (shape.h < 10) ? 10 : shape.h;
+      if (shape.h != 10) shape.y += diffY;
+
 
     });
     this.setOldX(x);
@@ -83,9 +92,16 @@ export class SelectBox extends Shape {
     this.selectedShapes.forEach(shape => {
       let diffX = x - this.oldMouseX;
       let diffY = y - this.oldMouseY;
-
+      
+      
       shape.w -= diffX;
+      shape.w = (shape.w < 10) ? 10 : shape.w;
+      if (shape.w != 10) shape.x += diffX;
+
       shape.h += diffY;
+      shape.h = (shape.h < 10) ? 10 : shape.h;
+
+      console.log(shape.w, shape.h);
 
     });
     this.setOldX(x);
@@ -98,7 +114,10 @@ export class SelectBox extends Shape {
       let diffY = y - this.oldMouseY;
 
       shape.w += diffX;
+      shape.w = (shape.w < 10) ? 10 : shape.w;
+
       shape.h += diffY;
+      shape.h = (shape.h < 10) ? 10 : shape.h;
 
     });
     this.setOldX(x);
