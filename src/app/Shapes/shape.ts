@@ -1,18 +1,19 @@
 export class Shape {
+  type:string = '';
   id: number = 0;
-  x: number = 0;
-  y: number = 0;
-  col: string = '';
+  outlineColor: string = '';
   valid: boolean = false;
-  w: number = 0;
-  h: number = 0;
-  fillColour: string = '';
+  width: number = 0;
+  height: number = 0;
+  fillColor: string = '';
   thickness :number = 1;
+  fillOpacity:number = 1;
+  upperLeftCorner = {x:0,y:0};
 
   public Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number,x: number, y: number, startx: number, starty: number) {}
   public Update(ctx: CanvasRenderingContext2D) {}
   public Move(x: number, y: number) {}
   public Resize(width: number, height: number) {}
-  public Fill(fillColour: string, ctx: CanvasRenderingContext2D) {}
+  public Fill(fillColor: string, ctx: CanvasRenderingContext2D) {}
   public clone():Shape{return new Shape()}
 }

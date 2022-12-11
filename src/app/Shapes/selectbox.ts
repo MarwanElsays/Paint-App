@@ -13,13 +13,13 @@ export class SelectBox extends Shape {
     ctx.lineWidth = 1;
     ctx.strokeRect(startx, starty, x - startx, y - starty);
 
-    this.x = startx;
-    this.y = starty;
-    this.w = x - startx;
-    this.h = y - starty;
-    this.col = color;
+    this.upperLeftCorner.x = startx;
+    this.upperLeftCorner.y = starty;
+    this.width = x - startx;
+    this.height = y - starty;
+    this.outlineColor = color;
     this.thickness = 1;
-    if (this.w == 0 && this.h == 0)
+    if (this.width == 0 && this.height == 0)
       this.valid = false;
     else this.valid = true;
 
@@ -28,10 +28,10 @@ export class SelectBox extends Shape {
 
   override Update(ctx: CanvasRenderingContext2D) {
     ctx.setLineDash([6]);
-    ctx.strokeStyle = this.col;
+    ctx.strokeStyle = this.outlineColor;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.strokeRect(this.x, this.y, this.w, this.h);
+    ctx.strokeRect(this.upperLeftCorner.x, this.upperLeftCorner.y, this.width, this.height);
     ctx.setLineDash([0]);
   }
 
@@ -40,8 +40,8 @@ export class SelectBox extends Shape {
       let diffX = x - this.oldMouseX;
       let diffY = y - this.oldMouseY;
 
-      shape.x += diffX;
-      shape.y += diffY;
+      shape.upperLeftCorner.x += diffX;
+      shape.upperLeftCorner.y += diffY;
 
       if (shape instanceof Line) {
         shape.endx += diffX;
@@ -56,18 +56,18 @@ export class SelectBox extends Shape {
 
   override Resize(width: number, height: number) {
     this.selectedShapes.forEach(shape => {
-      shape.w = width;
-      shape.h = height;
+      shape.width = width;
+      shape.height = height;
     });
   }
 
   selectShapes(shapes: Shape[], s: DrawService) {
      this.selectedShapes = shapes.filter((shape) => {
       return (
-        Math.min(shape.x, shape.x + shape.w) > Math.min(this.x, this.x + this.w) &&
-        Math.max(shape.x, shape.x + shape.w) < Math.max(this.x, this.x + this.w) &&
-        Math.min(shape.y, shape.y + shape.h) > Math.min(this.y, this.y + this.h) &&
-        Math.max(shape.y, shape.y + shape.h) < Math.max(this.y, this.y + this.h)
+        Math.min(shape.upperLeftCorner.x, shape.upperLeftCorner.x + shape.width) > Math.min(this.upperLeftCorner.x, this.upperLeftCorner.x + this.width) &&
+        Math.max(shape.upperLeftCorner.x, shape.upperLeftCorner.x + shape.width) < Math.max(this.upperLeftCorner.x, this.upperLeftCorner.x + this.width) &&
+        Math.min(shape.upperLeftCorner.y, shape.upperLeftCorner.y + shape.height) > Math.min(this.upperLeftCorner.y, this.upperLeftCorner.y + this.height) &&
+        Math.max(shape.upperLeftCorner.y, shape.upperLeftCorner.y + shape.height) < Math.max(this.upperLeftCorner.y, this.upperLeftCorner.y + this.height)
       );
     });
     s.state = 'Selected';

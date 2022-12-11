@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { Shape } from '../Shapes/shape';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +14,22 @@ export class BackendCommunicatorService {
     this.http.post( "http://localhost:8085/reset",null);
   }
 
-  public createLine(id:number,startingPoint:string,endingPoint:string){
+  public createLine(id:number,startingPoint:string,endingPoint:string,
+                    thickness:number,fillColor:string){
      
     this.http.post( "http://localhost:8085/createLine",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
                                .set('startingPoint', startingPoint)
                                .set('endingPoint',endingPoint)
+                               .set('thickness',thickness.toString())
+                               .set('fillColor',fillColor)
       }
     ).subscribe();
   }
 
-  public createMultiPointShape(id:number,type:string,upperLeftCorner:string,width:number,height:number){
+  public createMultiPointShape(id:number,type:string,upperLeftCorner:string,width:number,height:number,
+                                fillColor:string,outlineColor:string,thickness:number ){
      
     this.http.post( "http://localhost:8085/createShape",null,
       {responseType:'json',
@@ -32,7 +37,10 @@ export class BackendCommunicatorService {
                                .set('type', type)
                                .set('upperLeftCorner',upperLeftCorner)
                                .set('width',width.toString())
-                               .set('height',height.toString()),
+                               .set('height',height.toString())
+                               .set('fillColor',fillColor)
+                               .set('outlineColor',outlineColor)
+                               .set('thickness',thickness.toString())
       }
     ).subscribe();
 
@@ -149,12 +157,16 @@ export class BackendCommunicatorService {
     ).subscribe();
   }
 
-  public performUndo(){
-    return this.http.get( "http://localhost:8085/undo",{responseType:'json'});
+  public performUndo():Observable<Shape[]>{
+    return this.http.get<getResponseShapes>( "http://localhost:8085/undo",{responseType:'json'}).pipe(
+      map(response => response.Shapes.Shape)
+    );
   }
 
-  public performRedo(){
-    return this.http.get( "http://localhost:8085/redo",{responseType:'json'});
+  public performRedo():Observable<Shape[]>{
+    return this.http.get<getResponseShapes>( "http://localhost:8085/redo",{responseType:'json'}).pipe(
+      map(response => response.Shapes.Shape)
+    );
   }
 
   public getShapeData(){
@@ -162,3 +174,10 @@ export class BackendCommunicatorService {
   }
 
 }
+
+interface getResponseShapes {
+  Shapes:{
+    Shape:Shape[];
+  }
+}
+
