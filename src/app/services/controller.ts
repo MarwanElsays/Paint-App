@@ -7,9 +7,9 @@ import {lastValueFrom} from 'rxjs';
 
 
 export class ControllerService {
-  constructor(private canvas: CanvasComponent,private drawServe:DrawService) {}
+  constructor(private canvas: CanvasComponent, private drawServe: DrawService) { }
 
-  copyedshapes:Shape[] = [];
+  copyedshapes: Shape[] = [];
 
    async Undo(ctx: CanvasRenderingContext2D) {
     
@@ -40,7 +40,8 @@ export class ControllerService {
   Erase(ctx: CanvasRenderingContext2D) {
     this.canvas.startcanvas(ctx);
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
-    this.canvas.backService.reset();
+    this.canvas.backService.reset().subscribe();
+    this.canvas.ShapeID = 1;
   }
 
   eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
@@ -70,22 +71,22 @@ export class ControllerService {
     });
 
     s.copy.subscribe(() => {
-      if(this.drawServe.state != 'Selected')return;
+      if (this.drawServe.state != 'Selected') return;
       
-      this.copyedshapes.splice(0,this.copyedshapes.length);
+      this.copyedshapes.splice(0, this.copyedshapes.length);
       this.canvas.selectedShapes.forEach((s) => {
         this.copyedshapes.push(s.clone());
       })
-     
+
     });
 
     s.paste.subscribe(() => {
       let ShapesToBeAdd: Shape[] = [];
-      this.copyedshapes.forEach((s)=>{
+      this.copyedshapes.forEach((s) => {
         ShapesToBeAdd.push(s.clone());
       });
 
-      ShapesToBeAdd.forEach((s)=>{
+      ShapesToBeAdd.forEach((s) => {
         let oldID = s.id;
         s.id = this.canvas.ShapeID++;
         this.canvas.shapes.push(s);
@@ -105,6 +106,7 @@ export class ControllerService {
 
     });
 
+
     s.fillEvent.subscribe(() => {
       if (this.canvas.shapes[this.canvas.shapes.length - 1] instanceof SelectBox)
         this.canvas.shapes.pop();
@@ -116,13 +118,6 @@ export class ControllerService {
         this.canvas.shapes.pop();
       this.canvas.update(ctx);
     })
-  }
-
-  mouseInside(mouseX: number, mouseY: number, shape: Shape) {
-    return (mouseX >= Math.min(shape.upperLeftCorner.x, shape.upperLeftCorner.x + shape.width) &&
-    mouseX <= Math.max(shape.upperLeftCorner.x, shape.upperLeftCorner.x + shape.width) &&
-    mouseY - 80 >= Math.min(shape.upperLeftCorner.y, shape.upperLeftCorner.y + shape.height) &&
-    mouseY - 80 <= Math.max(shape.upperLeftCorner.y, shape.upperLeftCorner.y + shape.height));
   }
 
   objectToShape(newShape:Shape,returnedObj:Shape):Shape{
