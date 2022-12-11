@@ -2,7 +2,7 @@ import { DrawService } from '../services/draw.service';
 import { Shape } from './shape';
 import { Line } from './line';
 export class SelectBox extends Shape {
-
+  override id = 0;
   private selectedShapes: Shape[] = [];
   private oldMouseX: number = 0;
   private oldMouseY: number = 0;

@@ -1,4 +1,3 @@
-import { Square } from './../Shapes/square';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
@@ -140,7 +139,9 @@ export class CanvasComponent implements OnInit {
       }
 
       if (this.currshape.valid == true) {
+        if(!(this.currshape instanceof SelectBox))
         this.currshape.id = this.ShapeID++;
+        
         if (this.currshape.width < 0) {
           this.currshape.upperLeftCorner.x += this.currshape.width;
           this.currshape.width = - this.currshape.width;
