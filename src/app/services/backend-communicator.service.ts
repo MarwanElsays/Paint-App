@@ -58,7 +58,6 @@ export class BackendCommunicatorService {
     ).subscribe();
   }
 
-  /*Lsaaaaa*/
   public changeThickness(id: number, thickness: number) {
 
     return this.http.post("http://localhost:8085/updateThickness", null,
@@ -125,7 +124,6 @@ export class BackendCommunicatorService {
     ).subscribe();
   }
 
-  /*Lsaaaaaaaaaaaaaaaaaaa*///
   public deleteShape(id: number) {
 
     return this.http.post("http://localhost:8085/delete", null,

@@ -16,11 +16,16 @@ export class ControllerService {
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
     let returnedArray = await lastValueFrom (this.canvas.backService.performUndo());
 
-    returnedArray.forEach((s) =>{
-        let shape = this.objectToShape(this.canvas.factory.getShape(s.type),s);
-        this.canvas.shapes.push(shape);
+    console.log("the returned array",returnedArray);
+    returnedArray.forEach((shape) =>{
+        let s = this.objectToShape(this.canvas.factory.getShape(shape.type),shape);
+        this.canvas.shapes.push(s);
+        // this.canvas.backService.createMultiPointShape(s.id,s.type,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),
+        //                                               s.width,s.height,s.fillColor,s.outlineColor,s.thickness);
         this.canvas.update(ctx);
     })
+
+    console.log("the canvas array",this.canvas.shapes);
    
   }
 
@@ -91,6 +96,28 @@ export class ControllerService {
     this.canvas.update(ctx);
   }
 
+  changeShapeThickness(ctx : CanvasRenderingContext2D){
+    if (this.drawServe.state != 'Selected') return;
+
+    this.canvas.selectBox.getSelectedShapes().forEach((shape) =>{
+      shape.thickness = this.drawServe.thickness;
+      this.canvas.backService.changeThickness(shape.id,shape.thickness);
+    })
+
+    this.canvas.update(ctx);
+  }
+
+  changeShapeBorderColor(ctx : CanvasRenderingContext2D){
+    if (this.drawServe.state != 'Selected') return;
+
+    this.canvas.selectBox.getSelectedShapes().forEach((shape) =>{
+      shape.outlineColor = this.drawServe.color;
+      this.canvas.backService.changeOutlineColor(shape.id,shape.outlineColor);
+    })
+
+    this.canvas.update(ctx);
+  }
+
 
   eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
     s.erase.subscribe(() => {
@@ -116,7 +143,14 @@ export class ControllerService {
     s.paste.subscribe(() => {
       this.Paste(ctx)
     });
+    
+    s.ChangeThickness.subscribe(() =>{
+      this.changeShapeThickness(ctx);
+    })
 
+    s.ChangeBorderColor.subscribe(() =>{
+      this.changeShapeBorderColor(ctx);
+    })
 
     s.fillEvent.subscribe(() => {
       if (this.canvas.shapes[this.canvas.shapes.length - 1] instanceof SelectBox)
@@ -143,6 +177,7 @@ export class ControllerService {
     newShape.type = returnedObj.type;
     newShape.valid = returnedObj.valid;
     newShape.width = returnedObj.width;
+    newShape.valid = true;
 
     return newShape;
   }
