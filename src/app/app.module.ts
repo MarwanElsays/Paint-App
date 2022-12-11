@@ -8,7 +8,7 @@ import { DrawService } from './services/draw.service';
 import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BackendCommunicatorService } from './services/backend-communicator.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -23,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     FormsModule
   ],
-  providers: [DrawService,BackendCommunicatorService,ShapeFactoryService],
+  providers: [DrawService,BackendCommunicatorService,ShapeFactoryService, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

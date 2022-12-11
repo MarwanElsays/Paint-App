@@ -6,12 +6,14 @@ export class SelectBox extends Shape {
   private selectedShapes: Shape[] = [];
   private oldMouseX: number = 0;
   private oldMouseY: number = 0;
+  private minWidth = 10;
+  private minHeight = 10;
 
   override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
     ctx.setLineDash([6]);
     ctx.strokeStyle = color;
     ctx.strokeRect(startx, starty, x - startx, y - starty);
-
+    
     this.x = startx;
     this.y = starty;
     this.w = x - startx;
@@ -20,7 +22,6 @@ export class SelectBox extends Shape {
     if (this.w == 0 && this.h == 0)
       this.valid = false;
     else this.valid = true;
-
     ctx.setLineDash([0]);
   }
 
@@ -29,6 +30,7 @@ export class SelectBox extends Shape {
     ctx.strokeStyle = this.col;
     ctx.beginPath();
     ctx.strokeRect(this.x, this.y, this.w, this.h);
+    this.drawCorners(ctx);
     ctx.setLineDash([0]);
   }
 
@@ -49,13 +51,58 @@ export class SelectBox extends Shape {
     this.setOldX(x);
     this.setOldY(y);
   }
-
-
-  override Resize(width: number, height: number) {
+  
+  topLeftResize(x: number, y: number) {
     this.selectedShapes.forEach(shape => {
-      shape.w = width;
-      shape.h = height;
+      let diffX = x - this.oldMouseX;
+      let diffY = y - this.oldMouseY;
+      
+      shape.w -= diffX;
+      shape.h -= diffY;
+      
     });
+    this.setOldX(x);
+    this.setOldY(y);
+  }
+
+  topRightResize(x: number, y: number) {
+    this.selectedShapes.forEach(shape => {
+      let diffX = x - this.oldMouseX;
+      let diffY = y - this.oldMouseY;
+
+      shape.w += diffX;
+      shape.h -= diffY;
+
+    });
+    this.setOldX(x);
+    this.setOldY(y);
+  }
+
+  
+  bottomLeftResize(x: number, y: number) {
+    this.selectedShapes.forEach(shape => {
+      let diffX = x - this.oldMouseX;
+      let diffY = y - this.oldMouseY;
+
+      shape.w -= diffX;
+      shape.h += diffY;
+
+    });
+    this.setOldX(x);
+    this.setOldY(y);
+  }
+
+  bottomRightResize(x: number, y: number) {
+    this.selectedShapes.forEach(shape => {
+      let diffX = x - this.oldMouseX;
+      let diffY = y - this.oldMouseY;
+
+      shape.w += diffX;
+      shape.h += diffY;
+
+    });
+    this.setOldX(x);
+    this.setOldY(y);
   }
 
   selectShapes(shapes: Shape[], s: DrawService) {
@@ -82,5 +129,47 @@ export class SelectBox extends Shape {
   setSelectedShapes(shapeArray : Shape[]) {
     this.selectedShapes = shapeArray;
   }
-}
 
+  drawCorners(ctx: CanvasRenderingContext2D) {
+    ctx.fillStyle = this.col;
+    ctx.beginPath();
+    ctx.fillRect(this.x + this.w - 3, this.y - 3, 6, 6);
+    ctx.beginPath();
+    ctx.fillRect(this.x - 3, this.y + this.h - 3, 6, 6);
+    ctx.beginPath();
+    ctx.fillRect(this.x + this.w - 3, this.y + this.h - 3, 6, 6);
+    ctx.beginPath();
+    ctx.fillRect(this.x - 3, this.y - 3, 6, 6);
+  }
+
+  override isMouseInside(mouseX: number, mouseY: number) {
+    if (this.w > 0 && this.h > 0) {
+      return mouseX > this.x + 3 && mouseX < this.x + this.w - 3 &&
+      mouseY > this.y + 3 && mouseY < this.y + this.h - 3;
+    } 
+    else if (this.w > 0 && this.h < 0) {
+      return mouseX > this.x + 3 && mouseX < this.x + this.w - 3 &&
+      mouseY < this.y - 3 && mouseY > this.y + this.h + 3;
+    } 
+    else if (this.w < 0 && this.h > 0) {
+      return mouseX < this.x - 3 && mouseX > this.x + this.w + 3 &&
+      mouseY > this.y + 3 && mouseY < this.y + this.h - 3;
+    } 
+    else if (this.w < 0 && this.h < 0) {      
+      return mouseX < this.x - 3 && mouseX > this.x + this.w + 3 &&
+      mouseY < this.y - 3 && mouseY > this.y + this.h + 3;
+    }
+    return false;
+  }
+
+  isMouseOnVertex(mouseX: number, mouseY: number, x: number, y: number) {
+    return mouseX >= x - 3 && mouseX <= x + 3 && mouseY >= y - 3 && mouseY <= y + 3;
+  }
+
+  isResizing(mouseX: number, mouseY: number) {
+    return this.isMouseOnVertex(mouseX, mouseY, this.x, this.y) ||
+    this.isMouseOnVertex(mouseX, mouseY, this.x + this.w, this.y) ||
+    this.isMouseOnVertex(mouseX, mouseY, this.x, this.y + this.h) ||
+    this.isMouseOnVertex(mouseX, mouseY, this.x + this.w, this.y + this.h);
+  }
+}
