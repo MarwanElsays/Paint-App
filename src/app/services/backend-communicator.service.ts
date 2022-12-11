@@ -94,7 +94,7 @@ export class BackendCommunicatorService {
           .set('width', width.toString())
           .set('height', height.toString()),
       }
-    ).subscribe;
+    ).subscribe();
   }
 
 
