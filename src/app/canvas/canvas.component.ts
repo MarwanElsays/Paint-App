@@ -27,7 +27,6 @@ export class CanvasComponent implements OnInit {
   currshape: Shape = new Shape();
   selectBox: SelectBox = new SelectBox();
   controller: ControllerService = new ControllerService(this, this.s);
-  selectedShapes: Shape[] = [];
   ShapeID: number = 1;
 
   ngOnInit(): void {
@@ -78,12 +77,13 @@ export class CanvasComponent implements OnInit {
       }
       else { //selected and clicked outside
         this.reset();
+        this.selectBox.reset();
       }
     });
 
     mycanvas.addEventListener('mousemove', (e) => {
       this.update(ctx);
-      if (!this.moveSelected && !this.resizing && !(this.s.state == 'Fill')) {
+      if (!this.moveSelected && !this.resizing && this.s.state != 'Fill') {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
         switch (this.s.state) {
@@ -115,7 +115,7 @@ export class CanvasComponent implements OnInit {
 
       if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
-        this.selectedShapes = this.selectBox.selectShapes(this.shapes, this.s);
+        console.log(this.selectBox.selectShapes(this.shapes, this.s));
         if (this.selectBox.width < 0) {
           this.selectBox.upperLeftCorner.x += this.selectBox.width;
           this.selectBox.width = - this.selectBox.width;

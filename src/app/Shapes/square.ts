@@ -23,7 +23,7 @@ export class Square extends Shape {
     ctx.strokeRect(this.upperLeftCorner.x, this.upperLeftCorner.y, this.width, this.height);
     if (this.fillColor != '') {
       ctx.fillStyle = this.fillColor;
-      ctx.fillRect(this.upperLeftCorner.x, this.upperLeftCorner.y, this.width, this.height);
+      ctx.fillRect(this.upperLeftCorner.x + this.thickness / 2, this.upperLeftCorner.y + this.thickness / 2, this.width - this.thickness, this.height - this.thickness);
     }
   }
 
@@ -40,7 +40,7 @@ export class Square extends Shape {
 
   override Fill(fillColor: string, ctx: CanvasRenderingContext2D) {
     ctx.fillStyle = fillColor;
-    ctx.fillRect(this.upperLeftCorner.x, this.upperLeftCorner.y, this.width, this.height);
+    ctx.fillRect(this.upperLeftCorner.x + this.thickness / 2, this.upperLeftCorner.y + this.thickness / 2, this.width - this.thickness, this.height - this.thickness);
     this.fillColor = fillColor;
   }
 
@@ -57,11 +57,6 @@ export class Square extends Shape {
     sq.thickness = this.thickness;
 
     return sq;
-  }
-
-
-  print() {
-    console.log("anaaaaaaaaaaaaaaaaaaa square")
   }
 }
 

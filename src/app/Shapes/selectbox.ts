@@ -145,11 +145,12 @@ export class SelectBox extends Shape {
   }
 
   setSelectedShapes(shapeArray: Shape[]) {
+    this.reset();
     this.selectedShapes = shapeArray;
   }
 
   drawCorners(ctx: CanvasRenderingContext2D) {
-    ctx.fillStyle = this.fillColor;
+    ctx.fillStyle = this.outlineColor;
     ctx.beginPath();
     ctx.fillRect(this.upperLeftCorner.x + this.width - 3, this.upperLeftCorner.y - 3, 6, 6);
     ctx.beginPath();
@@ -193,5 +194,13 @@ export class SelectBox extends Shape {
 
   getSelectedShapes() {
     return this.selectedShapes;
+  }
+
+  reset() {
+    this.upperLeftCorner.x = 0;
+    this.upperLeftCorner.y = 0;
+    this.width = 0;
+    this.height = 0;
+    this.selectedShapes = [];
   }
 }

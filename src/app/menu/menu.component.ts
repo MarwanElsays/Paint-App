@@ -6,7 +6,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
 
-
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -88,9 +87,14 @@ export class MenuComponent {
   }
 
   save() {
-    this.backendService.saveXML().subscribe();
+    this.backendService.saveXML().subscribe((xml) => {
+      console.log(xml);
+    });
+  }
+
+  load(xml: string) {
+    this.backendService.xmlToJSON(xml).subscribe((json) => {
+      console.log(json.valueOf());
+    })
   }
 }
-
-
-
