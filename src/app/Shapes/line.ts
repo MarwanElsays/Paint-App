@@ -3,8 +3,9 @@ import { Shape } from "./shape";
 export class Line extends Shape {
   endx: number = 0;
   endy: number = 0;
-  override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
+  override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number, x: number, y: number, startx: number, starty: number) {
     ctx.strokeStyle = color;
+    ctx.lineWidth = linewidth;
     ctx.moveTo(startx, starty);
     ctx.lineTo(x, y);
     ctx.stroke();
@@ -14,6 +15,7 @@ export class Line extends Shape {
     this.endx = x;
     this.endy = y;
     this.col = color;
+    this.thickness = linewidth;
     if (this.endx == this.x && this.endy == this.y)
       this.valid = false;
     else this.valid = true;
@@ -21,6 +23,7 @@ export class Line extends Shape {
 
   override Update(ctx: CanvasRenderingContext2D) {
     ctx.strokeStyle = this.col;
+    ctx.lineWidth = this.thickness;
     ctx.beginPath();
     ctx.moveTo(this.x, this.y);
     ctx.lineTo(this.endx, this.endy);
@@ -49,6 +52,7 @@ export class Line extends Shape {
     line.endx = this.endx - 20;
     line.endy = this.endy - 20;
     line.id = this.id;
+    line.thickness = this.thickness;
 
     return line;
   }

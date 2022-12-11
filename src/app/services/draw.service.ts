@@ -9,13 +9,14 @@ export class DrawService {
 
   shape: string = "";
   color: string = "#000000FF";
+  thickness:number = 1;
   state: string = 'drawShape';         
 
   erase = new EventEmitter<void>();
   undo = new EventEmitter<void>();
   redo = new EventEmitter<void>();
   copy = new EventEmitter<void>();
-  cut = new EventEmitter<void>();
+  Delete = new EventEmitter<void>();
   paste = new EventEmitter<void>();
   fillEvent = new EventEmitter<void>();
   unSelectEvent = new EventEmitter<void>();
@@ -32,8 +33,8 @@ export class DrawService {
     this.copy.emit();
   }
 
-  emitCut() {
-    this.cut.emit();
+  emitDelete() {
+    this.Delete.emit();
   }
 
   emitPaste() {

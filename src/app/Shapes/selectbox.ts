@@ -7,9 +7,10 @@ export class SelectBox extends Shape {
   private oldMouseX: number = 0;
   private oldMouseY: number = 0;
 
-  override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
+  override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number,x: number, y: number, startx: number, starty: number) {
     ctx.setLineDash([6]);
     ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
     ctx.strokeRect(startx, starty, x - startx, y - starty);
 
     this.x = startx;
@@ -17,6 +18,7 @@ export class SelectBox extends Shape {
     this.w = x - startx;
     this.h = y - starty;
     this.col = color;
+    this.thickness = 1;
     if (this.w == 0 && this.h == 0)
       this.valid = false;
     else this.valid = true;
@@ -27,6 +29,7 @@ export class SelectBox extends Shape {
   override Update(ctx: CanvasRenderingContext2D) {
     ctx.setLineDash([6]);
     ctx.strokeStyle = this.col;
+    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.strokeRect(this.x, this.y, this.w, this.h);
     ctx.setLineDash([0]);

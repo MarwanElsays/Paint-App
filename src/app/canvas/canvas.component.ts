@@ -7,6 +7,7 @@ import { ShapeFactoryService } from '../services/shape-factory.service';
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
 import { Line } from '../Shapes/line';
 
+
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
@@ -136,7 +137,7 @@ export class CanvasComponent implements OnInit {
   Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
     if (!this.startDraw) return;
     ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color, x, y, this.mouseX, this.mouseY);
+    this.currshape.Draw(ctx, this.s.color,this.s.thickness, x, y, this.mouseX, this.mouseY);
   }
 
   Fill(ctx: CanvasRenderingContext2D) {

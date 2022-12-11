@@ -1,8 +1,9 @@
 import { Shape } from "./shape";
 
 export class Circle extends Shape {
-  override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
+  override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number, x: number, y: number, startx: number, starty: number) {
     ctx.strokeStyle = color;
+    ctx.lineWidth = linewidth;
     ctx.ellipse(startx, starty, Math.abs(x - startx), Math.abs(y - starty), 0, 0, 360);
     ctx.stroke();
 
@@ -11,6 +12,7 @@ export class Circle extends Shape {
     this.w = Math.abs(x - startx) * 2;
     this.h = Math.abs(y - starty) * 2;
     this.col = color;
+    this.thickness = linewidth;
     if (this.w == 0)
       this.valid = false;
     else this.valid = true;
@@ -18,6 +20,7 @@ export class Circle extends Shape {
 
   override Update(ctx: CanvasRenderingContext2D) {
     ctx.strokeStyle = this.col;
+    ctx.lineWidth = this.thickness;
     ctx.beginPath();
     ctx.ellipse(this.x + this.w / 2, this.y + this.h / 2, this.w / 2, this.h / 2, 0, 0, 360);
     ctx.stroke();
@@ -54,6 +57,7 @@ export class Circle extends Shape {
     circ.col = this.col;
     circ.valid = this.valid;
     circ.id = this.id;
+    circ.thickness = this.thickness;
     
     return circ;
   }

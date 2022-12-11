@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class BackendCommunicatorService {
                                .set('startingPoint', startingPoint)
                                .set('endingPoint',endingPoint)
       }
-    );
+    ).subscribe();
   }
 
   public createMultiPointShape(id:number,type:string,upperLeftCorner:string,width:number,height:number){
@@ -33,7 +34,7 @@ export class BackendCommunicatorService {
                                .set('width',width.toString())
                                .set('height',height.toString()),
       }
-    );
+    ).subscribe();
 
   }
 
@@ -45,7 +46,7 @@ export class BackendCommunicatorService {
                                .set('fillColor', fillColor)
                        
       }
-    );
+    ).subscribe();
   }
 
   /*Lsaaaaa*/
@@ -57,7 +58,7 @@ export class BackendCommunicatorService {
                                .set('thickness', thickness)
                        
       }
-    );
+    ).subscribe();
   }
 
   public changeLinePos(id:number,startingPoint:string,endingPoint:string){
@@ -68,7 +69,7 @@ export class BackendCommunicatorService {
                                .set('startingPoint', startingPoint)
                                .set('endingPoint',endingPoint)
       }
-    );
+    ).subscribe();
   }
 
 
@@ -81,7 +82,7 @@ export class BackendCommunicatorService {
                                .set('width',width.toString())
                                .set('height',height.toString()),
       }
-    );
+    ).subscribe;
   }
 
 
@@ -94,7 +95,7 @@ export class BackendCommunicatorService {
                                .set('outlineColor', outlineColor)
                        
       }
-    );
+    ).subscribe();
   }
 
 
@@ -107,7 +108,7 @@ export class BackendCommunicatorService {
                                .set('opacity', opacity.toString())
                        
       }
-    );
+    ).subscribe();
   }
 
   /*Lsaaaaaaaaaaaaaaaaaaa*///
@@ -117,7 +118,7 @@ export class BackendCommunicatorService {
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())        
       }
-    );
+    ).subscribe();
   }
 
 
@@ -131,7 +132,7 @@ export class BackendCommunicatorService {
                                .set('newUpperLeftCorner',newUpperLeftCorner)
                                .set('addUndo',addUndo.toString()),
       }
-    );
+    ).subscribe();
   }
 
   public createLineCopy(newID:number,copiedID:number,newStartingPoint:string,
@@ -145,7 +146,7 @@ export class BackendCommunicatorService {
                 .set('copiedID', copiedID.toString())
                 .set('addUndo',addUndo.toString()),
       }
-    );
+    ).subscribe();
   }
 
   public performUndo(){

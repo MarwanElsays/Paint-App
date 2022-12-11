@@ -11,9 +11,11 @@ export class ControllerService {
 
   Undo(ctx: CanvasRenderingContext2D) {
     //this.canvas.shapes 
+    
     this.canvas.backService.performUndo().subscribe((a) =>{
-      console.log(a);
+      console.log(a)
     });
+  
     this.canvas.update(ctx);
   }
 
@@ -40,6 +42,17 @@ export class ControllerService {
 
     s.redo.subscribe(() => {
       this.Redo(ctx);
+    });
+
+    s.Delete.subscribe(() => {
+      if(this.drawServe.state != 'Selected')return;
+
+      this.canvas.selectedShapes.forEach((s) => {
+        this.canvas.shapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == s.id}), 1);       
+      })
+
+      this.canvas.shapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == this.canvas.selectBox.id}), 1);
+      this.canvas.update(ctx);
     });
 
     s.copy.subscribe(() => {

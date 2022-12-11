@@ -1,8 +1,9 @@
 import { Shape } from './shape';
 
 export class Triangle extends Shape{
-  override Draw(ctx: CanvasRenderingContext2D, color: string, x: number, y: number, startx: number, starty: number) {
+  override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number, x: number, y: number, startx: number, starty: number) {
     ctx.strokeStyle = color;
+    ctx.lineWidth = linewidth;
     ctx.moveTo(startx, starty);
     ctx.lineTo(x, y);
     ctx.lineTo(startx - (x - startx), y);
@@ -14,11 +15,13 @@ export class Triangle extends Shape{
     this.x = startx - this.w / 2;
     this.y = starty;
     this.col = color;
+    this.thickness = linewidth;
     this.valid = true;
   }
 
   override Update(ctx: CanvasRenderingContext2D) {
     ctx.strokeStyle = this.col;
+    ctx.lineWidth = this.thickness;
     ctx.beginPath();
     ctx.moveTo(this.x + this.w / 2, this.y);
     ctx.lineTo(this.x + this.w, this.y + this.h);
@@ -58,6 +61,7 @@ export class Triangle extends Shape{
     triangle.col = this.col;
     triangle.valid = this.valid;
     triangle.id = this.id;
+    triangle.thickness = this.thickness;
     
     return triangle;
   }
