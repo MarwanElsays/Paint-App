@@ -12,6 +12,7 @@ export class DrawService {
   thickness:number = 1;
   state: string = 'drawShape';         
 
+  ChangeBorderColor = new EventEmitter<void>();
   ChangeThickness = new EventEmitter<void>();
   erase = new EventEmitter<void>();
   undo = new EventEmitter<void>();
@@ -21,6 +22,10 @@ export class DrawService {
   paste = new EventEmitter<void>();
   fillEvent = new EventEmitter<void>();
   unSelectEvent = new EventEmitter<void>();
+
+  emitFillBorderEvent(){
+    this.ChangeBorderColor.emit()
+  }
 
   emitChangeThickness(){
     this.ChangeThickness.emit()

@@ -10,6 +10,7 @@
     </div>
 
     <div id="Coloring">
+        <li  (click)="Fillborder()" >  <fa-icon [icon]="faFillDrip"></fa-icon> </li>
         <li  (click)="Fill()" [ngClass]="{'active':this.s.state == 'Fill'}" >  <fa-icon [icon]="faFill"></fa-icon> </li>
         <div id="col"> <label>pick a color</label><input type="color" [(ngModel)]="this.s.color"></div>
         <div> <label>Thickness</label><input type="range" [(ngModel)]="this.s.thickness" min ="1" (change) ="ChangeThickness()"></div>
