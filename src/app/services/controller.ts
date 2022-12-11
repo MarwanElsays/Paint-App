@@ -77,6 +77,7 @@ export class ControllerService {
 
     });
 
+
     s.fillEvent.subscribe(() => {
       if (this.canvas.shapes[this.canvas.shapes.length - 1] instanceof SelectBox)
         this.canvas.shapes.pop();

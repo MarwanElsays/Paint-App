@@ -4,6 +4,7 @@ import {
   faEraser, faSave, faFileUpload, faUndo, faRedo, faMousePointer,
   faSquare, faCircle, faCopy, faPaste, faCut, faFill
 } from '@fortawesome/free-solid-svg-icons';
+import { BackendCommunicatorService } from '../services/backend-communicator.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ import {
 })
 export class MenuComponent {
 
-  constructor(public s: DrawService) { }
+  constructor(public s: DrawService, private backendService: BackendCommunicatorService) { }
 
   faEraser = faEraser;
   faSave = faSave;
@@ -84,6 +85,10 @@ export class MenuComponent {
       this.s.state = 'drawShape';
       this.s.emitUnSelectEvent();
     }
+  }
+
+  save() {
+    this.backendService.saveXML().subscribe();
   }
 }
 

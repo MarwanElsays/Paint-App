@@ -124,25 +124,17 @@ export class CanvasComponent implements OnInit {
           this.selectBox.h = - this.selectBox.h;
         }
       }
-      else if (this.s.state == 'Move') {
-        let upperleftcornner = this.currshape.x.toString() + "," + this.currshape.y.toString();
-        if (this.currshape instanceof Line) {
-          let endingpoint = this.currshape.endx.toString() + "," + this.currshape.endy.toString();
-          this.backService.changeLinePos(this.currshape.id, upperleftcornner, endingpoint).subscribe();
-        }
-        else {
-          this.backService.changeShapePosAndSize(this.currshape.id, upperleftcornner, this.currshape.w, this.currshape.h).subscribe();
-        }
-      }
-      else if (this.s.state == 'Resize') {
-        let upperleftcornner = this.currshape.x.toString() + "," + this.currshape.y.toString();
-        if (this.currshape instanceof Line) {
-          let endingpoint = this.currshape.endx.toString() + "," + this.currshape.endy.toString();
-          this.backService.changeLinePos(this.currshape.id, upperleftcornner, endingpoint).subscribe();
-        }
-        else {
-          this.backService.changeShapePosAndSize(this.currshape.id, upperleftcornner, this.currshape.w, this.currshape.h).subscribe();
-        }
+      else if (this.s.state == 'Move' || this.s.state == 'Resize') {
+        this.selectBox.getSelectedShapes().forEach(selectedShape => {
+          let upperleftcornner = selectedShape.x.toString() + "," + selectedShape.y.toString();
+          if (selectedShape instanceof Line) {
+            let endingpoint = selectedShape.endx.toString() + "," + selectedShape.endy.toString();
+            this.backService.changeLinePos(selectedShape.id, upperleftcornner, endingpoint).subscribe();
+          }
+          else {
+            this.backService.changeShapePosAndSize(selectedShape.id, upperleftcornner, selectedShape.w, selectedShape.h).subscribe();
+          }
+        });
       }
 
       if (this.currshape.valid == true) {
@@ -163,7 +155,7 @@ export class CanvasComponent implements OnInit {
           this.backService.createLine(this.currshape.id, upperleftcornner, endingpoint).subscribe();
         }
         else {
-          this.backService.createMultiPointShape(this.currshape.id, this.s.shape, upperleftcornner, this.currshape.w, this.currshape.h).subscribe();
+          this.backService.createMultiPointShape(this.currshape.id, this.s.shape, upperleftcornner, this.currshape.w, this.currshape.h, "rgba(20,20,20,200)", "rgba(20,20,20,200)", 1).subscribe();
         }
       }
     });

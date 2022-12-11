@@ -101,8 +101,6 @@ export class SelectBox extends Shape {
       shape.h += diffY;
       shape.h = (shape.h < 10) ? 10 : shape.h;
 
-      console.log(shape.w, shape.h);
-
     });
     this.setOldX(x);
     this.setOldY(y);
@@ -190,5 +188,9 @@ export class SelectBox extends Shape {
     this.isMouseOnVertex(mouseX, mouseY, this.x + this.w, this.y) ||
     this.isMouseOnVertex(mouseX, mouseY, this.x, this.y + this.h) ||
     this.isMouseOnVertex(mouseX, mouseY, this.x + this.w, this.y + this.h);
+  }
+
+  getSelectedShapes() {
+    return this.selectedShapes;
   }
 }

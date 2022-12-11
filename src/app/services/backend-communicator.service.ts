@@ -24,7 +24,8 @@ export class BackendCommunicatorService {
     );
   }
 
-  public createMultiPointShape(id: number, type: string, upperLeftCorner: string, width: number, height: number) {
+  public createMultiPointShape(id: number, type: string, upperLeftCorner: string, width: number, height: number,
+                              fillColor: string, outlineColor: string, thickness: number) {
     return this.http.post("http://localhost:8085/createShape", null,
       {
         responseType: 'json',
@@ -33,6 +34,9 @@ export class BackendCommunicatorService {
           .set('upperLeftCorner', upperLeftCorner)
           .set('width', width.toString())
           .set('height', height.toString())
+          .set('fillColor', fillColor)
+          .set('outlineColor', outlineColor)
+          .set('thickness', thickness.toString())
       }
     );
   }
@@ -167,5 +171,13 @@ export class BackendCommunicatorService {
 
   public getShapeData() {
     return this.http.get("http://localhost:8085/getShapeData", { responseType: 'json' });
+  }
+
+  public saveXML() {
+    return this.http.post("http://localhost:8085/saveXml", { responseType: 'json' });
+  }
+
+  public xmlToJSON(xml: string) {
+    return this.http.post("http://localhost:8085/xmlToJson", { responseType: 'json' });
   }
 }
