@@ -11,7 +11,7 @@ export class ControllerService {
 
   copyedshapes: Shape[] = [];
 
-   async Undo(ctx: CanvasRenderingContext2D) {
+  async Undo(ctx: CanvasRenderingContext2D) {
     
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
     let returnedArray = await lastValueFrom (this.canvas.backService.performUndo());
@@ -44,6 +44,55 @@ export class ControllerService {
     this.canvas.ShapeID = 1;
   }
 
+  Delete(ctx: CanvasRenderingContext2D){
+    if(this.drawServe.state != 'Selected')return;
+
+    this.canvas.selectedShapes.forEach((s) => {
+      this.canvas.backService.deleteShape(s.id); 
+      this.canvas.shapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == s.id}), 1); 
+      // this.canvas.selectedShapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == s.id}), 1);     
+    })
+
+    this.canvas.shapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == 0}), 1);
+    this.canvas.update(ctx)
+  }
+
+  Copy(){
+    if (this.drawServe.state != 'Selected') return;
+      
+    this.copyedshapes.splice(0, this.copyedshapes.length);
+    this.canvas.selectedShapes.forEach((s) => {
+        this.copyedshapes.push(s.clone());
+
+    })
+  }
+
+  Paste(ctx : CanvasRenderingContext2D){
+    let ShapesToBeAdd: Shape[] = [];
+    this.copyedshapes.forEach((s) => {
+      ShapesToBeAdd.push(s.clone());
+    });
+
+    ShapesToBeAdd.forEach((s) => {
+      let oldID = s.id;
+      s.id = this.canvas.ShapeID++;
+      this.canvas.shapes.push(s);
+      if(s instanceof Line){
+        this.canvas.backService.createLineCopy(s.id,oldID,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),s.endx.toString()+","+s.endy.toString(),true);
+      }
+      else
+      {
+        this.canvas.backService.createShapeCopy(s.id,oldID,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),true);
+      }
+    });
+
+    this.canvas.selectBox.upperLeftCorner.x-=20;
+    this.canvas.selectBox.upperLeftCorner.y-=20;
+    this.canvas.selectBox.setSelectedShapes(ShapesToBeAdd);
+    this.canvas.update(ctx);
+  }
+
+
   eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
     s.erase.subscribe(() => {
       this.Erase(ctx);
@@ -58,52 +107,15 @@ export class ControllerService {
     });
 
     s.Delete.subscribe(() => {
-      if(this.drawServe.state != 'Selected')return;
-
-      this.canvas.selectedShapes.forEach((s) => {
-        this.canvas.shapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == s.id}), 1); 
-        this.canvas.backService.deleteShape(s.id);      
-      })
-
-      this.canvas.backService.deleteShape(this.canvas.selectBox.id);
-      this.canvas.shapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == this.canvas.selectBox.id}), 1);
-      this.canvas.update(ctx);
+      this.Delete(ctx);
     });
 
     s.copy.subscribe(() => {
-      if (this.drawServe.state != 'Selected') return;
-      
-      this.copyedshapes.splice(0, this.copyedshapes.length);
-      this.canvas.selectedShapes.forEach((s) => {
-        this.copyedshapes.push(s.clone());
-      })
-
+      this.Copy()
     });
 
     s.paste.subscribe(() => {
-      let ShapesToBeAdd: Shape[] = [];
-      this.copyedshapes.forEach((s) => {
-        ShapesToBeAdd.push(s.clone());
-      });
-
-      ShapesToBeAdd.forEach((s) => {
-        let oldID = s.id;
-        s.id = this.canvas.ShapeID++;
-        this.canvas.shapes.push(s);
-        if(s instanceof Line){
-          this.canvas.backService.createLineCopy(s.id,oldID,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),s.endx.toString()+","+s.endy.toString(),true);
-        }
-        else
-        {
-          this.canvas.backService.createShapeCopy(s.id,oldID,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),true);
-        }
-      });
-
-      this.canvas.selectBox.upperLeftCorner.x-=20;
-      this.canvas.selectBox.upperLeftCorner.y-=20;
-      this.canvas.selectBox.setSelectedShapes(ShapesToBeAdd);
-      this.canvas.update(ctx);
-
+      this.Paste(ctx)
     });
 
 
