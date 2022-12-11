@@ -1,4 +1,3 @@
-import { Square } from './../Shapes/square';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import { Shape } from '../Shapes/shape';
@@ -116,7 +115,7 @@ export class CanvasComponent implements OnInit {
 
       if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
-        this.selectedShapes = this.selectBox.selectShapes(this.shapes, this.s);
+        this.selectBox.selectShapes(this.shapes, this.s);
         if (this.selectBox.width < 0) {
           this.selectBox.upperLeftCorner.x += this.selectBox.width;
           this.selectBox.width = - this.selectBox.width;
@@ -171,6 +170,7 @@ export class CanvasComponent implements OnInit {
     ctx.setLineDash([0]);
     if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
       this.shapes.splice(this.shapes.findIndex((x) => { return x.id == this.selectBox.id }), 1);
+      this.selectBox.reset();
     }
     this.shapes.forEach((s:Shape) => {
       s.Update(ctx);

@@ -183,11 +183,11 @@ export class BackendCommunicatorService {
   }
 
   public saveXML() {
-    return this.http.post("http://localhost:8085/saveXml", { responseType: 'json' });
+    return this.http.get("http://localhost:8085/saveXml", { responseType: 'text' });
   }
 
   public xmlToJSON(xml: string) {
-    return this.http.post("http://localhost:8085/xmlToJson", { responseType: 'json' });
+    return this.http.get("http://localhost:8085/xmlToJson", { responseType: 'json', params: new HttpParams().set('xmlString', xml)});
   }
 }
 
