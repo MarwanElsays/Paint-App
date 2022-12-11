@@ -182,7 +182,7 @@ export class CanvasComponent implements OnInit {
 
   Fill(ctx: CanvasRenderingContext2D) {
     this.shapes.forEach((s) => {
-      if (s.isMouseInside(this.mouseX, this.mouseY - 80)) {
+      if (s.isMouseInside(this.mouseX, this.mouseY)) {
         ctx.fillStyle = this.s.color;
         this.backService.changeFillColor(s.id, this.s.color).subscribe();
         s.Fill(this.s.color, ctx);
