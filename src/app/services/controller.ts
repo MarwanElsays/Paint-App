@@ -11,7 +11,7 @@ export class ControllerService {
 
   Undo(ctx: CanvasRenderingContext2D) {
     this.canvas.backService.performUndo().subscribe((a) => {
-      console.log(JSON.stringify(a));
+      console.log(a.valueOf());
     });
     this.canvas.update(ctx);
   }
@@ -26,6 +26,7 @@ export class ControllerService {
     this.canvas.startcanvas(ctx);
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
     this.canvas.backService.reset().subscribe();
+    this.canvas.ShapeID = 1;
   }
 
   eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
@@ -43,7 +44,7 @@ export class ControllerService {
 
     s.copy.subscribe(() => {
       if (this.drawServe.state != 'Selected') return;
-
+      
       this.copyedshapes.splice(0, this.copyedshapes.length);
       this.canvas.selectedShapes.forEach((s) => {
         this.copyedshapes.push(s.clone());

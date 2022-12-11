@@ -168,5 +168,4 @@ export class BackendCommunicatorService {
   public getShapeData() {
     return this.http.get("http://localhost:8085/getShapeData", { responseType: 'json' });
   }
-
 }

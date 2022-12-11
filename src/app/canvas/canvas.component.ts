@@ -52,7 +52,6 @@ export class CanvasComponent implements OnInit {
       this.mouseY = e.clientY - 80;
       this.startDraw = true;
       if (this.s.state == 'Fill') { //filling shapes
-        console.log('here');
         this.s.shape = '';
         this.currshape = new Shape();
         this.Fill(ctx);
@@ -188,13 +187,14 @@ export class CanvasComponent implements OnInit {
   }
 
   Fill(ctx: CanvasRenderingContext2D) {
-    this.shapes.forEach((s) => {
-      if (s.isMouseInside(this.mouseX, this.mouseY)) {
+    for (let i = this.shapes.length - 1; i >= 0; i--) {
+      if (this.shapes[i].isMouseInside(this.mouseX, this.mouseY)) {
         ctx.fillStyle = this.s.color;
-        this.backService.changeFillColor(s.id, this.s.color).subscribe();
-        s.Fill(this.s.color, ctx);
+        this.backService.changeFillColor(this.shapes[i].id, this.s.color).subscribe();
+        this.shapes[i].Fill(this.s.color, ctx);
+        break;
       }
-    })
+    }
   }
 
   reset() {
