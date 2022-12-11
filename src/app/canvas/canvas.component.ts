@@ -27,7 +27,6 @@ export class CanvasComponent implements OnInit {
   currshape: Shape = new Shape();
   selectBox: SelectBox = new SelectBox();
   controller: ControllerService = new ControllerService(this, this.s);
-  selectedShapes: Shape[] = [];
   ShapeID: number = 1;
 
   ngOnInit(): void {

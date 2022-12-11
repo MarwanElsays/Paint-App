@@ -47,7 +47,7 @@ export class ControllerService {
   Delete(ctx: CanvasRenderingContext2D){
     if(this.drawServe.state != 'Selected')return;
 
-    this.canvas.selectedShapes.forEach((s) => {
+    this.canvas.selectBox.getSelectedShapes().forEach((s) => {
       this.canvas.backService.deleteShape(s.id); 
       this.canvas.shapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == s.id}), 1); 
       // this.canvas.selectedShapes.splice(this.canvas.shapes.findIndex((x) => {return x.id == s.id}), 1);     
@@ -61,7 +61,7 @@ export class ControllerService {
     if (this.drawServe.state != 'Selected') return;
       
     this.copyedshapes.splice(0, this.copyedshapes.length);
-    this.canvas.selectedShapes.forEach((s) => {
+    this.canvas.selectBox.getSelectedShapes().forEach((s) => {
         this.copyedshapes.push(s.clone());
 
     })
