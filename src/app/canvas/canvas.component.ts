@@ -77,12 +77,13 @@ export class CanvasComponent implements OnInit {
       }
       else { //selected and clicked outside
         this.reset();
+        this.selectBox.reset();
       }
     });
 
     mycanvas.addEventListener('mousemove', (e) => {
       this.update(ctx);
-      if (!this.moveSelected && !this.resizing && !(this.s.state == 'Fill')) {
+      if (!this.moveSelected && !this.resizing && this.s.state != 'Fill') {
         this.Draw(ctx, e.clientX, e.clientY - 80);
       } else {
         switch (this.s.state) {
@@ -114,7 +115,7 @@ export class CanvasComponent implements OnInit {
 
       if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
-        this.selectBox.selectShapes(this.shapes, this.s);
+        console.log(this.selectBox.selectShapes(this.shapes, this.s));
         if (this.selectBox.width < 0) {
           this.selectBox.upperLeftCorner.x += this.selectBox.width;
           this.selectBox.width = - this.selectBox.width;
@@ -171,7 +172,6 @@ export class CanvasComponent implements OnInit {
     ctx.setLineDash([0]);
     if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
       this.shapes.splice(this.shapes.findIndex((x) => { return x.id == this.selectBox.id }), 1);
-      this.selectBox.reset();
     }
     this.shapes.forEach((s:Shape) => {
       s.Update(ctx);

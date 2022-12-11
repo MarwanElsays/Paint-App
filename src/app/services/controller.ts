@@ -34,7 +34,6 @@ export class ControllerService {
         this.canvas.shapes.push(shape);
         this.canvas.update(ctx);
     })
-   
   }
 
   Erase(ctx: CanvasRenderingContext2D) {

@@ -133,6 +133,7 @@ export class SelectBox extends Shape {
       );
     });
     s.state = 'Selected';
+    return this.selectedShapes;
   }
 
   setOldX(x: number) {
