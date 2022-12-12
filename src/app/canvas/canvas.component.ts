@@ -115,7 +115,7 @@ export class CanvasComponent implements OnInit {
 
       if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
-        console.log(this.selectBox.selectShapes(this.shapes, this.s));
+        //console.log(this.selectBox.selectShapes(this.shapes, this.s));
         if (this.selectBox.width < 0) {
           this.selectBox.upperLeftCorner.x += this.selectBox.width;
           this.selectBox.width = - this.selectBox.width;

@@ -97,7 +97,6 @@ export class BackendCommunicatorService {
   }
 
 
-  /* Lsaaaaaaa*/
   public changeOutlineColor(id: number, outlineColor: string) {
 
     return this.http.post("http://localhost:8085/updateOutlineColor", null,
@@ -176,12 +175,17 @@ export class BackendCommunicatorService {
     );
   }
 
+  /*lsaaaaa*/
   public getShapeData() {
     return this.http.get("http://localhost:8085/getShapeData", { responseType: 'json' });
   }
 
   public saveXML() {
     return this.http.get("http://localhost:8085/saveXml", { responseType: 'text' });
+  }
+
+  public getAllShapesJsonInfo() {
+    return this.http.get("http://localhost:8085/saveJson", { responseType: 'json' });
   }
 
   public xmlToJSON(xml: string) {
