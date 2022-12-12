@@ -97,7 +97,7 @@ export class MenuComponent {
   }
 
 
-  saving:boolean = true;
+  saving:boolean = false;
 
   saveXML() {
     this.backendService.saveXML().subscribe((xml) => {   
@@ -109,6 +109,17 @@ export class MenuComponent {
     });
   }
 
+  load(event: Event) {
+    const files = (<HTMLInputElement> event.target).files;
+    if (files) {
+      files[0].text().then((xml) => {
+        console.log(xml);
+        this.backendService.xmlToJSON(xml).subscribe((json) => {
+          console.log(json);
+        })
+      });
+    }
+  }
   saveJson() {
     this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
       let file = new Blob([JSON.stringify(Json)],{type:"text"});
@@ -117,12 +128,5 @@ export class MenuComponent {
       anchor.download = "JsonFile.json";
       anchor.click();
     });
-  }
-
-
-  load(xml: string) {
-    this.backendService.xmlToJSON(xml).subscribe((json) => {
-      console.log(json.valueOf());
-    })
   }
 }

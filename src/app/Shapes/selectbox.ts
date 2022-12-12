@@ -46,8 +46,8 @@ export class SelectBox extends Shape {
       shape.upperLeftCorner.y += diffY;
 
       if (shape instanceof Line) {
-        shape.endx += diffX;
-        shape.endy += diffY;
+        shape.endingPoint.x += diffX;
+        shape.endingPoint.y += diffY;
       }
     });
     this.setOldX(x);
