@@ -19,10 +19,8 @@ export class ControllerService {
     returnedArray.forEach((shape) => {
       let s = this.objectToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
-      this.canvas.backService.createMultiPointShape(s.id, s.type, s.upperLeftCorner.x.toString() + "," + s.upperLeftCorner.y.toString(),
-        s.width, s.height, s.fillColor, s.outlineColor, s.thickness);
-      this.canvas.update(ctx);
     })
+    this.canvas.update(ctx);
   }
 
   async Redo(ctx: CanvasRenderingContext2D) {
@@ -33,7 +31,6 @@ export class ControllerService {
     returnedArray.forEach((s) => {
       let shape = this.objectToShape(this.canvas.factory.getShape(s.type), s);
       this.canvas.shapes.push(shape);
-      this.canvas.update(ctx);
     })
     this.canvas.update(ctx);
   }
