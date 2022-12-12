@@ -2,8 +2,7 @@ import { Shape } from "./shape";
 
 export class Line extends Shape {
   override type: string = "line";
-  endx: number = 0;
-  endy: number = 0;
+  endingPoint = {x: 0, y: 0};
   override Draw(ctx: CanvasRenderingContext2D, color: string,linewidth:number, x: number, y: number, startx: number, starty: number) {
     ctx.strokeStyle = color;
     ctx.lineWidth = linewidth;
@@ -13,11 +12,13 @@ export class Line extends Shape {
 
     this.upperLeftCorner.x = startx;
     this.upperLeftCorner.y = starty;
-    this.endx = x;
-    this.endy = y;
+    this.endingPoint.x = x;
+    this.endingPoint.y = y;
+    this.width = this.endingPoint.x - this.upperLeftCorner.x;
+    this.height = this.endingPoint.y - this.upperLeftCorner.y;
     this.outlineColor = color;
     this.thickness = linewidth;
-    if (this.endx == this.upperLeftCorner.x && this.endy == this.upperLeftCorner.y)
+    if (this.endingPoint.x == this.upperLeftCorner.x && this.endingPoint.y == this.upperLeftCorner.y)
       this.valid = false;
     else this.valid = true;
   }
@@ -25,9 +26,11 @@ export class Line extends Shape {
   override Update(ctx: CanvasRenderingContext2D) {
     ctx.strokeStyle = this.outlineColor;
     ctx.lineWidth = this.thickness;
+    this.endingPoint.x = this.upperLeftCorner.x + this.width;
+    this.endingPoint.y = this.upperLeftCorner.y + this.height;
     ctx.beginPath();
     ctx.moveTo(this.upperLeftCorner.x, this.upperLeftCorner.y);
-    ctx.lineTo(this.endx, this.endy);
+    ctx.lineTo(this.endingPoint.x, this.endingPoint.y);
     ctx.stroke();
   }
 
@@ -50,8 +53,8 @@ export class Line extends Shape {
     line.height =this.height;
     line.outlineColor = this.outlineColor;
     line.valid = this.valid;
-    line.endx = this.endx - 20;
-    line.endy = this.endy - 20;
+    line.endingPoint.x = this.endingPoint.x - 20;
+    line.endingPoint.y = this.endingPoint.y - 20;
     line.id = this.id;
     line.thickness = this.thickness;
 

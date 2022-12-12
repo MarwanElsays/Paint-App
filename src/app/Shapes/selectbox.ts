@@ -46,8 +46,8 @@ export class SelectBox extends Shape {
       shape.upperLeftCorner.y += diffY;
 
       if (shape instanceof Line) {
-        shape.endx += diffX;
-        shape.endy += diffY;
+        shape.endingPoint.x += diffX;
+        shape.endingPoint.y += diffY;
       }
     });
     this.setOldX(x);
@@ -132,6 +132,7 @@ export class SelectBox extends Shape {
         Math.max(shape.upperLeftCorner.y, shape.upperLeftCorner.y + shape.height) < Math.max(this.upperLeftCorner.y, this.upperLeftCorner.y + this.height)
       );
     });
+
     s.state = 'Selected';
     return this.selectedShapes;
   }

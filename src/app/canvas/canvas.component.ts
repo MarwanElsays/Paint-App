@@ -55,11 +55,11 @@ export class CanvasComponent implements OnInit {
         this.s.shape = '';
         this.currshape = new Shape();
         this.Fill(ctx);
-      } 
+      }
       else if (this.s.state == 'DrawSelectBox') { //selecting shapes
         this.currshape = this.selectBox;
         this.s.color = '#000000';
-      } 
+      }
       else if (this.s.state == 'drawShape') { //drawing shape
         this.currshape = this.factory.getShape(this.s.shape);
       }
@@ -101,7 +101,7 @@ export class CanvasComponent implements OnInit {
             else if (this.selectBox.isMouseOnVertex(this.mouseX, this.mouseY, this.selectBox.upperLeftCorner.x, this.selectBox.upperLeftCorner.y + this.selectBox.height)) {
               this.selectBox.bottomLeftResize(e.clientX, e.clientY);
             }
-            this.selectBox.Resize(e.clientX, e.clientY); 
+            this.selectBox.Resize(e.clientX, e.clientY);
             break;
         }
       }
@@ -115,7 +115,7 @@ export class CanvasComponent implements OnInit {
 
       if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
-        console.log(this.selectBox.selectShapes(this.shapes, this.s));
+        //console.log(this.selectBox.selectShapes(this.shapes, this.s));
         if (this.selectBox.width < 0) {
           this.selectBox.upperLeftCorner.x += this.selectBox.width;
           this.selectBox.width = - this.selectBox.width;
@@ -124,12 +124,14 @@ export class CanvasComponent implements OnInit {
           this.selectBox.upperLeftCorner.y += this.selectBox.height;
           this.selectBox.height = - this.selectBox.height;
         }
+        this.selectBox.selectShapes(this.shapes, this.s);
       }
       else if (this.s.state == 'Move' || this.s.state == 'Resize') {
+
         this.selectBox.getSelectedShapes().forEach(selectedShape => {
           let upperleftcornner = selectedShape.upperLeftCorner.x.toString() + "," + selectedShape.upperLeftCorner.y.toString();
           if (selectedShape instanceof Line) {
-            let endingpoint = selectedShape.endx.toString() + "," + selectedShape.endy.toString();
+            let endingpoint = selectedShape.endingPoint.x.toString() + "," + selectedShape.endingPoint.y.toString();
             this.backService.changeLinePos(selectedShape.id, upperleftcornner, endingpoint);
           }
           else {
@@ -139,9 +141,9 @@ export class CanvasComponent implements OnInit {
       }
 
       if (this.currshape.valid == true) {
-        if(!(this.currshape instanceof SelectBox))
-        this.currshape.id = this.ShapeID++;
-        
+        if (!(this.currshape instanceof SelectBox))
+          this.currshape.id = this.ShapeID++;
+
         if (this.currshape.width < 0) {
           this.currshape.upperLeftCorner.x += this.currshape.width;
           this.currshape.width = - this.currshape.width;
@@ -153,15 +155,15 @@ export class CanvasComponent implements OnInit {
         this.shapes.push(this.currshape);
 
         let upperleftcornner = this.currshape.upperLeftCorner.x.toString() + "," + this.currshape.upperLeftCorner.y.toString();
-        if(this.currshape instanceof Line) {
-          let endingpoint = this.currshape.endx.toString()+","+this.currshape.endy.toString();
-          this.backService.createLine(this.currshape.id,upperleftcornner,endingpoint,this.currshape.thickness,this.currshape.fillColor);
+        if (this.currshape instanceof Line) {
+          let endingpoint = this.currshape.endingPoint.x.toString() + "," + this.currshape.endingPoint.y.toString();
+          this.backService.createLine(this.currshape.id, upperleftcornner, endingpoint, this.currshape.thickness, this.currshape.fillColor);
         }
-        else{
+        else {
 
-          if(!(this.currshape instanceof SelectBox))
-          this.backService.createMultiPointShape(this.currshape.id,this.s.shape,upperleftcornner,this.currshape.width,this.currshape.height,
-                                                  "",this.currshape.outlineColor,this.currshape.thickness);
+          if (!(this.currshape instanceof SelectBox))
+            this.backService.createMultiPointShape(this.currshape.id, this.s.shape, upperleftcornner, this.currshape.width, this.currshape.height,
+              "", this.currshape.outlineColor, this.currshape.thickness);
         }
       }
     });
@@ -173,7 +175,7 @@ export class CanvasComponent implements OnInit {
     if (this.s.state != 'DrawSelectBox' && this.s.state != 'Selected' && this.shapes.includes(this.selectBox)) {
       this.shapes.splice(this.shapes.findIndex((x) => { return x.id == this.selectBox.id }), 1);
     }
-    this.shapes.forEach((s:Shape) => {
+    this.shapes.forEach((s: Shape) => {
       s.Update(ctx);
     });
   }
@@ -181,7 +183,7 @@ export class CanvasComponent implements OnInit {
   Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
     if (!this.startDraw) return;
     ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color,this.s.thickness, x, y, this.mouseX, this.mouseY);
+    this.currshape.Draw(ctx, this.s.color, this.s.thickness, x, y, this.mouseX, this.mouseY);
   }
 
   Fill(ctx: CanvasRenderingContext2D) {

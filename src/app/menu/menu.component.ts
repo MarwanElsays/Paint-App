@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import {
   faEraser, faSave, faFileUpload, faUndo, faRedo, faMousePointer,
-  faSquare, faCircle, faCopy, faPaste,faTrash, faFill
+  faSquare, faCircle, faCopy, faPaste,faTrash, faFill , faFillDrip
 } from '@fortawesome/free-solid-svg-icons';
+
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
 
 @Component({
@@ -22,6 +23,7 @@ export class MenuComponent {
   faRedo = faRedo;
   faMousePointer = faMousePointer;
   faFill = faFill;
+  faFillDrip = faFillDrip;
 
   shapes: any[] = [
   { name: 'square', icon: faSquare },
@@ -65,6 +67,14 @@ export class MenuComponent {
     }
   }
 
+  Fillborder(){
+    this.s.emitFillBorderEvent();
+  }
+
+  ChangeThickness(){
+    this.s.emitChangeThickness();
+  }
+
   erase() {
     this.s.emitErase();
   }
@@ -86,9 +96,16 @@ export class MenuComponent {
     }
   }
 
-  save() {
+
+  saving:boolean = false;
+
+  saveXML() {
     this.backendService.saveXML().subscribe((xml) => {
-      console.log(xml);
+      let file = new Blob([xml],{type:"xml"});
+      let anchor = document.createElement("a");
+      anchor.href = URL.createObjectURL(file);
+      anchor.download = "XmlFile.xml";
+      anchor.click();
     });
   }
 
@@ -102,5 +119,14 @@ export class MenuComponent {
         })
       });
     }
+  }
+  saveJson() {
+    this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
+      let file = new Blob([JSON.stringify(Json)],{type:"text"});
+      let anchor = document.createElement("a");
+      anchor.href = URL.createObjectURL(file);
+      anchor.download = "JsonFile.json";
+      anchor.click();
+    });
   }
 }

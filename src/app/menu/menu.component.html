@@ -10,9 +10,10 @@
     </div>
 
     <div id="Coloring">
-        <li  (click)="Fill()" [ngClass]="{'active':this.s.state == 'Fill'}"> <fa-icon [icon]="faFill"></fa-icon> </li>
+        <li  (click)="Fillborder()" >  <fa-icon [icon]="faFillDrip"></fa-icon> </li>
+        <li  (click)="Fill()" [ngClass]="{'active':this.s.state == 'Fill'}" >  <fa-icon [icon]="faFill"></fa-icon> </li>
         <div id="col"> <label>pick a color</label><input type="color" [(ngModel)]="this.s.color"></div>
-        <div> <label>Thickness</label><input type="range" [(ngModel)]="this.s.thickness" min ="1"></div>
+        <div> <label>Thickness</label><input type="range" [(ngModel)]="this.s.thickness" min ="1" (change) ="ChangeThickness()"></div>
     </div>
     
 
@@ -34,6 +35,12 @@
         <fa-icon [icon]="faFileUpload" id="Load" (click)="fileUpload.click()"></fa-icon>
     </div>
 
-    <div id="saveDiv"><label>Save</label><fa-icon [icon]="faSave"  id="save" (click)="save()"></fa-icon></div>
+    <div id="saveDiv"><label>Save</label><fa-icon [icon]="faSave"  id="save" (click)="saving = !saving"></fa-icon>
+    
+        <div *ngIf="saving" id="SavingUL">
+            <input type="button" value="Save Json" (click)="saveJson()">
+            <input type="button" value="Save Xml" (click)="saveXML()">
+        </div>
+    </div>
     
 </ul>
