@@ -100,7 +100,7 @@ export class MenuComponent {
   saving:boolean = false;
 
   saveXML() {
-    this.backendService.saveXML().subscribe((xml) => {
+    this.backendService.saveXML().subscribe((xml) => {   
       let file = new Blob([xml],{type:"xml"});
       let anchor = document.createElement("a");
       anchor.href = URL.createObjectURL(file);
