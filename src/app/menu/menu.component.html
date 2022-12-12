@@ -17,11 +17,11 @@
     </div>
     
 
-    <div id="eraseDiv"><label>Erase All</label><fa-icon [icon]="faEraser" (click)="erase()" id="erase"></fa-icon></div>
+    <div id="eraseDiv"><label>Erase All</label><button id="erase" (click)="erase()"><fa-icon [icon]="faEraser"></fa-icon></button></div>
 
-    <div id="undoDiv"><label>Undo</label><fa-icon [icon]="faUndo"  id="undo" (click)="undo()"></fa-icon></div>
+    <div id="undoDiv"><label>Undo</label><button  id="undo" (click)="undo()"><fa-icon [icon]="faUndo" ></fa-icon></button></div>
 
-    <div id="redoDiv"><label>Redo</label><fa-icon [icon]="faRedo"  id="redo"  (click)="redo()"></fa-icon></div>
+    <div id="redoDiv"><label>Redo</label><button  id="redo"  (click)="redo()"><fa-icon [icon]="faRedo"  ></fa-icon></button></div>
      
     <div id="selectDiv">
         <label>Select</label>
@@ -32,10 +32,12 @@
     <div id="LoadDiv">
         <label>Load </label> 
         <input type="file" class="fileUpload" (change)="load($event)" #fileUpload> 
-        <fa-icon [icon]="faFileUpload" id="Load" (click)="fileUpload.click()"></fa-icon>
+        <button id="Load" (click)="fileUpload.click()">
+            <fa-icon [icon]="faFileUpload" ></fa-icon>
+        </button>
     </div>
 
-    <div id="saveDiv"><label>Save</label><fa-icon [icon]="faSave"  id="save" (click)="saving = !saving"></fa-icon>
+    <div id="saveDiv"><label>Save</label><button  id="save" (click)="saving = !saving"><fa-icon [icon]="faSave"></fa-icon></button>
     
         <div *ngIf="saving" id="SavingUL">
             <input type="button" value="Save Json" (click)="saveJson()">
