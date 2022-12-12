@@ -96,11 +96,29 @@ export class MenuComponent {
     }
   }
 
-  save() {
+
+  saving:boolean = true;
+
+  saveXML() {
     this.backendService.saveXML().subscribe((xml) => {
-      console.log(xml);
+      let file = new Blob([xml],{type:"xml"});
+      let anchor = document.createElement("a");
+      anchor.href = URL.createObjectURL(file);
+      anchor.download = "XmlFile.xml";
+      anchor.click();
     });
   }
+
+  saveJson() {
+    this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
+      let file = new Blob([JSON.stringify(Json)],{type:"text"});
+      let anchor = document.createElement("a");
+      anchor.href = URL.createObjectURL(file);
+      anchor.download = "JsonFile.json";
+      anchor.click();
+    });
+  }
+
 
   load(xml: string) {
     this.backendService.xmlToJSON(xml).subscribe((json) => {

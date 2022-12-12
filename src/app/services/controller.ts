@@ -16,17 +16,15 @@ export class ControllerService {
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
     let returnedArray = await lastValueFrom (this.canvas.backService.performUndo());
 
-    console.log("the returned array",returnedArray);
     returnedArray.forEach((shape) =>{
         let s = this.objectToShape(this.canvas.factory.getShape(shape.type),shape);
         this.canvas.shapes.push(s);
-        // this.canvas.backService.createMultiPointShape(s.id,s.type,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),
-        //                                               s.width,s.height,s.fillColor,s.outlineColor,s.thickness);
+       // this.canvas.backService.createMultiPointShape(s.id,s.type,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),
+      //                                               s.width,s.height,s.fillColor,s.outlineColor,s.thickness);
+
         this.canvas.update(ctx);
     })
 
-    console.log("the canvas array",this.canvas.shapes);
-   
   }
 
   async Redo(ctx: CanvasRenderingContext2D) {

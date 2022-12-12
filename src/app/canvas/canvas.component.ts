@@ -115,7 +115,7 @@ export class CanvasComponent implements OnInit {
 
       if (this.s.state == 'DrawSelectBox') {
         ctx.setLineDash([0]);
-        console.log(this.selectBox.selectShapes(this.shapes, this.s));
+        //console.log(this.selectBox.selectShapes(this.shapes, this.s));
         if (this.selectBox.width < 0) {
           this.selectBox.upperLeftCorner.x += this.selectBox.width;
           this.selectBox.width = - this.selectBox.width;
@@ -124,9 +124,10 @@ export class CanvasComponent implements OnInit {
           this.selectBox.upperLeftCorner.y += this.selectBox.height;
           this.selectBox.height = - this.selectBox.height;
         }
+        this.selectBox.selectShapes(this.shapes,this.s);
       }
       else if (this.s.state == 'Move' || this.s.state == 'Resize') {
-        console.log("ana gwa elselect",this.selectBox.getSelectedShapes())
+  
         this.selectBox.getSelectedShapes().forEach(selectedShape => {
           let upperleftcornner = selectedShape.upperLeftCorner.x.toString() + "," + selectedShape.upperLeftCorner.y.toString();
           if (selectedShape instanceof Line) {
