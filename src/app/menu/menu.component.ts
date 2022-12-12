@@ -92,9 +92,15 @@ export class MenuComponent {
     });
   }
 
-  load(xml: string) {
-    this.backendService.xmlToJSON(xml).subscribe((json) => {
-      console.log(json.valueOf());
-    })
+  load(event: Event) {
+    const files = (<HTMLInputElement> event.target).files;
+    if (files) {
+      files[0].text().then((xml) => {
+        console.log(xml);
+        this.backendService.xmlToJSON(xml).subscribe((json) => {
+          console.log(json);
+        })
+      });
+    }
   }
 }

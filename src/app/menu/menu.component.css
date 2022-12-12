@@ -107,3 +107,7 @@ label{
     background-color: rgb(136, 255, 239);
     border-radius: 10px;
 }
+
+.fileUpload {
+    display: none;
+}

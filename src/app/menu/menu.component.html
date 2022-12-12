@@ -27,7 +27,12 @@
         <fa-icon [icon]="faMousePointer"  id="select"  (click)="select()" [ngClass]="{'active':this.s.state == 'DrawSelectBox'}"></fa-icon>
     </div>
 
-    <div id="LoadDiv"><label>Load</label><fa-icon [icon]="faFileUpload"  id="Load"></fa-icon></div>
+    
+    <div id="LoadDiv">
+        <label>Load </label> 
+        <input type="file" class="fileUpload" (change)="load($event)" #fileUpload> 
+        <fa-icon [icon]="faFileUpload" id="Load" (click)="fileUpload.click()"></fa-icon>
+    </div>
 
     <div id="saveDiv"><label>Save</label><fa-icon [icon]="faSave"  id="save" (click)="save()"></fa-icon></div>
     
