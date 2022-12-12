@@ -20,7 +20,7 @@ export class BackendCommunicatorService {
     this.http.post( "http://localhost:8085/createLine",null,
       {responseType:'json',
        params: new HttpParams().set('id', id.toString())
-                               .set('startingPoint', startingPoint)
+                               .set('upperLeftCorner', startingPoint)
                                .set('endingPoint',endingPoint)
                                .set('thickness',thickness.toString())
                                .set('fillColor',fillColor)
@@ -76,7 +76,7 @@ export class BackendCommunicatorService {
       {
         responseType: 'json',
         params: new HttpParams().set('id', id.toString())
-          .set('startingPoint', startingPoint)
+          .set('upperLeftCorner', startingPoint)
           .set('endingPoint', endingPoint)
       }
     ).subscribe();
@@ -155,7 +155,7 @@ export class BackendCommunicatorService {
       {
         responseType: 'json',
         params: new HttpParams().set('newID', newID.toString())
-          .set('newStartingPoint', newStartingPoint)
+          .set('newUpperLeftCorner', newStartingPoint)
           .set('newEndingPoint', newEndingPoint)
           .set('copiedID', copiedID.toString())
           .set('addUndo', addUndo.toString()),

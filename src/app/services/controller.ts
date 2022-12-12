@@ -19,10 +19,8 @@ export class ControllerService {
     returnedArray.forEach((shape) => {
       let s = this.objectToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
-      this.canvas.backService.createMultiPointShape(s.id, s.type, s.upperLeftCorner.x.toString() + "," + s.upperLeftCorner.y.toString(),
-        s.width, s.height, s.fillColor, s.outlineColor, s.thickness);
+      })
       this.canvas.update(ctx);
-    })
   }
 
   async Redo(ctx: CanvasRenderingContext2D) {
@@ -33,8 +31,8 @@ export class ControllerService {
     returnedArray.forEach((s) => {
       let shape = this.objectToShape(this.canvas.factory.getShape(s.type), s);
       this.canvas.shapes.push(shape);
-      this.canvas.update(ctx);
     })
+    this.canvas.update(ctx);
   }
 
   Erase(ctx: CanvasRenderingContext2D) {
@@ -105,7 +103,12 @@ export class ControllerService {
 
     this.canvas.selectBox.getSelectedShapes().forEach((shape) => {
       shape.outlineColor = this.drawServe.color;
-      this.canvas.backService.changeOutlineColor(shape.id, shape.outlineColor);
+      if (shape instanceof Line) {
+        this.canvas.backService.changeFillColor(shape.id, shape.outlineColor);
+      }
+      else {
+        this.canvas.backService.changeOutlineColor(shape.id, shape.outlineColor);
+      }
     })
 
     this.canvas.update(ctx);
@@ -175,6 +178,9 @@ export class ControllerService {
     if (newShape instanceof Line) {
       newShape.endingPoint.x = (<Line>returnedObj).endingPoint.x;
       newShape.endingPoint.y = (<Line>returnedObj).endingPoint.y;
+      newShape.outlineColor = (<Line>returnedObj).fillColor;
+      newShape.width = newShape.endingPoint.x - newShape.upperLeftCorner.x;
+      newShape.height = newShape.endingPoint.y - newShape.upperLeftCorner.y;
     }
 
     return newShape;

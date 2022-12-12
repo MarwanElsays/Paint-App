@@ -144,11 +144,21 @@ export class CanvasComponent implements OnInit {
         if (!(this.currshape instanceof SelectBox))
           this.currshape.id = this.ShapeID++;
 
-        if (this.currshape.width < 0) {
+        if (this.currshape.width < 0 && this.currshape.height < 0 && this.currshape instanceof Line) {
+          let temp = this.currshape.upperLeftCorner.x;
+          this.currshape.upperLeftCorner.x = this.currshape.endingPoint.x;
+          this.currshape.endingPoint.x = temp;
+          temp = this.currshape.upperLeftCorner.y;
+          this.currshape.upperLeftCorner.y = this.currshape.endingPoint.y;
+          this.currshape.endingPoint.y = temp;
+          this.currshape.width = this.currshape.endingPoint.x - this.currshape.upperLeftCorner.x;
+          this.currshape.height = this.currshape.endingPoint.y - this.currshape.upperLeftCorner.y;
+        }
+        if (this.currshape.width < 0 && !(this.currshape instanceof Line)) {
           this.currshape.upperLeftCorner.x += this.currshape.width;
           this.currshape.width = - this.currshape.width;
         }
-        if (this.currshape.height < 0) {
+        if (this.currshape.height < 0 && !(this.currshape instanceof Line)) {
           this.currshape.upperLeftCorner.y += this.currshape.height;
           this.currshape.height = - this.currshape.height;
         }
@@ -157,7 +167,7 @@ export class CanvasComponent implements OnInit {
         let upperleftcornner = this.currshape.upperLeftCorner.x.toString() + "," + this.currshape.upperLeftCorner.y.toString();
         if (this.currshape instanceof Line) {
           let endingpoint = this.currshape.endingPoint.x.toString() + "," + this.currshape.endingPoint.y.toString();
-          this.backService.createLine(this.currshape.id, upperleftcornner, endingpoint, this.currshape.thickness, this.currshape.fillColor);
+          this.backService.createLine(this.currshape.id, upperleftcornner, endingpoint, this.currshape.thickness, this.currshape.outlineColor);
         }
         else {
 
