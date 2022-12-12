@@ -124,9 +124,10 @@ export class CanvasComponent implements OnInit {
           this.selectBox.upperLeftCorner.y += this.selectBox.height;
           this.selectBox.height = - this.selectBox.height;
         }
+        this.selectBox.selectShapes(this.shapes,this.s);
       }
       else if (this.s.state == 'Move' || this.s.state == 'Resize') {
-        console.log("ana gwa elselect",this.selectBox.getSelectedShapes())
+  
         this.selectBox.getSelectedShapes().forEach(selectedShape => {
           let upperleftcornner = selectedShape.upperLeftCorner.x.toString() + "," + selectedShape.upperLeftCorner.y.toString();
           if (selectedShape instanceof Line) {

@@ -132,6 +132,7 @@ export class SelectBox extends Shape {
         Math.max(shape.upperLeftCorner.y, shape.upperLeftCorner.y + shape.height) < Math.max(this.upperLeftCorner.y, this.upperLeftCorner.y + this.height)
       );
     });
+
     s.state = 'Selected';
     return this.selectedShapes;
   }

@@ -101,10 +101,10 @@ export class MenuComponent {
 
   saveXML() {
     this.backendService.saveXML().subscribe((xml) => {
-      let file = new Blob([xml],{type:"text"});
+      let file = new Blob([xml],{type:"xml"});
       let anchor = document.createElement("a");
       anchor.href = URL.createObjectURL(file);
-      anchor.download = "XmlFile.txt";
+      anchor.download = "XmlFile.xml";
       anchor.click();
     });
   }
@@ -114,7 +114,7 @@ export class MenuComponent {
       let file = new Blob([JSON.stringify(Json)],{type:"text"});
       let anchor = document.createElement("a");
       anchor.href = URL.createObjectURL(file);
-      anchor.download = "JsonFile.txt";
+      anchor.download = "JsonFile.json";
       anchor.click();
     });
   }
