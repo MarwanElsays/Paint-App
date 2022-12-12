@@ -9,8 +9,6 @@ import { NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BackendCommunicatorService } from './services/backend-communicator.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-
-
 @NgModule({
   declarations: [
     AppComponent,
