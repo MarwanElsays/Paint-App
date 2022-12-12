@@ -16,14 +16,14 @@ export class ControllerService {
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
     let returnedArray = await lastValueFrom (this.canvas.backService.performUndo());
 
+    console.log(returnedArray)
     returnedArray.forEach((shape) =>{
         let s = this.objectToShape(this.canvas.factory.getShape(shape.type),shape);
         this.canvas.shapes.push(s);
-       // this.canvas.backService.createMultiPointShape(s.id,s.type,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),
-      //                                               s.width,s.height,s.fillColor,s.outlineColor,s.thickness);
-
-        this.canvas.update(ctx);
+        // this.canvas.backService.createMultiPointShape(s.id,s.type,s.upperLeftCorner.x.toString()+","+s.upperLeftCorner.y.toString(),
+        //                                             s.width,s.height,s.fillColor,s.outlineColor,s.thickness);
     })
+    this.canvas.update(ctx);
 
   }
 
@@ -32,11 +32,12 @@ export class ControllerService {
     this.canvas.shapes.splice(0, this.canvas.shapes.length);
     let returnedArray = await lastValueFrom (this.canvas.backService.performRedo());
 
+    console.log(returnedArray)
     returnedArray.forEach((s) =>{
         let shape = this.objectToShape(this.canvas.factory.getShape(s.type),s);
-        this.canvas.shapes.push(shape);
-        this.canvas.update(ctx);
+        this.canvas.shapes.push(shape); 
     })
+    this.canvas.update(ctx);
   }
 
   Erase(ctx: CanvasRenderingContext2D) {
@@ -164,18 +165,34 @@ export class ControllerService {
   }
 
   objectToShape(newShape:Shape,returnedObj:Shape):Shape{
-    newShape.upperLeftCorner.x = returnedObj.upperLeftCorner.x;
-    newShape.upperLeftCorner.y = returnedObj.upperLeftCorner.y;
-    newShape.fillColor = returnedObj.fillColor;
-    newShape.fillOpacity = returnedObj.fillOpacity;
-    newShape.height = returnedObj.height;
-    newShape.id = returnedObj.id;
-    newShape.outlineColor = returnedObj.outlineColor;
-    newShape.thickness = returnedObj.thickness;
-    newShape.type = returnedObj.type;
-    newShape.valid = returnedObj.valid;
-    newShape.width = returnedObj.width;
-    newShape.valid = true;
+    if(newShape instanceof Line){
+      // newShape.upperLeftCorner.x = returnedObj..x;
+      // newShape.upperLeftCorner.y = returnedObj.upperLeftCorner.y;
+      // newShape.fillColor = returnedObj.fillColor;
+      // newShape.fillOpacity = returnedObj.fillOpacity;
+      // newShape.height = returnedObj.height;
+      // newShape.id = returnedObj.id;
+      // newShape.outlineColor = returnedObj.outlineColor;
+      // newShape.thickness = returnedObj.thickness;
+      // newShape.type = returnedObj.type;
+      // newShape.valid = returnedObj.valid;
+      // newShape.width = returnedObj.width;
+      // newShape.valid = true;
+    }else{
+      newShape.upperLeftCorner.x = returnedObj.upperLeftCorner.x;
+      newShape.upperLeftCorner.y = returnedObj.upperLeftCorner.y;
+      newShape.fillColor = returnedObj.fillColor;
+      newShape.fillOpacity = returnedObj.fillOpacity;
+      newShape.height = returnedObj.height;
+      newShape.id = returnedObj.id;
+      newShape.outlineColor = returnedObj.outlineColor;
+      newShape.thickness = returnedObj.thickness;
+      newShape.type = returnedObj.type;
+      newShape.valid = returnedObj.valid;
+      newShape.width = returnedObj.width;
+      newShape.valid = true;
+    }
+    
 
     return newShape;
   }
