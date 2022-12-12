@@ -9,6 +9,7 @@ export class Shape {
   thickness: number = 1;
   fillOpacity: number = 1;
   upperLeftCorner = { x: 0, y: 0 };
+  
 
   public Draw(ctx: CanvasRenderingContext2D, color: string, thickness: number, x: number, y: number, startx: number, starty: number) { }
   public Update(ctx: CanvasRenderingContext2D) { }
