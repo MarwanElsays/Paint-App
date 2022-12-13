@@ -5,7 +5,6 @@ import { Shape } from "../Shapes/shape";
 import { DrawService } from "./draw.service";
 import { lastValueFrom, map } from 'rxjs';
 import { XmlJsoned } from '../NewTypes/XmlJsonedType';
-import { library } from '@fortawesome/fontawesome-svg-core';
 
 export class ControllerService {
   constructor(private canvas: CanvasComponent, private drawServe: DrawService) { }
@@ -118,7 +117,7 @@ export class ControllerService {
   }
 
   LoadXmlJsoned(ctx: CanvasRenderingContext2D,LoadedShapes:XmlJsoned[]){
-    
+    this.Erase(ctx);
     LoadedShapes.forEach((shape) => {
       let s = this.XmlJsonedToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
@@ -130,7 +129,7 @@ export class ControllerService {
   }
 
   LoadJsoned(ctx: CanvasRenderingContext2D,LoadedShapes:Shape[]){
-    
+    this.Erase(ctx);
     LoadedShapes.forEach((shape) => {
       let s = this.objectToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
