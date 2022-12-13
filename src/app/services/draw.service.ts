@@ -12,7 +12,8 @@ export class DrawService {
   shape: string = "";
   color: string = "#000000FF";
   thickness:number = 1;
-  state: string = 'drawShape';         
+  state: string = 'drawShape';      
+  equalDims: boolean = false;   
 
   LoadJsoned = new EventEmitter<getResponseShapes>();
   LoadXmlJsoned = new EventEmitter<XmlJsoned[]>();

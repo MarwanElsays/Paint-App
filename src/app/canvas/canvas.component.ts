@@ -195,7 +195,7 @@ export class CanvasComponent implements OnInit {
   Draw(ctx: CanvasRenderingContext2D, x: number, y: number) {
     if (!this.startDraw) return;
     ctx.beginPath();
-    this.currshape.Draw(ctx, this.s.color, this.s.thickness, x, y, this.mouseX, this.mouseY);
+    this.currshape.Draw(ctx, this.s.color, this.s.thickness, x, y, this.mouseX, this.mouseY, true);
   }
 
   Fill(ctx: CanvasRenderingContext2D) {
