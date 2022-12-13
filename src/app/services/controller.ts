@@ -4,6 +4,7 @@ import { SelectBox } from "../Shapes/selectbox";
 import { Shape } from "../Shapes/shape";
 import { DrawService } from "./draw.service";
 import { lastValueFrom } from 'rxjs';
+import { XmlJsoned } from '../NewTypes/XmlJsonedType';
 
 
 export class ControllerService {
@@ -109,8 +110,25 @@ export class ControllerService {
     this.canvas.update(ctx);
   }
 
+  Load(ctx: CanvasRenderingContext2D,LoadedShapes:XmlJsoned[]){
+    
+    console.log(LoadedShapes)
+    LoadedShapes.forEach((shape) => {
+      let s = this.XmlToShape(this.canvas.factory.getShape(shape.type), shape);
+      this.canvas.shapes.push(s);
+    })
+
+    console.log(this.canvas.shapes)
+    this.canvas.update(ctx);
+  }
+
 
   eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
+
+    s.Load.subscribe((LoadedShapes) => {
+       this.Load(ctx,LoadedShapes);
+    });
+
     s.erase.subscribe(() => {
       this.Erase(ctx);
     });
@@ -166,7 +184,6 @@ export class ControllerService {
     newShape.outlineColor = returnedObj.outlineColor;
     newShape.thickness = returnedObj.thickness;
     newShape.type = returnedObj.type;
-    newShape.valid = returnedObj.valid;
     newShape.width = returnedObj.width;
     newShape.valid = true;
 
@@ -174,6 +191,27 @@ export class ControllerService {
       newShape.endingPoint.x = (<Line>returnedObj).endingPoint.x;
       newShape.endingPoint.y = (<Line>returnedObj).endingPoint.y;
     }
+
+    return newShape;
+  }
+
+  XmlToShape(newShape: Shape, returnedObj: XmlJsoned): Shape {
+    newShape.upperLeftCorner.x = parseFloat(returnedObj.upperLeftCorner.split(",",2)[0]);
+    newShape.upperLeftCorner.y =  parseFloat(returnedObj.upperLeftCorner.split(",",2)[1]);
+    newShape.fillColor = returnedObj.fillColor;
+    newShape.fillOpacity = returnedObj.fillOpacity;
+    newShape.height = returnedObj.height;
+    newShape.id = returnedObj.ID;
+    newShape.outlineColor = returnedObj.outlineColor;
+    newShape.thickness = returnedObj.thickness;
+    newShape.type = returnedObj.type;
+    newShape.width = returnedObj.width;
+    newShape.valid = true;
+
+    // if (newShape instanceof Line) {
+    //   newShape.endingPoint.x = (<Line>returnedObj).endingPoint.x;
+    //   newShape.endingPoint.y = (<Line>returnedObj).endingPoint.y;
+    // }
 
     return newShape;
   }

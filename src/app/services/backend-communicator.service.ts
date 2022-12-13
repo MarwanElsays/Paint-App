@@ -1,6 +1,8 @@
 import { HttpClient, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { getResponseShapes, loadedXml } from '../NewTypes/NewInterfaces';
+import { XmlJsoned } from '../NewTypes/XmlJsonedType';
 import { Shape } from '../Shapes/shape';
 
 @Injectable({
@@ -188,14 +190,12 @@ export class BackendCommunicatorService {
     return this.http.get("http://localhost:8085/saveJson", { responseType: 'json' });
   }
 
-  public xmlToJSON(xml: string) {
-    return this.http.get("http://localhost:8085/xmlToJson", { responseType: 'json', params: new HttpParams().set('xmlString', xml)});
+  public xmlToJSON(xml: string):Observable<XmlJsoned[]>{
+    return this.http.get<loadedXml>("http://localhost:8085/xmlToJson",{ responseType: 'json', params: new HttpParams().set('xmlString', xml)})
+                                             .pipe(map(response => response.Shapes.Shape));
   }
 }
 
-interface getResponseShapes {
-  Shapes:{
-    Shape:Shape[];
-  }
-}
+
+
 

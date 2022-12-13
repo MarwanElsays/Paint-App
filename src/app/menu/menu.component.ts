@@ -114,12 +114,13 @@ export class MenuComponent {
     if (files) {
       files[0].text().then((xml) => {
         console.log(xml);
-        this.backendService.xmlToJSON(xml).subscribe((json) => {
-          console.log(json);
+        this.backendService.xmlToJSON(xml).subscribe((returnedArray) => {
+          this.s.emitLoad(returnedArray);
         })
       });
     }
   }
+
   saveJson() {
     this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
       let file = new Blob([JSON.stringify(Json)],{type:"text"});
@@ -130,3 +131,4 @@ export class MenuComponent {
     });
   }
 }
+

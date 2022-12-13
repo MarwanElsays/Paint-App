@@ -1,4 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { XmlJsoned } from '../NewTypes/XmlJsonedType';
+import { Shape } from '../Shapes/shape';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ export class DrawService {
   thickness:number = 1;
   state: string = 'drawShape';         
 
+  Load = new EventEmitter<XmlJsoned[]>();
   ChangeBorderColor = new EventEmitter<void>();
   ChangeThickness = new EventEmitter<void>();
   erase = new EventEmitter<void>();
@@ -22,6 +25,10 @@ export class DrawService {
   paste = new EventEmitter<void>();
   fillEvent = new EventEmitter<void>();
   unSelectEvent = new EventEmitter<void>();
+
+  emitLoad(ShapesLoaded:XmlJsoned[]){
+    this.Load.emit(ShapesLoaded);
+  }
 
   emitFillBorderEvent(){
     this.ChangeBorderColor.emit()
