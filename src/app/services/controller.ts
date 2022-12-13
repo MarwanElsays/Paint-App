@@ -121,7 +121,11 @@ export class ControllerService {
       this.canvas.shapes.push(s);
       this.sendToBack(s);
     })
-
+    let maxID = 0;
+    this.canvas.shapes.forEach((shape) => {
+      this.canvas.ShapeID = Math.max(shape.id, maxID);
+    })
+    this.canvas.ShapeID++;
     console.log(this.canvas.shapes)
     this.canvas.update(ctx);
   }
@@ -133,7 +137,11 @@ export class ControllerService {
       this.canvas.shapes.push(s);
       this.sendToBack(s);
     })
-
+    let maxID = 0;
+    this.canvas.shapes.forEach((shape) => {
+      this.canvas.ShapeID = Math.max(shape.id, maxID);
+    })
+    this.canvas.ShapeID++;
     console.log(this.canvas.shapes)
     this.canvas.update(ctx);
   }
