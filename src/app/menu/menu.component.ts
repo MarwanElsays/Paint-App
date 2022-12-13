@@ -25,11 +25,10 @@ export class MenuComponent {
   faFill = faFill;
   faFillDrip = faFillDrip;
   saving: boolean = false;
-
-  shapes: any[] = [
-    { name: 'square', icon: faSquare },
-    { name: 'circle', icon: faCircle },
-  ];
+  
+  square = { name: 'square', icon: faSquare };
+  circle = { name: 'circle', icon: faCircle };
+  
 
   Edits: any[] = [
     { name: 'Copy', icon: faCopy },
@@ -38,9 +37,10 @@ export class MenuComponent {
   ];
 
 
-  asign(shape: string) {
+  asign(shape: string, equalDims:boolean) {
     this.s.state = 'drawShape';
     this.s.shape = shape;
+    this.s.equalDims = equalDims;
   }
 
   doEdits(edit: string) {
@@ -97,9 +97,9 @@ export class MenuComponent {
     }
   }
 
-  toggleEqualDims() {
-    this.s.equalDims = !this.s.equalDims;
-  }
+  // toggleEqualDims() {
+  //   this.s.equalDims = !this.s.equalDims;
+  // }
 
   saveXML() {
     this.backendService.saveXML().subscribe((xml) => {

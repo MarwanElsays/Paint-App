@@ -111,8 +111,6 @@ export class BackendCommunicatorService {
     ).subscribe();
   }
 
-
-  /*Lsaaaaaaaaaaaaaaaaaa*/
   public changeFillOpacity(id: number, opacity: number) {
 
     return this.http.post("http://localhost:8085/updateFillOpacity", null,
@@ -176,11 +174,6 @@ export class BackendCommunicatorService {
       map(response => response.Shapes.Shape)
     );
   }
-
-  // /*lsaaaaa*/
-  // public getShapeData() {
-  //   return this.http.get("http://localhost:8085/getShapeData", { responseType: 'json' });
-  // }
 
   public saveXML() {
     return this.http.get("http://localhost:8085/saveXml", { responseType: 'text' });

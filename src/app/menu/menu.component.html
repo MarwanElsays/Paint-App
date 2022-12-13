@@ -1,13 +1,20 @@
-<ul class="shapesmenu">
-    <div id="shapesContainer">
-        <li (click)="asign('triangle')"> <i class="bi bi-triangle-fill"></i> </li>
-        <li (click)="asign('line')"> <i class="bi bi-slash-lg"></i> </li>
-        <li *ngFor="let shape of shapes" (click)="asign(shape.name)"><fa-icon [icon]="shape.icon"></fa-icon></li>
-    </div>
+<div class="shapesmenu">
+    <ul id="shapesContainer">
+        <li (click)="asign('triangle',false)"> <i class="bi bi-triangle-fill"></i> </li>
+        <li (click)="asign('line',false)"> <i class="bi bi-slash-lg"></i> </li>
+        <li (click)="asign(square.name,true)" ><fa-icon [icon]="square.icon"></fa-icon></li>
+        <li (click)="asign(circle.name,true)" ><fa-icon [icon]="circle.icon"></fa-icon></li>
+        <li (click)="asign('square',false)"> <span class="material-icons md-18" style="line-height: 135%;">rectangle</span></li>
+        <li (click)="asign('circle',false)"> <svg height="140" width="500">
+            <ellipse cx="25" cy="15" rx="14" ry="8"
+            style="fill:rgb(255, 255, 255);stroke:rgb(255, 255, 255);stroke-width:2" />
+          </svg>
+        </li>    
+    </ul>
 
-    <div id="EditSelected">
+    <ul id="EditSelected">
         <li *ngFor="let edit of Edits" (click)="doEdits(edit.name)"> <fa-icon [icon]="edit.icon"></fa-icon></li>
-    </div>
+    </ul>
 
     <div id="Coloring">
         <li  (click)="Fillborder()" >  <fa-icon [icon]="faFillDrip"></fa-icon> </li>
@@ -16,33 +23,35 @@
         <div> <label>Thickness</label><input type="range" [(ngModel)]="this.s.thickness" min ="1" (change) ="ChangeThickness()"></div>
     </div>
     
+    <div id="MISC">
+        <div id="eraseDiv"><label>Erase All</label><button id="erase" (click)="erase()"><fa-icon [icon]="faEraser"></fa-icon></button></div>
 
-    <div id="eraseDiv"><label>Erase All</label><button id="erase" (click)="erase()"><fa-icon [icon]="faEraser"></fa-icon></button></div>
+        <div id="undoDiv"><label>Undo</label><button  id="undo" (click)="undo()"><fa-icon [icon]="faUndo" ></fa-icon></button></div>
 
-    <div id="undoDiv"><label>Undo</label><button  id="undo" (click)="undo()"><fa-icon [icon]="faUndo" ></fa-icon></button></div>
+        <div id="redoDiv"><label>Redo</label><button  id="redo"  (click)="redo()"><fa-icon [icon]="faRedo"  ></fa-icon></button></div>
+        
+        <div id="selectDiv">
+            <label>Select</label>
+            <button id="select"  (click)="select()" [ngClass]="{'active':this.s.state == 'DrawSelectBox'}">
+                <fa-icon [icon]="faMousePointer"  ></fa-icon>
+            </button>
+        </div>
 
-    <div id="redoDiv"><label>Redo</label><button  id="redo"  (click)="redo()"><fa-icon [icon]="faRedo"  ></fa-icon></button></div>
-     
-    <div id="selectDiv">
-        <label>Select</label>
-        <fa-icon [icon]="faMousePointer"  id="select"  (click)="select()" [ngClass]="{'active':this.s.state == 'DrawSelectBox'}"></fa-icon>
-    </div>
+        <div id="LoadDiv">
+            <label>Load </label> 
+            <input type="file" class="fileUpload" (change)="load($event)" #fileUpload> 
+            <button id="Load" (click)="fileUpload.click()">
+                <fa-icon [icon]="faFileUpload" ></fa-icon>
+            </button>
+        </div>
 
-    
-    <div id="LoadDiv">
-        <label>Load </label> 
-        <input type="file" class="fileUpload" (change)="load($event)" #fileUpload> 
-        <button id="Load" (click)="fileUpload.click()">
-            <fa-icon [icon]="faFileUpload" ></fa-icon>
-        </button>
-    </div>
-
-    <div id="saveDiv"><label>Save</label><button  id="save" (click)="saving = !saving"><fa-icon [icon]="faSave"></fa-icon></button>
-    
-        <div *ngIf="saving" id="SavingUL">
-            <input type="button" value="Save Json" (click)="saveJson()">
-            <input type="button" value="Save Xml" (click)="saveXML()">
+        <div id="saveDiv"><label>Save</label><button  id="save" (click)="saving = !saving"><fa-icon [icon]="faSave"></fa-icon></button>
+        
+            <div *ngIf="saving" id="SavingUL">
+                <input type="button" value="Save Json" (click)="saveJson()">
+                <input type="button" value="Save Xml" (click)="saveXML()">
+            </div>
         </div>
     </div>
     
-</ul>
+</div>

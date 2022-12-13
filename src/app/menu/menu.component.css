@@ -7,21 +7,23 @@
     align-items: center;
 }
 
+#MISC{
+    display: grid;
+    grid-template-columns: repeat(6,120px);
+}
+
+#saveDiv{
+    position: relative;
+}
+
 li{
     list-style: none;
 }
 
 label{
-    margin-left:10px ;
+    margin-left:10px;
     margin-right:10px;
     color:blanchedalmond
-}
-#eraseDiv{
-    margin-left: 40px;
-}
-
-#undoDiv,#redoDiv,#selectDiv{
-   margin-left: 2px;
 }
 
 #erase,#undo,#redo,#select,#Load,#save{
@@ -38,20 +40,12 @@ label{
     transform: translateY(2px);
 }
 
-#LoadDiv{
-    margin-left: 180px;
-}
-
-#saveDiv{
-    position: relative;
-    margin-left: 30px; 
-}
 
 #SavingUL{
     border: 2px solid black;
     position: absolute;
-    top: 35px;
-    right: 8px;
+    top: 37px;
+    right: 34px;
     background-color: rgba(207, 207, 207, 0.521);
     display: flex;
     flex-direction: column;
@@ -83,8 +77,8 @@ label{
     background-color: rgba(2, 16, 46, 0.811);
     border : aliceblue 2px solid;
     display: grid;
-    grid-template-columns: repeat(4,50px);
-    width:200px;
+    grid-template-columns: repeat(6,50px);
+    width:300px;
     height: 50px;
     margin-left: 10px;
     padding-top: 20px;
@@ -100,7 +94,7 @@ label{
     border : aliceblue 2px solid;
     display: grid;
     grid-template-columns: repeat(2,50px);
-    width:100px;
+    width:120px;
     height: 60px;
     margin-left: 10px;
     padding: 5px;
@@ -112,7 +106,7 @@ label{
     display: flex;
     background-color: rgba(2, 16, 46, 0.811);
     border : aliceblue 2px solid;
-    width:350px;
+    width:450px;
     height: 70px;
     margin-left: 10px;
     border-radius: 25px;
