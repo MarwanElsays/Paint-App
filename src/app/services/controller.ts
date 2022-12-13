@@ -3,9 +3,8 @@ import { CanvasComponent } from "../canvas/canvas.component";
 import { SelectBox } from "../Shapes/selectbox";
 import { Shape } from "../Shapes/shape";
 import { DrawService } from "./draw.service";
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, map } from 'rxjs';
 import { XmlJsoned } from '../NewTypes/XmlJsonedType';
-
 
 export class ControllerService {
   constructor(private canvas: CanvasComponent, private drawServe: DrawService) { }
@@ -110,12 +109,24 @@ export class ControllerService {
     this.canvas.update(ctx);
   }
 
-  Load(ctx: CanvasRenderingContext2D,LoadedShapes:XmlJsoned[]){
+  LoadXmlJsoned(ctx: CanvasRenderingContext2D,LoadedShapes:XmlJsoned[]){
     
-    console.log(LoadedShapes)
     LoadedShapes.forEach((shape) => {
-      let s = this.XmlToShape(this.canvas.factory.getShape(shape.type), shape);
+      let s = this.XmlJsonedToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
+      this.sendToBack(s);
+    })
+
+    console.log(this.canvas.shapes)
+    this.canvas.update(ctx);
+  }
+
+  LoadJsoned(ctx: CanvasRenderingContext2D,LoadedShapes:Shape[]){
+    
+    LoadedShapes.forEach((shape) => {
+      let s = this.objectToShape(this.canvas.factory.getShape(shape.type), shape);
+      this.canvas.shapes.push(s);
+      this.sendToBack(s);
     })
 
     console.log(this.canvas.shapes)
@@ -125,8 +136,12 @@ export class ControllerService {
 
   eventSubscription(ctx: CanvasRenderingContext2D, s: DrawService) {
 
-    s.Load.subscribe((LoadedShapes) => {
-       this.Load(ctx,LoadedShapes);
+    s.LoadJsoned.pipe(map( jsonedfile => jsonedfile.Shapes.Shape)).subscribe((jsonedfile)=>{
+        this.LoadJsoned(ctx,jsonedfile)
+    })
+    
+    s.LoadXmlJsoned.subscribe((LoadedShapes) => {
+       this.LoadXmlJsoned(ctx,LoadedShapes);
     });
 
     s.erase.subscribe(() => {
@@ -195,7 +210,7 @@ export class ControllerService {
     return newShape;
   }
 
-  XmlToShape(newShape: Shape, returnedObj: XmlJsoned): Shape {
+  XmlJsonedToShape(newShape: Shape, returnedObj: XmlJsoned): Shape {
     newShape.upperLeftCorner.x = parseFloat(returnedObj.upperLeftCorner.split(",",2)[0]);
     newShape.upperLeftCorner.y =  parseFloat(returnedObj.upperLeftCorner.split(",",2)[1]);
     newShape.fillColor = returnedObj.fillColor;
@@ -214,5 +229,18 @@ export class ControllerService {
     // }
 
     return newShape;
+  }
+
+
+  sendToBack(s:Shape){
+    let upperleftcornner = s.upperLeftCorner.x.toString() + "," + s.upperLeftCorner.y.toString();
+    if (s instanceof Line) {
+      let endingpoint = s.endingPoint.x.toString() + "," + s.endingPoint.y.toString();
+      this.canvas.backService.createLine(s.id, upperleftcornner, endingpoint, s.thickness, s.fillColor);
+    }
+    else {
+        this.canvas.backService.createMultiPointShape(s.id, s.type, upperleftcornner, s.width, s.height,
+            s.fillColor,s.outlineColor, s.thickness);
+    }
   }
 }

@@ -112,11 +112,17 @@ export class MenuComponent {
   load(event: Event) {
     const files = (<HTMLInputElement> event.target).files;
     if (files) {
-      files[0].text().then((xml) => {
-        console.log(xml);
-        this.backendService.xmlToJSON(xml).subscribe((returnedArray) => {
-          this.s.emitLoad(returnedArray);
-        })
+      files[0].text().then((loadedFile) => {
+       
+        if(loadedFile[0] != '{'){
+          this.backendService.xmlToJSON(loadedFile).subscribe((returnedArray) => {
+            this.s.emitLoadXmlJsoned(returnedArray);
+          });
+        }else{
+          let jsonedfile = JSON.parse(loadedFile)
+          this.s.emitLoadJson(jsonedfile);
+        }
+
       });
     }
   }

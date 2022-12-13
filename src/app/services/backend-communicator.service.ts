@@ -177,10 +177,10 @@ export class BackendCommunicatorService {
     );
   }
 
-  /*lsaaaaa*/
-  public getShapeData() {
-    return this.http.get("http://localhost:8085/getShapeData", { responseType: 'json' });
-  }
+  // /*lsaaaaa*/
+  // public getShapeData() {
+  //   return this.http.get("http://localhost:8085/getShapeData", { responseType: 'json' });
+  // }
 
   public saveXML() {
     return this.http.get("http://localhost:8085/saveXml", { responseType: 'text' });

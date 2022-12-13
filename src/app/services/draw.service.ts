@@ -1,6 +1,8 @@
+import { Observable } from 'rxjs';
 import { EventEmitter, Injectable } from '@angular/core';
 import { XmlJsoned } from '../NewTypes/XmlJsonedType';
 import { Shape } from '../Shapes/shape';
+import { getResponseShapes } from '../NewTypes/NewInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,8 @@ export class DrawService {
   thickness:number = 1;
   state: string = 'drawShape';         
 
-  Load = new EventEmitter<XmlJsoned[]>();
+  LoadJsoned = new EventEmitter<getResponseShapes>();
+  LoadXmlJsoned = new EventEmitter<XmlJsoned[]>();
   ChangeBorderColor = new EventEmitter<void>();
   ChangeThickness = new EventEmitter<void>();
   erase = new EventEmitter<void>();
@@ -26,8 +29,12 @@ export class DrawService {
   fillEvent = new EventEmitter<void>();
   unSelectEvent = new EventEmitter<void>();
 
-  emitLoad(ShapesLoaded:XmlJsoned[]){
-    this.Load.emit(ShapesLoaded);
+  emitLoadJson(ShapesLoaded:Object){
+    this.LoadJsoned.emit(<getResponseShapes>ShapesLoaded);
+  }
+
+  emitLoadXmlJsoned(ShapesLoaded:XmlJsoned[]){
+    this.LoadXmlJsoned.emit(ShapesLoaded);
   }
 
   emitFillBorderEvent(){
