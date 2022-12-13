@@ -122,10 +122,10 @@ export class ControllerService {
     LoadedShapes.forEach((shape) => {
       let s = this.XmlJsonedToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
-      this.canvas.ShapeID = Math.max(s.id, maxID);
+      maxID = Math.max(s.id, maxID);
       this.sendToBack(s);
     });
-    this.canvas.ShapeID++;
+    this.canvas.ShapeID = maxID+1;
     this.canvas.update(ctx);
   }
 
@@ -135,11 +135,11 @@ export class ControllerService {
     LoadedShapes.forEach((shape) => {
       let s = this.objectToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
-      this.canvas.ShapeID = Math.max(s.id, maxID);
+      maxID = Math.max(s.id, maxID);
       this.sendToBack(s);
     })
     
-    this.canvas.ShapeID++;
+    this.canvas.ShapeID = maxID+1;
     this.canvas.update(ctx);
   }
 
