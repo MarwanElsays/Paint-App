@@ -80,42 +80,48 @@ label{
 
 /*    Shapess Container   */
 #shapesContainer{
-    background-color: rgba(193, 192, 186, 0.427);
+    background-color: rgba(2, 16, 46, 0.811);
     border : aliceblue 2px solid;
     display: grid;
     grid-template-columns: repeat(4,50px);
     width:200px;
-    height: 70px;
+    height: 50px;
     margin-left: 10px;
-    border-radius: 5px;
+    padding-top: 20px;
+    border-radius: 25px;
+}
+
+#shapesContainer li{
+    height: 40px;
 }
 
 #EditSelected{
-    background-color: rgba(193, 192, 186, 0.427);
+    background-color: rgba(2, 16, 46, 0.811);
     border : aliceblue 2px solid;
     display: grid;
     grid-template-columns: repeat(2,50px);
     width:100px;
-    height: 70px;
+    height: 60px;
     margin-left: 10px;
-    border-radius: 5px;
+    padding: 5px;
+    border-radius: 25px;
 }
 
 
 #Coloring{
     display: flex;
-    background-color: rgba(193, 192, 186, 0.427);
+    background-color: rgba(2, 16, 46, 0.811);
     border : aliceblue 2px solid;
     width:350px;
     height: 70px;
     margin-left: 10px;
-    border-radius: 5px;
+    border-radius: 25px;
 }
 
 #Coloring li{
     display: flex;
     margin-left: 20px;
-    color:rgb(0, 0, 0);
+    color:rgb(255, 255, 255);
     cursor: pointer;
     justify-content: center;
     align-items: center;
