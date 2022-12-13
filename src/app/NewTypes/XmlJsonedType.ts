@@ -7,6 +7,10 @@ export type XmlJsoned ={
         thickness:number,
         type:string,
         upperLeftCorner:string,
-        width:number
+        width:number,
+        endingPoint:string,
 }
+
+
+
 
