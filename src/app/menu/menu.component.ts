@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DrawService } from '../services/draw.service';
 import {
   faEraser, faSave, faFileUpload, faUndo, faRedo, faMousePointer,
-  faSquare, faCircle, faCopy, faPaste,faTrash, faFill , faFillDrip
+  faSquare, faCircle, faCopy, faPaste, faTrash, faFill, faFillDrip
 } from '@fortawesome/free-solid-svg-icons';
 
 import { BackendCommunicatorService } from '../services/backend-communicator.service';
@@ -24,16 +24,17 @@ export class MenuComponent {
   faMousePointer = faMousePointer;
   faFill = faFill;
   faFillDrip = faFillDrip;
+  saving: boolean = false;
 
   shapes: any[] = [
-  { name: 'square', icon: faSquare },
-  { name: 'circle', icon: faCircle },
+    { name: 'square', icon: faSquare },
+    { name: 'circle', icon: faCircle },
   ];
 
   Edits: any[] = [
-  { name: 'Copy', icon: faCopy },
-  { name: 'Delete', icon: faTrash },
-  { name: 'Paste', icon: faPaste },
+    { name: 'Copy', icon: faCopy },
+    { name: 'Delete', icon: faTrash },
+    { name: 'Paste', icon: faPaste },
   ];
 
 
@@ -43,7 +44,7 @@ export class MenuComponent {
   }
 
   doEdits(edit: string) {
-    switch(edit){
+    switch (edit) {
       case 'Copy':
         this.s.emitCopy();
         break;
@@ -67,11 +68,11 @@ export class MenuComponent {
     }
   }
 
-  Fillborder(){
+  Fillborder() {
     this.s.emitFillBorderEvent();
   }
 
-  ChangeThickness(){
+  ChangeThickness() {
     this.s.emitChangeThickness();
   }
 
@@ -96,12 +97,13 @@ export class MenuComponent {
     }
   }
 
-
-  saving:boolean = false;
+  toggleEqualDims() {
+    this.s.equalDims = !this.s.equalDims;
+  }
 
   saveXML() {
-    this.backendService.saveXML().subscribe((xml) => {   
-      let file = new Blob([xml],{type:"xml"});
+    this.backendService.saveXML().subscribe((xml) => {
+      let file = new Blob([xml], { type: "xml" });
       let anchor = document.createElement("a");
       anchor.href = URL.createObjectURL(file);
       anchor.download = "XmlFile.xml";
@@ -111,7 +113,7 @@ export class MenuComponent {
 
   saveJson() {
     this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
-      let file = new Blob([JSON.stringify(Json)],{type:"json"});
+      let file = new Blob([JSON.stringify(Json)], { type: "json" });
       let anchor = document.createElement("a");
       anchor.href = URL.createObjectURL(file);
       anchor.download = "JsonFile.json";
@@ -120,15 +122,15 @@ export class MenuComponent {
   }
 
   load(event: Event) {
-    const files = (<HTMLInputElement> event.target).files;
+    const files = (<HTMLInputElement>event.target).files;
     if (files) {
       files[0].text().then((loadedFile) => {
-
-        if(files[0].type == 'xml'){
+        console.log(files[0].type);
+        if (files[0].type == 'text/xml') {
           this.backendService.xmlToJSON(loadedFile).subscribe((returnedArray) => {
             this.s.emitLoadXmlJsoned(returnedArray);
           });
-        }else{
+        } else {
           let jsonedfile = JSON.parse(loadedFile)
           this.s.emitLoadJson(jsonedfile);
         }

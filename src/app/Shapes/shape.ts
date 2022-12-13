@@ -11,7 +11,7 @@ export class Shape {
   upperLeftCorner = { x: 0, y: 0 };
   
 
-  public Draw(ctx: CanvasRenderingContext2D, color: string, thickness: number, x: number, y: number, startx: number, starty: number) { }
+  public Draw(ctx: CanvasRenderingContext2D, color: string, thickness: number, x: number, y: number, startx: number, starty: number, equalDims: boolean) { }
   public Update(ctx: CanvasRenderingContext2D) { }
   public Move(x: number, y: number) { }
   public Resize(width: number, height: number) { }
