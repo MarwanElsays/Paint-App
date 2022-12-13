@@ -1,7 +1,5 @@
-import { Observable } from 'rxjs';
 import { EventEmitter, Injectable } from '@angular/core';
 import { XmlJsoned } from '../NewTypes/XmlJsonedType';
-import { Shape } from '../Shapes/shape';
 import { getResponseShapes } from '../NewTypes/NewInterfaces';
 
 @Injectable({

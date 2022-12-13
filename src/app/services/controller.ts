@@ -103,12 +103,7 @@ export class ControllerService {
 
     this.canvas.selectBox.getSelectedShapes().forEach((shape) => {
       shape.outlineColor = this.drawServe.color;
-      if (shape instanceof Line) {
-        this.canvas.backService.changeFillColor(shape.id, shape.outlineColor);
-      }
-      else {
-        this.canvas.backService.changeOutlineColor(shape.id, shape.outlineColor);
-      }
+      this.canvas.backService.changeOutlineColor(shape.id, shape.outlineColor);
     })
 
     this.canvas.update(ctx);
@@ -204,6 +199,7 @@ export class ControllerService {
     newShape.outlineColor = returnedObj.outlineColor;
     newShape.thickness = returnedObj.thickness;
     newShape.type = returnedObj.type;
+    newShape.valid = returnedObj.valid;
     newShape.width = returnedObj.width;
     newShape.valid = true;
 
@@ -218,9 +214,10 @@ export class ControllerService {
     return newShape;
   }
 
+
   XmlJsonedToShape(newShape: Shape, returnedObj: XmlJsoned): Shape {
     newShape.upperLeftCorner.x = parseFloat(returnedObj.upperLeftCorner.split(",",2)[0]);
-    newShape.upperLeftCorner.y =  parseFloat(returnedObj.upperLeftCorner.split(",",2)[1]);
+    newShape.upperLeftCorner.y = parseFloat(returnedObj.upperLeftCorner.split(",",2)[1]);
     newShape.fillColor = returnedObj.fillColor;
     newShape.fillOpacity = returnedObj.fillOpacity;
     newShape.height = returnedObj.height;
@@ -231,10 +228,13 @@ export class ControllerService {
     newShape.width = returnedObj.width;
     newShape.valid = true;
 
-    // if (newShape instanceof Line) {
-    //   newShape.endingPoint.x = (<Line>returnedObj).endingPoint.x;
-    //   newShape.endingPoint.y = (<Line>returnedObj).endingPoint.y;
-    // }
+    if (newShape instanceof Line) {
+      newShape.endingPoint.x = parseFloat(returnedObj.endingPoint.split(",",2)[0]);
+      newShape.endingPoint.y = parseFloat(returnedObj.endingPoint.split(",",2)[1]);
+      newShape.outlineColor = returnedObj.fillColor;
+      newShape.width = newShape.endingPoint.x - newShape.upperLeftCorner.x;
+      newShape.height = newShape.endingPoint.y - newShape.upperLeftCorner.y;
+    }
 
     return newShape;
   }

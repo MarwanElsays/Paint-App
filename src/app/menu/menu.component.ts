@@ -109,11 +109,21 @@ export class MenuComponent {
     });
   }
 
+  saveJson() {
+    this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
+      let file = new Blob([JSON.stringify(Json)],{type:"text"});
+      let anchor = document.createElement("a");
+      anchor.href = URL.createObjectURL(file);
+      anchor.download = "JsonFile.json";
+      anchor.click();
+    });
+  }
+
   load(event: Event) {
     const files = (<HTMLInputElement> event.target).files;
     if (files) {
       files[0].text().then((loadedFile) => {
-       
+
         if(loadedFile[0] != '{'){
           this.backendService.xmlToJSON(loadedFile).subscribe((returnedArray) => {
             this.s.emitLoadXmlJsoned(returnedArray);
@@ -125,16 +135,6 @@ export class MenuComponent {
 
       });
     }
-  }
-
-  saveJson() {
-    this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
-      let file = new Blob([JSON.stringify(Json)],{type:"text"});
-      let anchor = document.createElement("a");
-      anchor.href = URL.createObjectURL(file);
-      anchor.download = "JsonFile.json";
-      anchor.click();
-    });
   }
 }
 
