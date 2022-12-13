@@ -34,6 +34,10 @@ label{
     cursor: pointer;
 }
 
+#erase:active,#undo:active,#redo:active,#select:active,#save:active,#Load:active{
+    transform: translateY(2px);
+}
+
 #LoadDiv{
     margin-left: 180px;
 }

@@ -19,8 +19,8 @@ export class ControllerService {
     returnedArray.forEach((shape) => {
       let s = this.objectToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
-      })
-      this.canvas.update(ctx);
+    })
+    this.canvas.update(ctx);
   }
 
   async Redo(ctx: CanvasRenderingContext2D) {
