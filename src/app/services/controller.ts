@@ -5,6 +5,7 @@ import { Shape } from "../Shapes/shape";
 import { DrawService } from "./draw.service";
 import { lastValueFrom, map } from 'rxjs';
 import { XmlJsoned } from '../NewTypes/XmlJsonedType';
+import { library } from '@fortawesome/fontawesome-svg-core';
 
 export class ControllerService {
   constructor(private canvas: CanvasComponent, private drawServe: DrawService) { }
@@ -103,7 +104,14 @@ export class ControllerService {
 
     this.canvas.selectBox.getSelectedShapes().forEach((shape) => {
       shape.outlineColor = this.drawServe.color;
-      this.canvas.backService.changeOutlineColor(shape.id, shape.outlineColor);
+      if(shape instanceof Line){
+        this.canvas.backService.changeFillColor(shape.id, shape.outlineColor);
+      }
+      else
+      {
+        this.canvas.backService.changeOutlineColor(shape.id, shape.outlineColor);
+      }
+      
     })
 
     this.canvas.update(ctx);
