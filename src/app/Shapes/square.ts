@@ -1,14 +1,19 @@
 import { Shape } from './shape';
 export class Square extends Shape {
   override type: string = "square";
-  override Draw(ctx: CanvasRenderingContext2D, color: string, linewidth: number, x: number, y: number, startx: number, starty: number) {
+  override Draw(ctx: CanvasRenderingContext2D, color: string, linewidth: number, x: number, y: number, startx: number, starty: number, equalDims: boolean) {
     ctx.strokeStyle = color;
     ctx.lineWidth = linewidth;
-    ctx.strokeRect(startx, starty, x - startx, y - starty);
     this.upperLeftCorner.x = startx;
     this.upperLeftCorner.y = starty;
     this.width = x - startx;
-    this.height = y - starty;
+    if (equalDims) {
+      this.height = this.width;
+    }
+    else {
+      this.height = y - starty;
+    }
+    ctx.strokeRect(startx, starty, this.width, this.height);
     this.outlineColor = color;
     this.thickness = linewidth;
     if (this.width == 0 && this.height == 0)
