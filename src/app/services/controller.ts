@@ -118,33 +118,28 @@ export class ControllerService {
 
   LoadXmlJsoned(ctx: CanvasRenderingContext2D,LoadedShapes:XmlJsoned[]){
     this.Erase(ctx);
+    let maxID = 0;
     LoadedShapes.forEach((shape) => {
       let s = this.XmlJsonedToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
+      this.canvas.ShapeID = Math.max(s.id, maxID);
       this.sendToBack(s);
-    })
-    let maxID = 0;
-    this.canvas.shapes.forEach((shape) => {
-      this.canvas.ShapeID = Math.max(shape.id, maxID);
-    })
+    });
     this.canvas.ShapeID++;
-    console.log(this.canvas.shapes)
     this.canvas.update(ctx);
   }
 
   LoadJsoned(ctx: CanvasRenderingContext2D,LoadedShapes:Shape[]){
     this.Erase(ctx);
+    let maxID = 0;
     LoadedShapes.forEach((shape) => {
       let s = this.objectToShape(this.canvas.factory.getShape(shape.type), shape);
       this.canvas.shapes.push(s);
+      this.canvas.ShapeID = Math.max(s.id, maxID);
       this.sendToBack(s);
     })
-    let maxID = 0;
-    this.canvas.shapes.forEach((shape) => {
-      this.canvas.ShapeID = Math.max(shape.id, maxID);
-    })
+    
     this.canvas.ShapeID++;
-    console.log(this.canvas.shapes)
     this.canvas.update(ctx);
   }
 

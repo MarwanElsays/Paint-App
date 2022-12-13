@@ -154,16 +154,16 @@ export class CanvasComponent implements OnInit {
           this.currshape.width = this.currshape.endingPoint.x - this.currshape.upperLeftCorner.x;
           this.currshape.height = this.currshape.endingPoint.y - this.currshape.upperLeftCorner.y;
         }
-        else {
-          if (this.currshape.width < 0) {
-            this.currshape.upperLeftCorner.x += this.currshape.width;
-            this.currshape.width = - this.currshape.width;
-          }
-          if (this.currshape.height < 0) {
-            this.currshape.upperLeftCorner.y += this.currshape.height;
-            this.currshape.height = - this.currshape.height;
-          }
+         
+        if (this.currshape.width < 0 && !(this.currshape instanceof Line)) {
+          this.currshape.upperLeftCorner.x += this.currshape.width;
+          this.currshape.width = - this.currshape.width;
         }
+        if (this.currshape.height < 0 && !(this.currshape instanceof Line)) {
+          this.currshape.upperLeftCorner.y += this.currshape.height;
+          this.currshape.height = - this.currshape.height;
+        }
+        
         this.shapes.push(this.currshape);
 
         let upperleftcornner = this.currshape.upperLeftCorner.x.toString() + "," + this.currshape.upperLeftCorner.y.toString();

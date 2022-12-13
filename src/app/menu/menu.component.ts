@@ -111,7 +111,7 @@ export class MenuComponent {
 
   saveJson() {
     this.backendService.getAllShapesJsonInfo().subscribe((Json) => {
-      let file = new Blob([JSON.stringify(Json)],{type:"text"});
+      let file = new Blob([JSON.stringify(Json)],{type:"json"});
       let anchor = document.createElement("a");
       anchor.href = URL.createObjectURL(file);
       anchor.download = "JsonFile.json";
@@ -124,7 +124,7 @@ export class MenuComponent {
     if (files) {
       files[0].text().then((loadedFile) => {
 
-        if(loadedFile[0] != '{'){
+        if(files[0].type == 'xml'){
           this.backendService.xmlToJSON(loadedFile).subscribe((returnedArray) => {
             this.s.emitLoadXmlJsoned(returnedArray);
           });
